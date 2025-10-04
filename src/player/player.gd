@@ -19,7 +19,7 @@ func _physics_process(delta):
     handle_movement(delta)
     handle_beam()
     abduct_pedestrians(previous_pos)
-    
+
 func handle_beam():
     var beam = get_node("TractorBeam")
     var beamCollisionArea = %TractorBeamCollisionPolygon
