@@ -47,13 +47,13 @@ func handle_movement(delta):
         velocity.y = velocity.y * DAMPING_FACTOR
         # TODO: revisit and add wobbling when decelerating?
         rotation = 0
-        
+
     if abs(velocity.x) < 1:
         velocity.x = 0
-    
+
     if abs(velocity.y) < 1:
         velocity.y = 0
-        
+
     velocity.y += gravity * delta
     move_and_collide(velocity * delta)
 
