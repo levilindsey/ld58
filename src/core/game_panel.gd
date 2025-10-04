@@ -11,3 +11,4 @@ func _ready() -> void:
 
 func _on_viewport_size_changed() -> void:
     var size := self.get_viewport().get_visible_rect().size
+    # TODO
