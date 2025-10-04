@@ -24,3 +24,12 @@ position = Vector2(355, -73)
 
 [node name="Pedestrian" parent="." instance=ExtResource("4_n7c0l")]
 position = Vector2(209, -42)
+
+[node name="Pedestrian2" parent="." instance=ExtResource("4_n7c0l")]
+position = Vector2(481, -44)
+
+[node name="Pedestrian3" parent="." instance=ExtResource("4_n7c0l")]
+position = Vector2(354, -42)
+
+[node name="Pedestrian4" parent="." instance=ExtResource("4_n7c0l")]
+position = Vector2(285, -42)

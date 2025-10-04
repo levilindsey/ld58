@@ -10,6 +10,7 @@ var gravity = 0
 var pedestrians_in_beam = {}
 var pedestrians_collected = {}
 var is_beaming = false
+var max_pedestrian_capacity = 3
 
 func _ready() -> void:
     G.player = self
@@ -19,6 +20,7 @@ func _physics_process(delta):
     handle_movement(delta)
     handle_beam()
     abduct_pedestrians(previous_pos)
+    $CapacityLabel.text = str(pedestrians_collected.size()) + "/" + str(max_pedestrian_capacity)
     
 func handle_beam():
     var beam = get_node("TractorBeam")
@@ -44,11 +46,12 @@ func abduct_pedestrians(previous_pos):
         var ped_height_offset = ped.get_node("CollisionShape2D").shape.get_height() / 2
         ped.position.x = move_toward(ped.position.x, position.x, 0.1) + player_x_delta
         ped.position.y = move_toward(ped.position.y, player_bottom_edge + ped_height_offset, 0.5)
-        if ped.position.y == player_bottom_edge + ped_height_offset:
+        if ped.position.y == player_bottom_edge + ped_height_offset and pedestrians_collected.size() < max_pedestrian_capacity:
             # The pedestrian has been collected
             pedestrians_collected[ped] = true
             ped.visible = false
             pedestrians_in_beam.erase(ped)
+            gravity += 100
 
 func handle_movement(delta):
     if Input.is_action_pressed("ui_left"):
@@ -74,12 +77,12 @@ func handle_movement(delta):
     if abs(velocity.y) < 1:
         velocity.y = 0
 
-    velocity.y += gravity * delta
+    if not is_beaming:
+        velocity.y += gravity * delta
     move_and_collide(velocity * delta)
 
 func is_movement_action_pressed():
     return Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_right") or Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_down")
-
 
 func _on_tractor_beam_area_body_entered(body: Node2D) -> void:
     if body is Pedestrian:
