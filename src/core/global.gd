@@ -8,3 +8,4 @@ var settings: Settings
 var hud: Hud
 var game_panel: GamePanel
 var utils := Utils.new()
+var player: Player
