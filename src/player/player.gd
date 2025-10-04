@@ -39,7 +39,7 @@ func _physics_process(delta):
     handle_beam()
     abduct_pedestrians(previous_pos)
     $CapacityLabel.text = str(pedestrians_collected.size()) + "/" + str(max_pedestrian_capacity)
-    
+
 
 func handle_beam():
     var beam = get_node("TractorBeam")
