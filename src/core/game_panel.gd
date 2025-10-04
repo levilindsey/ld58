@@ -15,6 +15,7 @@ var chunk_c_bounds: Rect2
 var combined_level_chunk_bounds: Rect2
 
 var is_shifting_chunks := false
+var enemy_spawner : EnemySpawner
 
 
 func _ready() -> void:
@@ -43,6 +44,9 @@ func _ready() -> void:
     _update_bounds()
 
     is_shifting_chunks = false
+    
+    enemy_spawner = EnemySpawner.new()
+    add_child(enemy_spawner)
 
 
 func _physics_process(_delta: float) -> void:

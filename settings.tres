@@ -1,6 +1,8 @@
-[gd_resource type="Resource" script_class="Settings" load_steps=2 format=3 uid="uid://dv60bmaw1pdx6"]
+[gd_resource type="Resource" script_class="Settings" load_steps=3 format=3 uid="uid://dv60bmaw1pdx6"]
 
 [ext_resource type="Script" uid="uid://cqomr88ncj2d3" path="res://src/core/settings.gd" id="1_krfic"]
+[ext_resource type="PackedScene" uid="uid://dxb3ayi4re60" path="res://src/enemy/pedestrian.tscn" id="1_w7hap"]
 
 [resource]
 script = ExtResource("1_krfic")
+farmer_scene = ExtResource("1_w7hap")

@@ -12,4 +12,14 @@ extends Resource
 
 @export var show_hud := true
 
+@export var farmer_scene : PackedScene
+
+func getEnemyScene(enemyType: Enemy.Type):
+    match enemyType:
+        Enemy.Type.FARMER:
+            return farmer_scene.instantiate()
+        _:
+            G.utils.ensure(false)
+            return
+
 # TODO: Configure initial screen/level to open.
