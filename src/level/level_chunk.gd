@@ -3,7 +3,7 @@ class_name LevelChunk
 extends Node2D
 
 
-const DRAW_DEBUG_BOUNDS_IN_GAME := true
+const DRAW_DEBUG_BOUNDS_IN_GAME := false
 
 
 func _draw() -> void:

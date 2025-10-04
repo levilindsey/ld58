@@ -29,13 +29,13 @@ func _physics_process(delta):
         velocity.y = velocity.y * damping_factor
         # TODO: revisit and add wobbling when decelerating?
         rotation = 0
-        
+
     if abs(velocity.x) < 1:
         velocity.x = 0
-    
+
     if abs(velocity.y) < 1:
         velocity.y = 0
-        
+
     velocity.y += gravity * delta
     var collision = move_and_collide(velocity * delta)
 
