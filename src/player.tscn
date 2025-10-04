@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3 uid="uid://cn6hdqmmufnvr"]
+
+[ext_resource type="Script" uid="uid://ctdjb8phvmc71" path="res://src/player.gd" id="1_gkcme"]
+[ext_resource type="Texture2D" uid="uid://dsgbstsy1ok2w" path="res://assets/images/ufo.png" id="2_gmfve"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lowyb"]
+radius = 5.0
+height = 20.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gmfve"]
+atlas = ExtResource("2_gmfve")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ehvfd"]
+atlas = ExtResource("2_gmfve")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gmfve"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gmfve")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ehvfd")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 3.0
+}]
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 2
+script = ExtResource("1_gkcme")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_lowyb")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_gmfve")
+animation = &"new_animation"
+autoplay = "new_animation"
+frame_progress = 0.2024626
+
+[node name="Camera2D" type="Camera2D" parent="."]

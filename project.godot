@@ -19,7 +19,18 @@ config/icon="res://assets/images/icon.svg"
 
 G="*res://src/core/global.gd"
 
+[layer_names]
+
+2d_physics/layer_1="player"
+2d_physics/layer_2="terrain"
+2d_physics/layer_3="enemy"
+2d_physics/layer_4="enemy_projectile"
+2d_physics/layer_5="enemy_light"
+2d_physics/layer_6="enemy_vision"
+2d_physics/layer_7="player_beam"
+
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
