@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=4 uid="uid://c7or8277wryhs"]
 
-[ext_resource type="Script" uid="uid://03qt2e20crof" path="res://src/level_chunk.gd" id="1_6nf5l"]
+[ext_resource type="Script" uid="uid://03qt2e20crof" path="res://src/level/level_chunk.gd" id="1_6nf5l"]
 [ext_resource type="TileSet" uid="uid://n1nnhi54pgyi" path="res://src/level/terrain_tile_set.tres" id="2_vr8w8"]
 
 [node name="LevelChunk" type="Node2D"]

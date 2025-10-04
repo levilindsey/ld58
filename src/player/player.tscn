@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://cn6hdqmmufnvr"]
 
-[ext_resource type="Script" uid="uid://ctdjb8phvmc71" path="res://src/player.gd" id="1_gkcme"]
+[ext_resource type="Script" uid="uid://ctdjb8phvmc71" path="res://src/player/player.gd" id="1_gkcme"]
 [ext_resource type="Texture2D" uid="uid://dsgbstsy1ok2w" path="res://assets/images/ufo.png" id="2_gmfve"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lowyb"]

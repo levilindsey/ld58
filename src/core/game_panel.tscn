@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://luccssf71n0"]
 
 [ext_resource type="Script" uid="uid://b0biq0wqtvk5e" path="res://src/core/game_panel.gd" id="1_lii62"]
-[ext_resource type="PackedScene" uid="uid://c7or8277wryhs" path="res://src/level_chunk.tscn" id="2_6i81m"]
-[ext_resource type="PackedScene" uid="uid://cn6hdqmmufnvr" path="res://src/player.tscn" id="3_0qy1w"]
+[ext_resource type="PackedScene" uid="uid://c7or8277wryhs" path="res://src/level/level_chunk.tscn" id="2_6i81m"]
+[ext_resource type="PackedScene" uid="uid://cn6hdqmmufnvr" path="res://src/player/player.tscn" id="3_0qy1w"]
 [ext_resource type="PackedScene" uid="uid://dxb3ayi4re60" path="res://src/enemy/pedestrian.tscn" id="4_n7c0l"]
 
 [node name="GamePanel" type="Node2D"]
