@@ -23,7 +23,7 @@ enum State {
 }
 
 
-const LANDED_HARD_SPEED_THRESHOLD := 400
+const LANDED_HARD_SPEED_THRESHOLD := 150
 
 
 @export var type := Type.FARMER
