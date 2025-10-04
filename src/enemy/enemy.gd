@@ -4,8 +4,13 @@ extends CharacterBody2D
 
 enum Type {
     FARMER,
-    # TODO: Add stuff here!
+    KID,
+    BUSINESS_MAN,
+    ELDERLY,
+    HOMELESS_PERSON,
+    CAT,
     POLICE_OFFICER,
+    # TODO: Add stuff here!
     POLICE_CAR,
     TANK,
     HELICOPTER,

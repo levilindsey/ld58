@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=3 uid="uid://cakoqktrln4k8"]
+
+[ext_resource type="Script" uid="uid://c00fx7v44n5qw" path="res://src/enemy/pedestrian.gd" id="1_jwwoi"]
+[ext_resource type="Texture2D" uid="uid://bkbobd38lahao" path="res://assets/images/homeless-person.png" id="2_jwwoi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7qg1a"]
+atlas = ExtResource("2_jwwoi")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jg6so"]
+atlas = ExtResource("2_jwwoi")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_a1i78"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7qg1a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jg6so")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1p648"]
+radius = 2.0
+height = 13.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1p648"]
+size = Vector2(54, 58.204)
+
+[node name="HomelessPerson" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_jwwoi")
+type = 4
+metadata/_custom_type_script = "uid://crnlma8ijjgwp"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -8)
+sprite_frames = SubResource("SpriteFrames_a1i78")
+autoplay = "default"
+frame_progress = 0.20731318
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -6.5)
+shape = SubResource("CapsuleShape2D_1p648")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 5
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+position = Vector2(40, -17)
+rotation = -0.92415726
+shape = SubResource("RectangleShape2D_1p648")
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

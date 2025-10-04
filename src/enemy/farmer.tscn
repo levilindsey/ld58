@@ -1,14 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://dxb3ayi4re60"]
+[gd_scene load_steps=8 format=3 uid="uid://drnwm8uaffaxb"]
 
-[ext_resource type="Script" uid="uid://c00fx7v44n5qw" path="res://src/enemy/pedestrian.gd" id="1_1avmb"]
-[ext_resource type="Texture2D" uid="uid://bivvk85ypii7n" path="res://assets/images/farmer.png" id="2_1p648"]
+[ext_resource type="Script" uid="uid://c00fx7v44n5qw" path="res://src/enemy/pedestrian.gd" id="1_w8tha"]
+[ext_resource type="Texture2D" uid="uid://bivvk85ypii7n" path="res://assets/images/farmer.png" id="2_2ti1m"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_x3yub"]
-atlas = ExtResource("2_1p648")
+atlas = ExtResource("2_2ti1m")
 region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l8xm2"]
-atlas = ExtResource("2_1p648")
+atlas = ExtResource("2_2ti1m")
 region = Rect2(16, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_a1i78"]
@@ -26,16 +26,16 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1p648"]
-radius = 1.0
-height = 6.0
+radius = 2.0
+height = 15.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1p648"]
-size = Vector2(27, 29.102407)
+size = Vector2(54, 58.204)
 
-[node name="Pedestrian" type="CharacterBody2D"]
+[node name="Farmer" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 2
-script = ExtResource("1_1avmb")
+script = ExtResource("1_w8tha")
 metadata/_custom_type_script = "uid://crnlma8ijjgwp"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -45,7 +45,7 @@ autoplay = "default"
 frame_progress = 0.7337046
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -3)
+position = Vector2(0, -7.5)
 shape = SubResource("CapsuleShape2D_1p648")
 
 [node name="DetectionArea" type="Area2D" parent="."]
@@ -54,7 +54,7 @@ collision_mask = 5
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
-position = Vector2(19.829548, -8.354105)
+position = Vector2(40, -19)
 rotation = -0.92415726
 shape = SubResource("RectangleShape2D_1p648")
 
