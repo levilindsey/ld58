@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cn6hdqmmufnvr"]
+[gd_scene load_steps=9 format=3 uid="uid://cn6hdqmmufnvr"]
 
 [ext_resource type="Script" uid="uid://ctdjb8phvmc71" path="res://src/player/player.gd" id="1_gkcme"]
 [ext_resource type="Texture2D" uid="uid://dsgbstsy1ok2w" path="res://assets/images/ufo.png" id="2_gmfve"]
+[ext_resource type="AudioStream" uid="uid://c6xc34578ys23" path="res://assets/audio/Tractor Beam V2.wav" id="3_mf2ua"]
+[ext_resource type="AudioStream" uid="uid://50qf35kdpd1h" path="res://assets/audio/UFO Flight_loop.cm.wav" id="4_244u8"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lowyb"]
 radius = 5.0
@@ -80,5 +82,14 @@ text = "0/3"
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 2
+[node name="TractorBeamAudiostream" type="AudioStreamPlayer" parent="TractorBeam"]
+stream = ExtResource("3_mf2ua")
+volume_db = -20.459
+bus = &"SFX"
+
+[node name="UFOAudiostream" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_244u8")
+autoplay = true
+bus = &"SFX"
 
 [connection signal="body_entered" from="TractorBeam/TractorBeamArea" to="." method="_on_tractor_beam_area_body_entered"]
