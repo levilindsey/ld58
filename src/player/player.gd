@@ -12,8 +12,26 @@ var pedestrians_collected = {}
 var is_beaming = false
 var max_pedestrian_capacity = 3
 
+@onready var beam_audio_player: AudioStreamPlayer = $TractorBeam/TractorBeamAudiostream
+@onready var ufo_audio_player: AudioStreamPlayer = $UFOAudiostream
+
 func _ready() -> void:
     G.player = self
+
+func _process(delta: float) -> void:
+    var speed = velocity.length()
+    if not ufo_audio_player.playing:
+        ufo_audio_player.play()
+
+    # Map speed to pitch (1.0 = normal)
+    var min_pitch = 0.4
+    var max_pitch = 1.1
+    ufo_audio_player.pitch_scale = lerp(min_pitch, max_pitch, clamp(speed / max_speed, 0.0, 1.0))
+
+    # Map speed to volume in decibels
+    var min_db = -32.0
+    var max_db = -20.0
+    ufo_audio_player.volume_db = lerp(min_db, max_db, clamp(speed / max_speed, 0.0, 1.0))
 
 func _physics_process(delta):
     var previous_pos = position
@@ -22,17 +40,21 @@ func _physics_process(delta):
     abduct_pedestrians(previous_pos)
     $CapacityLabel.text = str(pedestrians_collected.size()) + "/" + str(max_pedestrian_capacity)
     
+
 func handle_beam():
     var beam = get_node("TractorBeam")
     var beamCollisionArea = %TractorBeamCollisionPolygon
     if Input.is_action_pressed("ui_select"):
         is_beaming = true
         beam.visible = true
+        if not beam_audio_player.playing:
+            beam_audio_player.play()
         beamCollisionArea.set_deferred("disabled", false)
         max_speed = 50
     if Input.is_action_just_released("ui_select"):
         is_beaming = false
         beam.visible = false
+        beam_audio_player.stop()
         beamCollisionArea.set_deferred("disabled", true)
         max_speed = 400
         for ped in pedestrians_in_beam:
