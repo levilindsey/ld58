@@ -122,6 +122,8 @@ func _on_detection_end() -> void:
     if is_dead():
         return
     is_player_visible = false
+    was_player_recently_visible = true
+    last_player_sighting_time = Time.get_ticks_msec() / 1000.0
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
