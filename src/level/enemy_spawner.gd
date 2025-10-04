@@ -38,5 +38,5 @@ func spawn_enemy(enemyType: Enemy.Type):
     
     enemy.position.x = int(random_x_position)
     # randomize starting direction
-    enemy.is_facing_right = int(random_x_position) % 2 == 0
+    enemy.set_is_facing_right(int(random_x_position) % 2 == 0)
     G.game_panel.add_child(enemy)

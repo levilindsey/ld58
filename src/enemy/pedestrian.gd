@@ -51,6 +51,10 @@ func _get_horizontal_velocity() -> float:
         _:
             G.utils.ensure(false)
             return 0
+            
+func set_is_facing_right(is_facing_right: bool) -> void:
+    self.is_facing_right = is_facing_right
+    scale.x = 1 if is_facing_right else -1
 
 
 func on_beam_start() -> void:
@@ -107,8 +111,7 @@ func _on_ufo_or_beamed_player_detection_start() -> void:
 
     if state == State.IDLE or state == State.FALLING or state == State.RETREATING:
         # Face away from the player.
-        is_facing_right = position.x >= G.player.position.x
-        scale.x = 1 if is_facing_right else -1
+        set_is_facing_right(position.x >= G.player.position.x)
 
     if state == State.IDLE:
         state = State.FALLING
