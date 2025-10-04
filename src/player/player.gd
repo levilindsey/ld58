@@ -7,6 +7,11 @@ var max_rotation = PI / 8
 var damping_factor = 0.95
 var gravity = 0
 
+
+func _ready() -> void:
+    G.player = self
+
+
 func _physics_process(delta):
     if Input.is_action_pressed("ui_left"):
         velocity.x = clamp(velocity.x + acceleration * delta * -1, max_speed * -1, max_speed)
