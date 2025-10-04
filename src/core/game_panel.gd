@@ -2,7 +2,9 @@ class_name GamePanel
 extends Node2D
 
 
-const CHUNK_EDGE_DISTANCE_THRESHOLD_FOR_CHUNK_REPOSITIONING := 128
+const CHUNK_EDGE_DISTANCE_THRESHOLD_FOR_CHUNK_REPOSITIONING := 420
+const ENEMY_DISTANCE_THRESHOLD_FOR_DESPAWNING := \
+    CHUNK_EDGE_DISTANCE_THRESHOLD_FOR_CHUNK_REPOSITIONING - 50
 const ZOO_KEEPER_SPACE_HEIGHT_THRESHOLD := 1024
 
 var player_start_position := Vector2.ZERO
@@ -16,6 +18,10 @@ var is_shifting_chunks := false
 
 
 func _ready() -> void:
+    G.utils.ensure(
+        CHUNK_EDGE_DISTANCE_THRESHOLD_FOR_CHUNK_REPOSITIONING >
+            ENEMY_DISTANCE_THRESHOLD_FOR_DESPAWNING)
+
     G.game_panel = self
     player_start_position = G.player.global_position
 
