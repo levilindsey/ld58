@@ -36,6 +36,10 @@ var previous_velocity := Vector2.ZERO
 var visible_enemies := {}
 
 
+func _ready() -> void:
+    G.enemies.push_back(self)
+
+
 func _physics_process(delta: float) -> void:
     if state == State.BEING_BEAMED:
         return
