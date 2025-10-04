@@ -44,7 +44,7 @@ func _ready() -> void:
     _update_bounds()
 
     is_shifting_chunks = false
-    
+
     enemy_spawner = EnemySpawner.new()
     add_child(enemy_spawner)
 
