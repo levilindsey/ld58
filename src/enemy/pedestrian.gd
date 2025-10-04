@@ -13,9 +13,6 @@ var is_player_visible := false
 var was_player_recently_visible := false
 var is_facing_right := true
 
-# Dictionary<Enemy, bool>
-var visible_enemies := {}
-
 
 func _physics_process(_delta: float) -> void:
     super._physics_process(_delta)
@@ -61,6 +58,13 @@ func on_beam_start() -> void:
         return
     state = State.BEING_BEAMED
 
+    # Trigger detection on any other enemy that can currently see this pedestrian.
+    for enemy in G.enemies:
+        if enemy == self:
+            continue
+        if enemy.visible_enemies.has(self):
+            enemy._on_ufo_or_beamed_player_detection_start()
+
 
 func on_beam_end() -> void:
     if is_dead():
@@ -92,8 +96,19 @@ func _on_detection_start() -> void:
     if is_dead():
         return
     is_player_visible = true
+    _on_ufo_or_beamed_player_detection_start()
+
+
+func _on_ufo_or_beamed_player_detection_start() -> void:
+    if is_dead():
+        return
     was_player_recently_visible = true
     last_player_sighting_time = Time.get_ticks_msec() / 1000.0
+
+    if state == State.IDLE or state == State.FALLING or state == State.RETREATING:
+        # Face away from the player.
+        is_facing_right = position.x >= G.player.position.x
+        scale.x = 1 if is_facing_right else -1
 
     if state == State.IDLE:
         state = State.FALLING
@@ -101,10 +116,6 @@ func _on_detection_start() -> void:
         # Jump in fear.
         velocity.x = 0
         velocity.y = -JUMP_VELOCITY_BOOST
-
-        # Face away from the player.
-        is_facing_right = position.x >= G.player.position.x
-        scale.x = 1 if is_facing_right else -1
 
 
 func _on_detection_end() -> void:
@@ -120,6 +131,9 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
         _on_detection_start()
     elif body is Enemy:
         visible_enemies[body] = true
+        if body.state == State.BEING_BEAMED:
+            _on_ufo_or_beamed_player_detection_start()
+
 
 
 func _on_detection_area_body_exited(body: Node2D) -> void:

@@ -32,6 +32,9 @@ var state := State.STARTING
 var was_on_floor := false
 var previous_velocity := Vector2.ZERO
 
+# Dictionary<Enemy, bool>
+var visible_enemies := {}
+
 
 func _physics_process(delta: float) -> void:
     if state == State.BEING_BEAMED:
