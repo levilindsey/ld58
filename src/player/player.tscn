@@ -595,6 +595,7 @@ unique_name_in_owner = true
 zoom = Vector2(3, 3)
 
 [node name="TractorBeam" type="Node2D" parent="."]
+visible = false
 
 [node name="TractorBeamArea" type="Area2D" parent="TractorBeam"]
 collision_layer = 64
