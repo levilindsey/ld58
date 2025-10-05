@@ -39,15 +39,16 @@ script = ExtResource("1_m3cnc")
 type = 5
 metadata/_custom_type_script = "uid://crnlma8ijjgwp"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="SpriteWrapper" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteWrapper"]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_a1i78")
 autoplay = "default"
 frame_progress = 0.5521451
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -3.5)
-rotation = 1.5707964
+position = Vector2(0, -5)
 shape = SubResource("CapsuleShape2D_1p648")
 
 [node name="DetectionArea" type="Area2D" parent="."]
@@ -56,7 +57,7 @@ collision_mask = 5
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
-position = Vector2(40, -12.999998)
+position = Vector2(40, -13.999998)
 rotation = -0.92415726
 shape = SubResource("RectangleShape2D_1p648")
 

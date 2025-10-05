@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://v01bkoexv76d"]
+[gd_scene load_steps=38 format=3 uid="uid://v01bkoexv76d"]
 
 [ext_resource type="AudioStream" uid="uid://ddcvc3bya2scb" path="res://assets/audio/Human Screams/Human screams-cm-01.wav" id="1_44n7j"]
 [ext_resource type="AudioStream" uid="uid://cgjv1jya2givh" path="res://assets/audio/Human Screams/Human screams-cm-02.wav" id="2_8ayot"]
@@ -29,6 +29,9 @@
 [ext_resource type="AudioStream" uid="uid://dgfcf5lsy31cb" path="res://assets/audio/Human Surprise/Human screams.dup1-cm_05-02.wav" id="27_710h6"]
 [ext_resource type="AudioStream" uid="uid://d2owd3ywhpqf4" path="res://assets/audio/Human Surprise/Human screams.dup1-cm_06-01.wav" id="28_hnjx5"]
 [ext_resource type="AudioStream" uid="uid://ddht7s208ilp" path="res://assets/audio/Human Surprise/Human screams.dup1-cm_07-01.wav" id="29_kptdp"]
+[ext_resource type="Script" uid="uid://dx1i5n60x14ay" path="res://src/enemy/detect_stream_player_2d.gd" id="30_kptdp"]
+[ext_resource type="AudioStream" uid="uid://b6bx2xd5ff8oq" path="res://assets/audio/Running Screams/Running.cm1_01.wav" id="32_kptdp"]
+[ext_resource type="AudioStream" uid="uid://7fmajccvb2jp" path="res://assets/audio/Running Screams/Running.cm1_02.wav" id="33_dor8u"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_hnjx5"]
 streams_count = 16
@@ -72,6 +75,13 @@ stream_2/stream = ExtResource("27_710h6")
 stream_3/stream = ExtResource("28_hnjx5")
 stream_4/stream = ExtResource("29_kptdp")
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_s27u6"]
+random_pitch = 1.38
+random_volume_offset_db = 0.28
+streams_count = 2
+stream_0/stream = ExtResource("32_kptdp")
+stream_1/stream = ExtResource("33_dor8u")
+
 [node name="EnemySound" type="Node2D"]
 
 [node name="AbductingAudioStream" type="AudioStreamPlayer2D" parent="."]
@@ -96,7 +106,15 @@ bus = &"SFX"
 stream = SubResource("AudioStreamRandomizer_dor8u")
 volume_db = -8.44
 pitch_scale = 0.77
-max_distance = 400.0
+max_distance = 359.0
+bus = &"Voices"
+script = ExtResource("30_kptdp")
+
+[node name="RunningStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_s27u6")
+volume_db = -3.8
+max_distance = 300.0
 bus = &"Voices"
 
 [connection signal="finished" from="AbductingAudioStream" to="AbductingAudioStream" method="_on_finished"]
+[connection signal="finished" from="DetectStreamPlayer2D" to="DetectStreamPlayer2D" method="_on_finished"]
