@@ -9,7 +9,6 @@ func _ready() -> void:
     mostRecentSpawnTime = Time.get_ticks_msec() / 1000.0
     # spawn 1 farmer to start
     spawn_enemy(Enemy.Type.FARMER)
-    return
 
 
 func _physics_process(_delta: float) -> void:

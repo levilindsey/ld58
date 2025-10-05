@@ -7,6 +7,10 @@ var enemy_count := 3
 var start_time := -INF
 var duration := INF
 
+var end_time: float:
+    get:
+        return start_time + duration
+
 
 func _init(p_enemy_type: Enemy.Type, p_enemy_count: int, p_start_time: float, p_duration: float) -> void:
     enemy_type = p_enemy_type

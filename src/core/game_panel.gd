@@ -14,6 +14,7 @@ var combined_level_chunk_bounds: Rect2
 
 var is_shifting_chunks := false
 var enemy_spawner : EnemySpawner
+var quest_manager : QuestManager
 
 
 func _enter_tree() -> void:
@@ -52,6 +53,11 @@ func start_level() -> void:
         enemy_spawner.queue_free()
     enemy_spawner = EnemySpawner.new()
     add_child(enemy_spawner)
+
+    if is_instance_valid(quest_manager):
+        quest_manager.queue_free()
+    quest_manager = QuestManager.new()
+    add_child(quest_manager)
 
     chunk_edge_distance_threshold_for_chunk_repositioning = get_viewport().size.x / get_viewport().get_camera_2d().zoom.x / 2 + 50
 

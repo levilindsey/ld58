@@ -26,11 +26,11 @@ var health := 0
 
 var detection_score := 0
 
-var active_quests: Array[RefCounted] = []
+var active_quests: Array[Quest] = []
 
-var failed_quests: Array[RefCounted] = []
+var failed_quests: Array[Quest] = []
 
-var fulfilled_quests: Array[RefCounted] = []
+var fulfilled_quests: Array[Quest] = []
 
 
 func _init() -> void:
