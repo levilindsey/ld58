@@ -6,6 +6,7 @@ extends Node
 var main: Main
 var settings: Settings
 var hud: Hud
+var zoo_keeper: PanelContainer
 var game_panel: GamePanel
 var utils := Utils.new()
 var player: Player

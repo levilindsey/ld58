@@ -1,0 +1,98 @@
+[gd_scene load_steps=9 format=3 uid="uid://dg8tvc66eq6c5"]
+
+[ext_resource type="Texture2D" uid="uid://dj2ig84eome17" path="res://assets/images/background_color.png" id="1_e6fyj"]
+[ext_resource type="Texture2D" uid="uid://bymo0pfodey5k" path="res://assets/images/cat.png" id="2_fdtcg"]
+[ext_resource type="Script" uid="uid://bkdd7i01q1ow5" path="res://src/ui/zoo_keeper_screen.gd" id="2_lpqvl"]
+[ext_resource type="Texture2D" uid="uid://ccrh0uyxuhy7h" path="res://assets/images/background_stars.png" id="2_npo0w"]
+
+[sub_resource type="Theme" id="Theme_fdtcg"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lpqvl"]
+texture = ExtResource("1_e6fyj")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_oxfrs"]
+texture = ExtResource("2_npo0w")
+
+[sub_resource type="Theme" id="Theme_ntcfd"]
+
+[node name="ZooKeeperScreen" type="PanelContainer"]
+process_mode = 3
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_fdtcg")
+theme_override_styles/panel = SubResource("StyleBoxTexture_lpqvl")
+script = ExtResource("2_lpqvl")
+
+[node name="Stars" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_stretch_ratio = 2.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_oxfrs")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme = SubResource("Theme_ntcfd")
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="LeftPanel" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Options" type="VBoxContainer" parent="MarginContainer/LeftPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="DropEarthlings" type="Button" parent="MarginContainer/LeftPanel/Options"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Drop off earthlings"
+
+[node name="UpgradeCapacity" type="Button" parent="MarginContainer/LeftPanel/Options"]
+layout_mode = 2
+text = "Add ship capacity (+1)"
+
+[node name="UpgradeStealth" type="Button" parent="MarginContainer/LeftPanel/Options"]
+layout_mode = 2
+text = "Improve stealth (+20%)"
+
+[node name="UpgradeSpeed" type="Button" parent="MarginContainer/LeftPanel/Options"]
+layout_mode = 2
+text = "Upgrade speed (+10%)"
+
+[node name="EarthButton" type="Button" parent="MarginContainer/LeftPanel/Options"]
+layout_mode = 2
+text = "Return to earth"
+
+[node name="RightPanel" type="VBoxContainer" parent="MarginContainer/LeftPanel"]
+layout_direction = 3
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ZooKeeperImage" type="TextureRect" parent="MarginContainer/LeftPanel/RightPanel"]
+custom_minimum_size = Vector2(0, 500)
+layout_mode = 2
+texture = ExtResource("2_fdtcg")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="ZooKeeperText" type="Label" parent="MarginContainer/LeftPanel/RightPanel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_vertical = 6
+text = "I am the Zookeeper. Hear me roar. I would like you to collect humans for me."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[connection signal="pressed" from="MarginContainer/LeftPanel/Options/DropEarthlings" to="." method="_on_drop_earthlings_pressed"]
+[connection signal="pressed" from="MarginContainer/LeftPanel/Options/UpgradeCapacity" to="." method="_on_upgrade_capacity_pressed"]
+[connection signal="pressed" from="MarginContainer/LeftPanel/Options/UpgradeStealth" to="." method="_on_upgrade_stealth_pressed"]
+[connection signal="pressed" from="MarginContainer/LeftPanel/Options/UpgradeSpeed" to="." method="_on_upgrade_speed_pressed"]
+[connection signal="pressed" from="MarginContainer/LeftPanel/Options/EarthButton" to="." method="_on_earth_button_pressed"]
