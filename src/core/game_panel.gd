@@ -2,7 +2,7 @@ class_name GamePanel
 extends Node2D
 
 
-const ZOO_KEEPER_SPACE_HEIGHT_THRESHOLD := 1024
+const ZOO_KEEPER_SPACE_HEIGHT_THRESHOLD := -1800
 
 var player_start_position := Vector2.ZERO
 var chunk_edge_distance_threshold_for_chunk_repositioning: int
