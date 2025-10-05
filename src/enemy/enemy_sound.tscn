@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://v01bkoexv76d"]
+
+[node name="EnemySound" type="Node2D"]

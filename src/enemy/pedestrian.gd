@@ -51,7 +51,7 @@ func _get_horizontal_velocity() -> float:
         _:
             G.utils.ensure(false)
             return 0
-            
+
 func set_is_facing_right(is_facing_right: bool) -> void:
     self.is_facing_right = is_facing_right
     scale.x = 1 if is_facing_right else -1
@@ -61,6 +61,8 @@ func on_beam_start() -> void:
     if is_dead():
         return
     state = State.BEING_BEAMED
+
+    # TODO: Alden: ABDUCTION
 
     # Trigger detection on any other enemy that can currently see this pedestrian.
     for enemy in G.enemies:
@@ -95,6 +97,8 @@ func _on_killed() -> void:
     # TODO
     pass
 
+    # TODO: Alden: SPLAT
+
 
 func _on_detection_start() -> void:
     if is_dead():
@@ -119,6 +123,8 @@ func _on_ufo_or_beamed_player_detection_start() -> void:
         # Jump in fear.
         velocity.x = 0
         velocity.y = -JUMP_VELOCITY_BOOST
+
+        # TODO: Alden: SCREAM
 
 
 func _on_detection_end() -> void:

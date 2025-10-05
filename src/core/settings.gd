@@ -20,6 +20,9 @@ extends Resource
 @export var business_person_scene : PackedScene
 @export var police_officer_scene : PackedScene
 
+@export var enemy_sound_scene: PackedScene
+
+
 func getEnemyScene(enemyType: Enemy.Type):
     match enemyType:
         Enemy.Type.FARMER:

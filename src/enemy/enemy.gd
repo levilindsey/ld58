@@ -40,9 +40,14 @@ var previous_velocity := Vector2.ZERO
 # Dictionary<Enemy, bool>
 var visible_enemies := {}
 
+var sound_scene: Node2D
+
 
 func _ready() -> void:
     G.enemies.push_back(self)
+
+    sound_scene = G.settings.enemy_sound_scene.instantiate()
+    add_child(sound_scene)
 
 
 func _physics_process(delta: float) -> void:
