@@ -3,7 +3,7 @@ extends Node2D
 
 
 @export var settings: Settings
-
+@onready var click_audio_player: AudioStreamPlayer = $ClickStreamPlayer
 
 var is_paused := true:
     get:
@@ -65,6 +65,10 @@ func _unhandled_input(event: InputEvent) -> void:
                         is_paused = true
                 _:
                     pass
+
+func click_sound() -> void:
+    if not click_audio_player.playing:
+        click_audio_player.play()
 
 
 func close_app() -> void:

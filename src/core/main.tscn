@@ -1,10 +1,21 @@
-[gd_scene load_steps=6 format=3 uid="uid://bpnl5pn3ydite"]
+[gd_scene load_steps=11 format=3 uid="uid://bpnl5pn3ydite"]
 
 [ext_resource type="Script" uid="uid://cb3gdybtwy0ry" path="res://src/core/main.gd" id="1_avv2o"]
 [ext_resource type="Resource" uid="uid://dv60bmaw1pdx6" path="res://settings.tres" id="2_ivtyw"]
 [ext_resource type="PackedScene" uid="uid://bt1la6s52krxe" path="res://src/ui/hud.tscn" id="2_ukt3u"]
 [ext_resource type="PackedScene" uid="uid://luccssf71n0" path="res://src/core/game_panel.tscn" id="3_x62ka"]
 [ext_resource type="PackedScene" uid="uid://dg8tvc66eq6c5" path="res://src/ui/ZooKeeperScreen.tscn" id="5_w61mg"]
+[ext_resource type="AudioStream" uid="uid://505pi6oqhfst" path="res://assets/audio/Click/Click-cm-02.wav" id="6_nlf45"]
+[ext_resource type="AudioStream" uid="uid://dmh678v0gek8c" path="res://assets/audio/Click/Click-cm-04.wav" id="7_2in8s"]
+[ext_resource type="AudioStream" uid="uid://b3achb3rytv11" path="res://assets/audio/Click/Click-cm-06.wav" id="8_7o0du"]
+[ext_resource type="AudioStream" uid="uid://qk2yfhofcotd" path="res://assets/audio/Click/Click-cm-07.wav" id="9_7561f"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_0g4b3"]
+streams_count = 4
+stream_0/stream = ExtResource("6_nlf45")
+stream_1/stream = ExtResource("7_2in8s")
+stream_2/stream = ExtResource("8_7o0du")
+stream_3/stream = ExtResource("9_7561f")
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_avv2o")
@@ -23,3 +34,8 @@ layer = 200
 
 [node name="ZooKeeperScreen" parent="ZooKeeper" instance=ExtResource("5_w61mg")]
 unique_name_in_owner = true
+
+[node name="ClickStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_0g4b3")
+volume_db = -12.142
+bus = &"SFX"
