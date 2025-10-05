@@ -88,7 +88,7 @@ func on_beam_start() -> void:
     # AUDIO: Abduction
     if running_audio_player.playing:
         running_audio_player.stop()
-    
+
     if not abducting_audio_player.playing:
         abducting_audio_player.play()
 
@@ -199,9 +199,9 @@ func _on_ufo_or_beamed_player_detection_start() -> void:
         # AUDIO: SCREAM
         if not detect_audio_player.playing:
             detect_audio_player.play()
-        
+
         await get_tree().create_timer(.5).timeout
-        
+
         if state == State.FALLING or state == State.RETREATING:
             if not running_audio_player.playing:
                 running_audio_player.play()

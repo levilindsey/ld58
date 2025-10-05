@@ -64,6 +64,8 @@ func _physics_process(delta):
 
 func _slide_abductees_toward_beam_center(delta: float) -> void:
     for ped in pedestrians_in_beam:
+        if not G.utils.ensure(is_instance_valid(ped)):
+            continue
         if abs(ped.position.x) < 4:
             # Close enough.
             continue
@@ -73,6 +75,8 @@ func _slide_abductees_toward_beam_center(delta: float) -> void:
 
 func _slide_abductees_up_beam(delta: float) -> void:
     for ped in pedestrians_in_beam:
+        if not G.utils.ensure(is_instance_valid(ped)):
+            continue
         ped.position += Vector2.UP * SLIDE_ABDUCTEE_UP_BEAM_SPEED * delta
 
 
@@ -148,12 +152,16 @@ func is_movement_action_pressed():
 
 
 func _on_tractor_beam_area_body_entered(body: Node2D) -> void:
+    if not G.utils.ensure(is_instance_valid(body)):
+        return
+
     # Apparently reparenting a pedestrian can re-trigger on-area-entered
     # calculations, so we up re-attaching the pedestrian right after we detach
     # it, or trying to attach it again right after attaching it.
     if not is_beaming or pedestrians_in_beam.has(body):
         return
-    if body is Pedestrian:
+
+    if body is Pedestrian and not body.is_dead():
         # Add pedestrian to dictionary to keep them unique. Value is meaningless
         pedestrians_in_beam[body] = true
         body.call_deferred("reparent", %EnemiesInBeam)

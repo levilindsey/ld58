@@ -112,6 +112,12 @@ func _fade_out_death() -> void:
     destroy()
 
 
+func _exit_tree() -> void:
+    # Hack to ensure we don't somehow deallocated enemies without cleaning up references first.
+    if self.is_queued_for_deletion() or not is_instance_valid(self):
+        destroy()
+
+
 func destroy() -> void:
     # Remove references to this enemy.
     for enemy in G.enemies:
@@ -120,7 +126,8 @@ func destroy() -> void:
         enemy.visible_enemies.erase(self)
     G.player.pedestrians_in_beam.erase(self)
     G.enemies.erase(self)
-    queue_free()
+    if not self.is_queued_for_deletion():
+        queue_free()
 
 
 func _on_landed(_landed_hard: bool) -> void:
