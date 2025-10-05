@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://v01bkoexv76d"]
+[gd_scene load_steps=35 format=3 uid="uid://v01bkoexv76d"]
 
 [ext_resource type="AudioStream" uid="uid://ddcvc3bya2scb" path="res://assets/audio/Human Screams/Human screams-cm-01.wav" id="1_44n7j"]
 [ext_resource type="AudioStream" uid="uid://cgjv1jya2givh" path="res://assets/audio/Human Screams/Human screams-cm-02.wav" id="2_8ayot"]
@@ -29,6 +29,7 @@
 [ext_resource type="AudioStream" uid="uid://dgfcf5lsy31cb" path="res://assets/audio/Human Surprise/Human screams.dup1-cm_05-02.wav" id="27_710h6"]
 [ext_resource type="AudioStream" uid="uid://d2owd3ywhpqf4" path="res://assets/audio/Human Surprise/Human screams.dup1-cm_06-01.wav" id="28_hnjx5"]
 [ext_resource type="AudioStream" uid="uid://ddht7s208ilp" path="res://assets/audio/Human Surprise/Human screams.dup1-cm_07-01.wav" id="29_kptdp"]
+[ext_resource type="AudioStream" uid="uid://dt34fq1ggcp0e" path="res://assets/audio/Capture.wav" id="30_28jwa"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_hnjx5"]
 streams_count = 16
@@ -98,5 +99,11 @@ volume_db = -8.44
 pitch_scale = 0.77
 max_distance = 400.0
 bus = &"Voices"
+
+[node name="CaptureStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("30_28jwa")
+volume_db = -11.0
+pitch_scale = 1.17
+bus = &"SFX"
 
 [connection signal="finished" from="AbductingAudioStream" to="AbductingAudioStream" method="_on_finished"]
