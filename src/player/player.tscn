@@ -592,7 +592,7 @@ script = ExtResource("1_gkcme")
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 unique_name_in_owner = true
-zoom = Vector2(3, 3)
+zoom = Vector2(1.5, 1.5)
 
 [node name="TractorBeam" type="Node2D" parent="."]
 visible = false

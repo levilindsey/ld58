@@ -2,12 +2,10 @@ class_name GamePanel
 extends Node2D
 
 
-const CHUNK_EDGE_DISTANCE_THRESHOLD_FOR_CHUNK_REPOSITIONING := 420
-const ENEMY_DISTANCE_THRESHOLD_FOR_DESPAWNING := \
-    CHUNK_EDGE_DISTANCE_THRESHOLD_FOR_CHUNK_REPOSITIONING - 50
 const ZOO_KEEPER_SPACE_HEIGHT_THRESHOLD := 1024
 
 var player_start_position := Vector2.ZERO
+var chunk_edge_distance_threshold_for_chunk_repositioning: int
 
 var chunk_a_bounds: Rect2
 var chunk_b_bounds: Rect2
@@ -19,10 +17,6 @@ var enemy_spawner : EnemySpawner
 
 
 func _ready() -> void:
-    G.utils.ensure(
-        CHUNK_EDGE_DISTANCE_THRESHOLD_FOR_CHUNK_REPOSITIONING >
-            ENEMY_DISTANCE_THRESHOLD_FOR_DESPAWNING)
-
     G.game_panel = self
     player_start_position = G.player.global_position
 
@@ -47,15 +41,16 @@ func _ready() -> void:
 
     enemy_spawner = EnemySpawner.new()
     add_child(enemy_spawner)
-
+    
+    chunk_edge_distance_threshold_for_chunk_repositioning = get_viewport().size.x / get_viewport().get_camera_2d().zoom.x / 2 + 50
 
 func _physics_process(_delta: float) -> void:
     if is_shifting_chunks:
         return
 
     # Handle swapping level chunk positions to support infinite scroll.
-    var left_threshold := combined_level_chunk_bounds.position.x + CHUNK_EDGE_DISTANCE_THRESHOLD_FOR_CHUNK_REPOSITIONING
-    var right_threshold := combined_level_chunk_bounds.end.x - CHUNK_EDGE_DISTANCE_THRESHOLD_FOR_CHUNK_REPOSITIONING
+    var left_threshold := combined_level_chunk_bounds.position.x + chunk_edge_distance_threshold_for_chunk_repositioning
+    var right_threshold := combined_level_chunk_bounds.end.x - chunk_edge_distance_threshold_for_chunk_repositioning
     if G.player.global_position.x < left_threshold:
         is_shifting_chunks = true
         var right_chunk := _get_right_most_level_chunk()
