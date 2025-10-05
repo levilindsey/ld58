@@ -106,6 +106,7 @@ func _on_killed() -> void:
     pass
 
     # TODO: Alden: SPLAT
+    sound_scene
 
 
 func _on_detection_start() -> void:

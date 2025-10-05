@@ -41,7 +41,7 @@ func _ready() -> void:
 
     enemy_spawner = EnemySpawner.new()
     add_child(enemy_spawner)
-    
+
     chunk_edge_distance_threshold_for_chunk_repositioning = get_viewport().size.x / get_viewport().get_camera_2d().zoom.x / 2 + 50
 
 func _physics_process(_delta: float) -> void:
