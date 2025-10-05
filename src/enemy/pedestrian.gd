@@ -66,7 +66,10 @@ func _get_horizontal_velocity() -> float:
 
 func set_is_facing_right(is_facing_right: bool) -> void:
     self.is_facing_right = is_facing_right
+    rotation = 0
+    scale = Vector2.ONE
     scale.x = 1 if is_facing_right else -1
+
 
 
 func on_beam_start() -> void:
@@ -84,6 +87,10 @@ func on_beam_start() -> void:
             continue
         if enemy.visible_enemies.has(self):
             enemy._on_ufo_or_beamed_player_detection_start()
+    
+    # Mark player as seen so that if dropped the pedestrian will run.
+    was_player_recently_visible = true
+    last_player_sighting_time = Time.get_ticks_msec() / 1000.0
 
 
 func on_beam_end() -> void:
@@ -120,8 +127,9 @@ func _on_landed(landed_hard: bool) -> void:
 
 func _on_killed() -> void:
     state = State.DEAD
-    # TODO
-    pass
+    death_time = Time.get_ticks_msec() / 1000.0
+    rotate(PI/2)
+    get_node("AnimatedSprite2D").stop()
     
     # AUDIO: Splat
     if falling_audio_player.playing:

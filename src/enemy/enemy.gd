@@ -36,6 +36,7 @@ const LANDED_HARD_SPEED_THRESHOLD := 200
 var state := State.STARTING
 var was_on_floor := false
 var previous_velocity := Vector2.ZERO
+var death_time := -INF
 
 # Dictionary<Enemy, bool>
 var visible_enemies := {}
@@ -57,6 +58,10 @@ func setup_sound():
 func _physics_process(delta: float) -> void:
     if state == State.BEING_BEAMED:
         return
+
+    var time_since_dead = Time.get_ticks_msec() / 1000.0 - death_time    
+    if is_dead() and time_since_dead >= 5:
+            _fade_out_death()
 
     previous_velocity = velocity
 
@@ -82,6 +87,12 @@ func _physics_process(delta: float) -> void:
             _on_lifted_off()
     was_on_floor = next_is_on_floor
 
+func _fade_out_death() -> void:
+    var tween = get_tree().create_tween()
+    # Adjust the modulate property to an alpha of 0 (completely transparent)
+    tween.tween_property(self, "modulate:a", 0, 1.0)
+    await tween.finished # Wait for the tween to complete
+    tween.kill() # Clean up the tween
 
 func _on_landed(_landed_hard: bool) -> void:
     pass
