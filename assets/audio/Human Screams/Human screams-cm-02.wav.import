@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cgjv1jya2givh"
+path="res://.godot/imported/Human screams-cm-02.wav-f19c511e8702d47c8cc4b45897352408.sample"
+
+[deps]
+
+source_file="res://assets/audio/Human Screams/Human screams-cm-02.wav"
+dest_files=["res://.godot/imported/Human screams-cm-02.wav-f19c511e8702d47c8cc4b45897352408.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

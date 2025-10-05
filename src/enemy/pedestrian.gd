@@ -13,6 +13,10 @@ var is_player_visible := false
 var was_player_recently_visible := false
 var is_facing_right := true
 
+var abducting_audio_player: AudioStreamPlayer
+
+func setup_sound():
+    abducting_audio_player = sound_scene.get_node("AbductingAudioStream")
 
 func _physics_process(_delta: float) -> void:
     super._physics_process(_delta)
@@ -61,6 +65,10 @@ func on_beam_start() -> void:
     if is_dead():
         return
     state = State.BEING_BEAMED
+    if not abducting_audio_player.playing:
+        abducting_audio_player.play()
+        
+        
 
     # TODO: Alden: ABDUCTION
 
