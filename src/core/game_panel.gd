@@ -82,7 +82,7 @@ func _physics_process(_delta: float) -> void:
         is_shifting_chunks = false
 
     # Check for player reaching space for zookeeper updates.
-    if G.player.global_position.y < -ZOO_KEEPER_SPACE_HEIGHT_THRESHOLD:
+    if G.player.global_position.y < ZOO_KEEPER_SPACE_HEIGHT_THRESHOLD:
         _show_zoo_keeper_screen()
 
 
