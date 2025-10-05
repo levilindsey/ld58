@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://v01bkoexv76d"]
+[gd_scene load_steps=34 format=3 uid="uid://v01bkoexv76d"]
 
 [ext_resource type="AudioStream" uid="uid://ddcvc3bya2scb" path="res://assets/audio/Human Screams/Human screams-cm-01.wav" id="1_44n7j"]
 [ext_resource type="AudioStream" uid="uid://cgjv1jya2givh" path="res://assets/audio/Human Screams/Human screams-cm-02.wav" id="2_8ayot"]
@@ -24,6 +24,11 @@
 [ext_resource type="AudioStream" uid="uid://dhirp8tdfc5g3" path="res://assets/audio/Splats/Splat.1.cm-cm-03.wav" id="22_c0nre"]
 [ext_resource type="AudioStream" uid="uid://cx6skhm0783k0" path="res://assets/audio/Splats/Splat.1.cm-cm-05.wav" id="23_nnerb"]
 [ext_resource type="AudioStream" uid="uid://bgkvjr5hkdfx1" path="res://assets/audio/Splats/Splat.1.cm-cm-06.wav" id="24_olylk"]
+[ext_resource type="AudioStream" uid="uid://b5m2h3flf5fiu" path="res://assets/audio/Human Surprise/Human screams.dup1-cm_04-01.wav" id="25_fcgco"]
+[ext_resource type="AudioStream" uid="uid://b3oubyb485vm8" path="res://assets/audio/Human Surprise/Human screams.dup1-cm_05-01.wav" id="26_28jwa"]
+[ext_resource type="AudioStream" uid="uid://dgfcf5lsy31cb" path="res://assets/audio/Human Surprise/Human screams.dup1-cm_05-02.wav" id="27_710h6"]
+[ext_resource type="AudioStream" uid="uid://d2owd3ywhpqf4" path="res://assets/audio/Human Surprise/Human screams.dup1-cm_06-01.wav" id="28_hnjx5"]
+[ext_resource type="AudioStream" uid="uid://ddht7s208ilp" path="res://assets/audio/Human Surprise/Human screams.dup1-cm_07-01.wav" id="29_kptdp"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_hnjx5"]
 streams_count = 16
@@ -59,11 +64,18 @@ stream_0/stream = ExtResource("22_c0nre")
 stream_1/stream = ExtResource("23_nnerb")
 stream_2/stream = ExtResource("24_olylk")
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_dor8u"]
+streams_count = 5
+stream_0/stream = ExtResource("25_fcgco")
+stream_1/stream = ExtResource("26_28jwa")
+stream_2/stream = ExtResource("27_710h6")
+stream_3/stream = ExtResource("28_hnjx5")
+stream_4/stream = ExtResource("29_kptdp")
+
 [node name="EnemySound" type="Node2D"]
 
 [node name="AbductingAudioStream" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource("AudioStreamRandomizer_hnjx5")
-volume_db = 4.16
 max_distance = 248.0
 attenuation = 0.93303293
 bus = &"Voices"
@@ -71,13 +83,20 @@ script = ExtResource("17_8ayot")
 
 [node name="FallingStreamPlayer" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource("AudioStreamRandomizer_nnerb")
-volume_db = 5.847
-max_distance = 258.0
+volume_db = 2.065
+max_distance = 220.0
 bus = &"Voices"
 
 [node name="SplatStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamRandomizer_n4aue")
 volume_db = -2.537
 bus = &"SFX"
+
+[node name="DetectStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_dor8u")
+volume_db = -8.44
+pitch_scale = 0.77
+max_distance = 400.0
+bus = &"Voices"
 
 [connection signal="finished" from="AbductingAudioStream" to="AbductingAudioStream" method="_on_finished"]

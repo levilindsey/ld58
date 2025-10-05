@@ -16,11 +16,14 @@ var is_facing_right := true
 var abducting_audio_player: AudioStreamPlayer2D
 var falling_audio_player: AudioStreamPlayer2D
 var splat_audio_player: AudioStreamPlayer
+var detect_audio_player: AudioStreamPlayer2D
+
 
 func setup_sound():
     abducting_audio_player = sound_scene.get_node("AbductingAudioStream")
     falling_audio_player = sound_scene.get_node("FallingStreamPlayer")
     splat_audio_player = sound_scene.get_node("SplatStreamPlayer")
+    detect_audio_player = sound_scene.get_node("DetectStreamPlayer2D")
 
 func _physics_process(_delta: float) -> void:
     super._physics_process(_delta)
@@ -158,6 +161,8 @@ func _on_ufo_or_beamed_player_detection_start() -> void:
         velocity.x = 0
         velocity.y = -JUMP_VELOCITY_BOOST
 
+        if not detect_audio_player.playing:
+            detect_audio_player.play()
         # TODO: Alden: SCREAM
 
 
