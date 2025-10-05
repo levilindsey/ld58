@@ -19,12 +19,14 @@ var splat_audio_player: AudioStreamPlayer
 var detect_audio_player: AudioStreamPlayer2D
 var running_audio_player: AudioStreamPlayer2D
 
+
 func setup_sound():
     abducting_audio_player = sound_scene.get_node("AbductingAudioStream")
     falling_audio_player = sound_scene.get_node("FallingStreamPlayer")
     splat_audio_player = sound_scene.get_node("SplatStreamPlayer")
     detect_audio_player = sound_scene.get_node("DetectStreamPlayer2D")
     running_audio_player = sound_scene.get_node("RunningStreamPlayer2D")
+
 
 func _physics_process(_delta: float) -> void:
     super._physics_process(_delta)
@@ -159,6 +161,8 @@ func _on_killed() -> void:
     if not splat_audio_player.playing:
         splat_audio_player.play()
 
+    G.session.add_splatted_enemy(type)
+
 
 func on_collected() -> void:
     # AUDIO: Capture
@@ -186,6 +190,8 @@ func _on_ufo_or_beamed_player_detection_start() -> void:
 
     if state == State.IDLE:
         state = State.FALLING
+
+        G.session.add_enemy_that_has_detected_you(type)
 
         # Jump in fear.
         velocity.x = 0

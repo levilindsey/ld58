@@ -114,6 +114,7 @@ func _physics_process(_delta: float) -> void:
 
 func _show_zoo_keeper_screen() -> void:
     quest_manager.on_return_to_zoo()
+    G.session.deposit_enemies()
     # TODO
     pass
 

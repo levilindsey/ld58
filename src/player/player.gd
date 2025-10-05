@@ -82,9 +82,9 @@ func _slide_abductees_up_beam(delta: float) -> void:
 
 
 func handle_beam():
-    if Input.is_action_just_pressed("ui_select"):
+    if Input.is_action_just_pressed("Beam"):
         _on_started_beam()
-    if Input.is_action_just_released("ui_select"):
+    if Input.is_action_just_released("Beam"):
         _on_stopped_beam()
 
 
@@ -116,15 +116,15 @@ func _on_stopped_beam() -> void:
 
 
 func handle_movement(delta):
-    if Input.is_action_pressed("ui_left"):
+    if Input.is_action_pressed("MoveLeft"):
         velocity.x = clamp(velocity.x + ACCELERATION * delta * -1, max_speed * -1, max_speed)
         rotation = clamp(velocity.x / max_speed * MAX_ROTATION, MAX_ROTATION * -1, max_speed)
-    if Input.is_action_pressed("ui_right"):
+    if Input.is_action_pressed("MoveRight"):
         velocity.x = clamp(velocity.x + ACCELERATION * delta, max_speed * -1, max_speed)
         rotation = clamp(velocity.x / max_speed * MAX_ROTATION, MAX_ROTATION * -1, MAX_ROTATION)
-    if Input.is_action_pressed("ui_up") and not is_beaming:
+    if Input.is_action_pressed("MoveUp") and not is_beaming:
         velocity.y = clamp(velocity.y + ACCELERATION * delta * -1, max_speed * -1, max_speed)
-    if Input.is_action_pressed("ui_down") and not is_beaming:
+    if Input.is_action_pressed("MoveDown") and not is_beaming:
         velocity.y = clamp(velocity.y + ACCELERATION * delta, max_speed * -1, max_speed)
 
     if not is_movement_action_pressed() or is_beaming:
@@ -149,7 +149,12 @@ func _get_gravity() -> float:
 
 
 func is_movement_action_pressed():
-    return Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_right") or Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_down")
+    return (
+        Input.is_action_pressed("MoveLeft") or
+        Input.is_action_pressed("MoveRight") or
+        Input.is_action_pressed("MoveUp") or
+        Input.is_action_pressed("MoveDown")
+    )
 
 
 func _on_tractor_beam_area_body_entered(body: Node2D) -> void:
@@ -170,7 +175,9 @@ func _on_tractor_beam_area_body_entered(body: Node2D) -> void:
 
 
 func _on_abductee_collection_area_body_entered(body: Node2D) -> void:
-    if body is Pedestrian and pedestrians_in_beam.has(body):
+    if (body is Pedestrian and
+            pedestrians_in_beam.has(body) and
+            G.session.current_enemies_collected_count < G.session.collection_capacity):
         # The pedestrian has been collected
         pedestrians_in_beam.erase(body)
         G.session.add_collected_enemy(body.type)
