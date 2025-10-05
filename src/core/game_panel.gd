@@ -125,8 +125,8 @@ func _return_from_zoo_keeper_screen() -> void:
     pass
 
 
-func add_enemy(enemy: Enemy) -> void:
-    %Enemies.add_child(enemy)
+func get_enemy_container() -> Node2D:
+    return %Enemies
 
 
 func _update_bounds() -> void:
@@ -164,6 +164,7 @@ func _get_right_most_level_chunk() -> LevelChunk:
         else:
             return %LevelChunkC
 
+
 func _get_enemies_in_right_most_level_chunk(delta: float) -> Array:
     var filtered_enemies = []
     for enemy in G.enemies:
@@ -172,6 +173,7 @@ func _get_enemies_in_right_most_level_chunk(delta: float) -> Array:
         if enemy.position.x > right_chunk_left_boundary or next_x_position > right_chunk_left_boundary:
             filtered_enemies.append(enemy)
     return filtered_enemies
+
 
 func _get_enemies_in_left_most_level_chunk(delta: float) -> Array:
     var filtered_enemies = []

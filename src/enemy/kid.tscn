@@ -25,12 +25,12 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1p648"]
-size = Vector2(54, 58.204)
-
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1p648"]
 radius = 2.0
 height = 9.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1p648"]
+size = Vector2(54, 58.204)
 
 [node name="Kid" type="CharacterBody2D"]
 collision_layer = 4
@@ -39,11 +39,17 @@ script = ExtResource("1_rmyqv")
 type = 1
 metadata/_custom_type_script = "uid://crnlma8ijjgwp"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="SpriteWrapper" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteWrapper"]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_a1i78")
 autoplay = "default"
 frame_progress = 0.5027297
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4.5)
+shape = SubResource("CapsuleShape2D_1p648")
 
 [node name="DetectionArea" type="Area2D" parent="."]
 collision_layer = 0
@@ -54,10 +60,6 @@ monitorable = false
 position = Vector2(40, -12.999998)
 rotation = -0.92415726
 shape = SubResource("RectangleShape2D_1p648")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-position = Vector2(0, -4.5)
-shape = SubResource("CapsuleShape2D_1p648")
 
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

@@ -9,12 +9,14 @@ const DAMPING_FACTOR_VERTICAL = 0.8
 const DEFAULT_MAX_SPEED := 400
 const MAX_SPEED_WITH_BEAM_ACTIVE := 50
 const DEFAULT_GRAVITY := 0
+const GRAVITY_DELTA_PER_ENEMY := 100
+const SLIDE_ABDUCTEE_TOWARD_BEAM_CENTER_SPEED := 30
+const SLIDE_ABDUCTEE_UP_BEAM_SPEED := 30
 
 
 var max_speed = DEFAULT_MAX_SPEED
-var gravity = DEFAULT_GRAVITY
+# Dictionary<Pedestrian, boolean>
 var pedestrians_in_beam = {}
-var pedestrians_collected = {}
 var is_beaming = false
 
 @onready var beam_audio_player: AudioStreamPlayer = $TractorBeam/TractorBeamAudiostream
@@ -28,9 +30,7 @@ func _ready() -> void:
 
 func reset() -> void:
     max_speed = DEFAULT_MAX_SPEED
-    gravity = DEFAULT_GRAVITY
     pedestrians_in_beam.clear()
-    pedestrians_collected.clear()
     is_beaming = false
 
 
@@ -51,52 +51,63 @@ func _process(_delta: float) -> void:
 
 
 func _physics_process(delta):
-    var previous_pos = position
     handle_movement(delta)
     handle_beam()
-    abduct_pedestrians(previous_pos)
+    if is_beaming:
+        _slide_abductees_toward_beam_center(delta)
+        _slide_abductees_up_beam(delta)
     $CapacityLabel.text = (
         str(G.session.current_enemies_collected_count) +
         "/" + str(G.session.collection_capacity)
     )
 
 
+func _slide_abductees_toward_beam_center(delta: float) -> void:
+    for ped in pedestrians_in_beam:
+        if abs(ped.position.x) < 2:
+            # Close enough.
+            continue
+        var slide_direction := Vector2.LEFT if ped.position.x > 0 else Vector2.RIGHT
+        ped.position += slide_direction * SLIDE_ABDUCTEE_TOWARD_BEAM_CENTER_SPEED * delta
+
+
+func _slide_abductees_up_beam(delta: float) -> void:
+    for ped in pedestrians_in_beam:
+        ped.position += Vector2.UP * SLIDE_ABDUCTEE_UP_BEAM_SPEED * delta
+
+
 func handle_beam():
+    if Input.is_action_just_pressed("ui_select"):
+        _on_started_beam()
+    if Input.is_action_just_released("ui_select"):
+        _on_stopped_beam()
+
+
+func _on_started_beam() -> void:
+    print("_on_started_beam")
     var beam = get_node("TractorBeam")
     var beamCollisionArea = %TractorBeamCollisionPolygon
-    if Input.is_action_pressed("ui_select"):
-        is_beaming = true
-        beam.visible = true
-        if not beam_audio_player.playing:
-            beam_audio_player.play()
-        beamCollisionArea.set_deferred("disabled", false)
-        max_speed = MAX_SPEED_WITH_BEAM_ACTIVE
-    if Input.is_action_just_released("ui_select"):
-        is_beaming = false
-        beam.visible = false
-        beam_audio_player.stop()
-        beamCollisionArea.set_deferred("disabled", true)
-        max_speed = DEFAULT_MAX_SPEED
-        for ped in pedestrians_in_beam:
-            ped.on_beam_end()
-        pedestrians_in_beam.clear()
+    is_beaming = true
+    beam.visible = true
+    if not beam_audio_player.playing:
+        beam_audio_player.play()
+    beamCollisionArea.disabled = false
+    max_speed = MAX_SPEED_WITH_BEAM_ACTIVE
 
 
-func abduct_pedestrians(previous_pos):
-    var player_x_delta = position.x - previous_pos.x
-    var player_bottom_edge = %PlayerBodyCollisionShape.shape.get_height() / 2.0 + global_position.y
-    for ped in pedestrians_in_beam.duplicate_deep():
-        var ped_height_offset = ped.get_node("CollisionShape2D").shape.get_height() / 2
-        ped.position.x = move_toward(ped.position.x, position.x, 0.1) + player_x_delta
-        ped.position.y = move_toward(ped.position.y, player_bottom_edge + ped_height_offset, 0.5)
-        if (ped.position.y == player_bottom_edge + ped_height_offset and
-                G.session.current_enemies_collected_count < G.session.collection_capacity):
-            # The pedestrian has been collected
-            pedestrians_collected[ped] = true
-            pedestrians_in_beam.erase(ped)
-            G.session.add_collected_enemy(ped.type)
-            gravity += 100
-            ped.on_collected()
+func _on_stopped_beam() -> void:
+    print("_on_stopped_beam")
+    var beam = get_node("TractorBeam")
+    var beamCollisionArea = %TractorBeamCollisionPolygon
+    is_beaming = false
+    beam.visible = false
+    beam_audio_player.stop()
+    beamCollisionArea.disabled = true
+    max_speed = DEFAULT_MAX_SPEED
+    for ped in pedestrians_in_beam:
+        ped.reparent(G.game_panel.get_enemy_container())
+        ped.on_beam_end()
+    pedestrians_in_beam.clear()
 
 
 func handle_movement(delta):
@@ -124,17 +135,34 @@ func handle_movement(delta):
         velocity.y = 0
 
     if not is_beaming:
-        velocity.y += gravity * delta
-    move_and_collide(velocity * delta)
+        velocity.y += _get_gravity() * delta
+    move_and_slide()
+
+
+func _get_gravity() -> float:
+    return G.session.current_enemies_collected_count * GRAVITY_DELTA_PER_ENEMY
+
 
 func is_movement_action_pressed():
     return Input.is_action_pressed("ui_left") or Input.is_action_pressed("ui_right") or Input.is_action_pressed("ui_up") or Input.is_action_pressed("ui_down")
 
+
 func _on_tractor_beam_area_body_entered(body: Node2D) -> void:
+    # Apparently reparenting a pedestrian can re-trigger on-area-entered
+    # calculations, so we up re-attaching the pedestrian right after we detach
+    # it, or trying to attach it again right after attaching it.
+    if not is_beaming or pedestrians_in_beam.has(body):
+        return
     if body is Pedestrian:
-        body.on_beam_start()
         # Add pedestrian to dictionary to keep them unique. Value is meaningless
         pedestrians_in_beam[body] = true
-    else:
-        return
-    pass # Replace with function body.
+        body.reparent(%EnemiesInBeam)
+        body.on_beam_start()
+
+
+func _on_abductee_collection_area_body_entered(body: Node2D) -> void:
+    if body is Pedestrian and pedestrians_in_beam.has(body):
+        # The pedestrian has been collected
+        pedestrians_in_beam.erase(body)
+        G.session.add_collected_enemy(body.type)
+        body.on_collected()

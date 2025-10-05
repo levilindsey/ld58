@@ -67,12 +67,11 @@ func _get_horizontal_velocity() -> float:
             return 0
 
 
-func set_is_facing_right(is_facing_right: bool) -> void:
-    self.is_facing_right = is_facing_right
+func set_is_facing_right(p_is_facing_right: bool) -> void:
+    self.is_facing_right = p_is_facing_right
     rotation = 0
     scale = Vector2.ONE
     scale.x = 1 if is_facing_right else -1
-
 
 
 func on_beam_start() -> void:
@@ -88,9 +87,11 @@ func on_beam_start() -> void:
     for enemy in G.enemies:
         if enemy == self:
             continue
+        if not is_instance_valid(enemy):
+            continue
         if enemy.visible_enemies.has(self):
             enemy._on_ufo_or_beamed_player_detection_start()
-    
+
     # Mark player as seen so that if dropped the pedestrian will run.
     was_player_recently_visible = true
     last_player_sighting_time = Time.get_ticks_msec() / 1000.0
@@ -101,7 +102,7 @@ func on_beam_end() -> void:
         return
 
     # AUDIO: Falling
-    if  abducting_audio_player.playing:
+    if abducting_audio_player.playing:
         abducting_audio_player.stop()
 
     if not falling_audio_player.playing:
@@ -114,10 +115,12 @@ func _on_landed(landed_hard: bool) -> void:
     if is_dead():
         return
 
+    global_rotation = 0
+    global_scale = Vector2.ONE
+
     if landed_hard and state != State.STARTING:
         _on_killed()
         return
-
 
     if falling_audio_player.playing:
         falling_audio_player.stop()
@@ -131,9 +134,12 @@ func _on_landed(landed_hard: bool) -> void:
 func _on_killed() -> void:
     state = State.DEAD
     death_time = Time.get_ticks_msec() / 1000.0
-    rotate(PI/2)
-    get_node("AnimatedSprite2D").stop()
-    
+    var sprite := get_sprite()
+    var sprite_wrapper := get_sprite_wrapper()
+    sprite.stop()
+    sprite_wrapper.rotate(PI / 2)
+    sprite_wrapper.position.y = - get_min_radius()
+
     # AUDIO: Splat
     if falling_audio_player.playing:
         falling_audio_player.stop()
@@ -143,14 +149,13 @@ func _on_killed() -> void:
 
 
 func on_collected() -> void:
-    visible = false
-    
     # AUDIO: Capture
     if abducting_audio_player.playing:
         abducting_audio_player.stop()
-        
-    if not abducting_audio_player.playing:
+    if not capture_audio_player.playing:
         capture_audio_player.play()
+
+    destroy()
 
 
 func _on_detection_start() -> void:
@@ -175,7 +180,7 @@ func _on_ufo_or_beamed_player_detection_start() -> void:
 
         # Jump in fear.
         velocity.x = 0
-        velocity.y = -JUMP_VELOCITY_BOOST
+        velocity.y = - JUMP_VELOCITY_BOOST
 
         if not detect_audio_player.playing:
             detect_audio_player.play()
@@ -199,7 +204,6 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
         visible_enemies[body] = true
         if body.state == State.BEING_BEAMED:
             _on_ufo_or_beamed_player_detection_start()
-
 
 
 func _on_detection_area_body_exited(body: Node2D) -> void:

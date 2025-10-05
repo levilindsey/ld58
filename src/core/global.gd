@@ -8,6 +8,7 @@ var settings: Settings
 var hud: Hud
 var game_panel: GamePanel
 var utils := Utils.new()
+var geometry := Geometry.new()
 var player: Player
 var enemies: Array[Enemy] = []
 var session: Session

@@ -1,4 +1,4 @@
-[gd_scene load_steps=89 format=3 uid="uid://cn6hdqmmufnvr"]
+[gd_scene load_steps=90 format=3 uid="uid://cn6hdqmmufnvr"]
 
 [ext_resource type="Script" uid="uid://ctdjb8phvmc71" path="res://src/player/player.gd" id="1_gkcme"]
 [ext_resource type="Texture2D" uid="uid://dsgbstsy1ok2w" path="res://assets/images/ufo.png" id="2_gmfve"]
@@ -586,6 +586,10 @@ animations = [{
 radius = 11.0
 height = 64.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5f2sf"]
+radius = 12.0
+height = 66.0
+
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 2
 script = ExtResource("1_gkcme")
@@ -631,6 +635,17 @@ position = Vector2(0, 4)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_lowyb")
 
+[node name="AbducteeCollectionArea" type="Area2D" parent="."]
+position = Vector2(0, 4)
+rotation = 1.5707964
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+
+[node name="AbducteeCollectionShape" type="CollisionShape2D" parent="AbducteeCollectionArea"]
+unique_name_in_owner = true
+shape = SubResource("CapsuleShape2D_5f2sf")
+
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(3, 3)
 
@@ -651,4 +666,8 @@ stream = ExtResource("4_244u8")
 autoplay = true
 bus = &"SFX"
 
+[node name="EnemiesInBeam" type="Node2D" parent="."]
+unique_name_in_owner = true
+
 [connection signal="body_entered" from="TractorBeam/TractorBeamArea" to="." method="_on_tractor_beam_area_body_entered"]
+[connection signal="body_entered" from="AbducteeCollectionArea" to="." method="_on_abductee_collection_area_body_entered"]

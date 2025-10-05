@@ -39,7 +39,9 @@ script = ExtResource("1_jwwoi")
 type = 4
 metadata/_custom_type_script = "uid://crnlma8ijjgwp"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="SpriteWrapper" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteWrapper"]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_a1i78")
 autoplay = "default"
