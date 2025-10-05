@@ -10,7 +10,7 @@ const DEFAULT_MAX_SPEED := 400
 const MAX_SPEED_WITH_BEAM_ACTIVE := 50
 const DEFAULT_GRAVITY := 0
 const GRAVITY_DELTA_PER_ENEMY := 100
-const SLIDE_ABDUCTEE_TOWARD_BEAM_CENTER_SPEED := 30
+const SLIDE_ABDUCTEE_TOWARD_BEAM_CENTER_SPEED := 50
 const SLIDE_ABDUCTEE_UP_BEAM_SPEED := 30
 
 
@@ -64,7 +64,7 @@ func _physics_process(delta):
 
 func _slide_abductees_toward_beam_center(delta: float) -> void:
     for ped in pedestrians_in_beam:
-        if abs(ped.position.x) < 2:
+        if abs(ped.position.x) < 4:
             # Close enough.
             continue
         var slide_direction := Vector2.LEFT if ped.position.x > 0 else Vector2.RIGHT
@@ -156,7 +156,7 @@ func _on_tractor_beam_area_body_entered(body: Node2D) -> void:
     if body is Pedestrian:
         # Add pedestrian to dictionary to keep them unique. Value is meaningless
         pedestrians_in_beam[body] = true
-        body.reparent(%EnemiesInBeam)
+        body.call_deferred("reparent", %EnemiesInBeam)
         body.on_beam_start()
 
 

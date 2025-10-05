@@ -64,7 +64,10 @@ func setup_sound():
 
 func _physics_process(delta: float) -> void:
     # Hacky catch-all fix to prevent falling-through-the-world edge-cases.
-    if global_position.y > 0.1:
+    if global_position.y > 1:
+        # Enemies get pushed under the floor when being beamed from an angle.
+        if not state == State.BEING_BEAMED:
+            push_warning("Enemy is below the floor")
         global_position.y = -0.01
 
     if state == State.BEING_BEAMED:
@@ -84,9 +87,9 @@ func _physics_process(delta: float) -> void:
 
     # teleport the enemy if it is going to walk off the end of the map
     if not G.game_panel.is_shifting_chunks:
-        if velocity.x < 0 and position.x < G.game_panel.combined_level_chunk_bounds.position.x + 2:
+        if position.x < G.game_panel.combined_level_chunk_bounds.position.x + 2:
             position.x = G.game_panel.combined_level_chunk_bounds.end.x - 2
-        if velocity.x > 0 and position.x > G.game_panel.combined_level_chunk_bounds.end.x - 2:
+        if position.x > G.game_panel.combined_level_chunk_bounds.end.x - 2:
             position.x = G.game_panel.combined_level_chunk_bounds.position.x + 2
 
     # Detect when we start and stop contacting the floor.
