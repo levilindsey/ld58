@@ -1,5 +1,6 @@
 class_name  EnemySpawner extends Node
 
+
 const LEVEL_EDGE_MARGIN = 100
 var mostRecentSpawnTime := -INF
 var spawnRateSeconds := 1.0

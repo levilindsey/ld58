@@ -39,9 +39,13 @@ func _physics_process(_delta: float) -> void:
                 Time.get_ticks_msec() / 1000.0
     )
     if was_player_recently_visible and is_past_scared_cut_off:
-        was_player_recently_visible = false
-        if state == State.RETREATING:
-            state = State.IDLE
+        _on_done_running_away()
+
+
+func _on_done_running_away() -> void:
+    was_player_recently_visible = false
+    if state == State.RETREATING:
+        state = State.IDLE
 
 
 func _get_horizontal_velocity() -> float:

@@ -83,10 +83,11 @@ func _physics_process(delta: float) -> void:
     move_and_slide()
 
     # teleport the enemy if it is going to walk off the end of the map
-    if velocity.x < 0 and abs(position.x - G.game_panel.combined_level_chunk_bounds.position.x) < 50:
-        position.x = G.game_panel.combined_level_chunk_bounds.end.x - 50
-    if velocity.x > 0 and abs(G.game_panel.combined_level_chunk_bounds.end.x - position.x) < 50:
-        position.x = G.game_panel.combined_level_chunk_bounds.position.x + 50
+    if not G.game_panel.is_shifting_chunks:
+        if velocity.x < 0 and position.x < G.game_panel.combined_level_chunk_bounds.position.x + 2:
+            position.x = G.game_panel.combined_level_chunk_bounds.end.x - 2
+        if velocity.x > 0 and position.x > G.game_panel.combined_level_chunk_bounds.end.x - 2:
+            position.x = G.game_panel.combined_level_chunk_bounds.position.x + 2
 
     # Detect when we start and stop contacting the floor.
     var next_is_on_floor = is_on_floor()
