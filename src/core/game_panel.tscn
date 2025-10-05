@@ -1,13 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://luccssf71n0"]
+[gd_scene load_steps=7 format=3 uid="uid://luccssf71n0"]
 
 [ext_resource type="Script" uid="uid://b0biq0wqtvk5e" path="res://src/core/game_panel.gd" id="1_lii62"]
 [ext_resource type="PackedScene" uid="uid://c7or8277wryhs" path="res://src/level/level_chunk_a.tscn" id="2_6i81m"]
+[ext_resource type="PackedScene" uid="uid://bo0yvrajk0ktn" path="res://src/level/background.tscn" id="2_v30hu"]
 [ext_resource type="PackedScene" uid="uid://cn6hdqmmufnvr" path="res://src/player/player.tscn" id="3_0qy1w"]
 [ext_resource type="PackedScene" uid="uid://blghjbgd7fmpk" path="res://src/level/level_chunk_b.tscn" id="5_v30hu"]
 [ext_resource type="PackedScene" uid="uid://cu4clq6l16j20" path="res://src/level/level_chunk_c.tscn" id="6_rcpjb"]
 
 [node name="GamePanel" type="Node2D"]
 script = ExtResource("1_lii62")
+
+[node name="Background" parent="." instance=ExtResource("2_v30hu")]
 
 [node name="Player" parent="." instance=ExtResource("3_0qy1w")]
 position = Vector2(355, -73)
