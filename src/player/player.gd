@@ -85,6 +85,9 @@ func handle_beam():
     if Input.is_action_just_pressed("Beam"):
         if not G.session.is_ship_full():
             _on_started_beam()
+        else:
+            # TODO: ALDEN: Nuh-uh sound.
+            pass
     if Input.is_action_just_released("Beam"):
         _on_stopped_beam()
 
