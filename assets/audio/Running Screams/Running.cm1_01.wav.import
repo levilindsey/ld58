@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://b6bx2xd5ff8oq"
+path="res://.godot/imported/Running.cm1_01.wav-7387b0b19c4d081e7c07d6549fa6f32f.sample"
+
+[deps]
+
+source_file="res://assets/audio/Running Screams/Running.cm1_01.wav"
+dest_files=["res://.godot/imported/Running.cm1_01.wav-7387b0b19c4d081e7c07d6549fa6f32f.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

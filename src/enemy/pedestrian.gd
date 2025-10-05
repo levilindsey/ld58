@@ -18,7 +18,7 @@ var falling_audio_player: AudioStreamPlayer2D
 var splat_audio_player: AudioStreamPlayer
 var detect_audio_player: AudioStreamPlayer2D
 var capture_audio_player: AudioStreamPlayer
-
+var running_audio_player: AudioStreamPlayer2D
 
 func setup_sound():
     abducting_audio_player = sound_scene.get_node("AbductingAudioStream")
@@ -26,7 +26,7 @@ func setup_sound():
     splat_audio_player = sound_scene.get_node("SplatStreamPlayer")
     detect_audio_player = sound_scene.get_node("DetectStreamPlayer2D")
     capture_audio_player = sound_scene.get_node("CaptureStreamPlayer")
-
+    running_audio_player = sound_scene.get_node("RunningStreamPlayer2D")
 
 func _physics_process(_delta: float) -> void:
     super._physics_process(_delta)
@@ -46,6 +46,8 @@ func _on_done_running_away() -> void:
     was_player_recently_visible = false
     if state == State.RETREATING:
         state = State.IDLE
+    if running_audio_player.playing:
+        running_audio_player.stop()
 
 
 func _get_horizontal_velocity() -> float:
@@ -84,6 +86,9 @@ func on_beam_start() -> void:
     state = State.BEING_BEAMED
 
     # AUDIO: Abduction
+    if running_audio_player.playing:
+        running_audio_player.stop()
+    
     if not abducting_audio_player.playing:
         abducting_audio_player.play()
 
@@ -191,14 +196,21 @@ func _on_ufo_or_beamed_player_detection_start() -> void:
         velocity.x = 0
         velocity.y = - JUMP_VELOCITY_BOOST
 
+        # AUDIO: SCREAM
         if not detect_audio_player.playing:
             detect_audio_player.play()
-        # TODO: Alden: SCREAM
+        
+        await get_tree().create_timer(.5).timeout
+        
+        if state == State.FALLING or state == State.RETREATING:
+            if not running_audio_player.playing:
+                running_audio_player.play()
 
 
 func _on_detection_end() -> void:
     if is_dead():
         return
+
     is_player_visible = false
     was_player_recently_visible = true
     last_player_sighting_time = Time.get_ticks_msec() / 1000.0
