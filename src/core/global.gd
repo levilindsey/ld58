@@ -10,3 +10,4 @@ var game_panel: GamePanel
 var utils := Utils.new()
 var player: Player
 var enemies: Array[Enemy] = []
+var session: Session

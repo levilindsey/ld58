@@ -1,21 +1,22 @@
 class_name  EnemySpawner extends Node
 
 const LEVEL_EDGE_MARGIN = 100
-var mostRecentSpawnTime
-var spawnRateSeconds = 1
+var mostRecentSpawnTime := -INF
+var spawnRateSeconds := 1.0
 
 
 func _ready() -> void:
     mostRecentSpawnTime = Time.get_ticks_msec() / 1000.0
     # spawn 1 farmer to start
     spawn_enemy(Enemy.Type.FARMER)
-    return
-    
-func _physics_process(delta: float) -> void:
+
+
+func _physics_process(_delta: float) -> void:
     var currentTime = Time.get_ticks_msec() / 1000.0
     if currentTime - mostRecentSpawnTime > spawnRateSeconds:
         spawn_enemy(Enemy.Type.FARMER)
         mostRecentSpawnTime = currentTime
+
 
 func spawn_enemy(enemyType: Enemy.Type):
     var enemy = G.settings.getEnemyScene(enemyType)
@@ -28,15 +29,15 @@ func spawn_enemy(enemyType: Enemy.Type):
 
     var camera_width = get_viewport().size.x / get_viewport().get_camera_2d().zoom.x
     var no_spawn_width = camera_width / 2 + 50
-    
+
     # If the random spawn position is inside of the viewport then bump it outside.
     if random_x_position > G.player.position.x - no_spawn_width and random_x_position <  G.player.position.x + no_spawn_width:
         if random_x_position < G.player.position.x:
             random_x_position -= camera_width
         else:
             random_x_position += camera_width
-    
+
     enemy.position.x = int(random_x_position)
     # randomize starting direction
     enemy.set_is_facing_right(int(random_x_position) % 2 == 0)
-    G.game_panel.add_child(enemy)
+    G.game_panel.add_enemy(enemy)

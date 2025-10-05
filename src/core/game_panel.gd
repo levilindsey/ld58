@@ -14,11 +14,22 @@ var combined_level_chunk_bounds: Rect2
 
 var is_shifting_chunks := false
 var enemy_spawner : EnemySpawner
+var quest_manager : QuestManager
+
+
+func _enter_tree() -> void:
+    G.session = Session.new()
 
 
 func _ready() -> void:
     G.game_panel = self
     player_start_position = G.player.global_position
+    start_level()
+
+
+func start_level() -> void:
+    G.player.global_position = player_start_position
+    G.session.start_new_excursion()
 
     is_shifting_chunks = true
 
@@ -39,10 +50,25 @@ func _ready() -> void:
 
     is_shifting_chunks = false
 
+    if is_instance_valid(enemy_spawner):
+        enemy_spawner.queue_free()
     enemy_spawner = EnemySpawner.new()
     add_child(enemy_spawner)
 
+    if is_instance_valid(quest_manager):
+        quest_manager.queue_free()
+    quest_manager = QuestManager.new()
+    add_child(quest_manager)
+
     chunk_edge_distance_threshold_for_chunk_repositioning = get_viewport().size.x / get_viewport().get_camera_2d().zoom.x / 2 + 50
+
+
+# TODO: Call this at some point!
+func reset() -> void:
+    G.session.reset()
+    G.player.reset()
+    start_level()
+
 
 func _physics_process(_delta: float) -> void:
     if is_shifting_chunks:
@@ -87,14 +113,20 @@ func _physics_process(_delta: float) -> void:
 
 
 func _show_zoo_keeper_screen() -> void:
+    quest_manager.on_return_to_zoo()
     # TODO
     pass
 
 
 func _return_from_zoo_keeper_screen() -> void:
     G.player.global_position = player_start_position
+    G.session.start_new_excursion()
     # TODO
     pass
+
+
+func add_enemy(enemy: Enemy) -> void:
+    %Enemies.add_child(enemy)
 
 
 func _update_bounds() -> void:
