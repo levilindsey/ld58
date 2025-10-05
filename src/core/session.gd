@@ -78,9 +78,9 @@ func start_new_quest(next_quest: Quest) -> void:
     if is_instance_valid(active_quest):
         fulfilled_quests.push_back(active_quest)
     active_quest = next_quest
-
     health = DEFAULT_MAX_HEALTH
     detection_score = 0
+    G.hud.update()
 
 
 func start_new_excursion() -> void:
@@ -89,6 +89,7 @@ func start_new_excursion() -> void:
     current_enemies_collected_count = 0
     total_excursion_count += 1
     current_quest_excursion_count += 1
+    G.hud.update()
 
 
 func deposit_enemies() -> void:
@@ -97,11 +98,13 @@ func deposit_enemies() -> void:
         total_enemies_deposited_by_type[type] += type_count
         current_enemies_deposited_by_type[type] += type_count
         current_enemies_deposited_count += type_count
+    G.hud.update()
 
 
 func add_collected_enemy(type: Enemy.Type) -> void:
     current_enemies_collected_by_type[type] += 1
     current_enemies_collected_count += 1
+    G.hud.update()
 
 
 func add_splatted_enemy(type: Enemy.Type) -> void:

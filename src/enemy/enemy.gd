@@ -5,15 +5,15 @@ extends CharacterBody2D
 enum Type {
     FARMER,
     KID,
-    BUSINESS_MAN,
     ELDERLY,
-    HOMELESS_PERSON,
     CAT,
+    HOMELESS_PERSON,
+    BUSINESS_MAN,
     POLICE_OFFICER,
     # TODO: Add stuff here!
-    POLICE_CAR,
-    TANK,
-    HELICOPTER,
+    #POLICE_CAR,
+    #TANK,
+    #HELICOPTER,
 }
 
 enum State {
@@ -27,7 +27,7 @@ enum State {
     BEING_BEAMED,
 }
 
-const LANDED_HARD_SPEED_THRESHOLD := 200
+const LANDED_HARD_SPEED_THRESHOLD := 270
 
 
 @export var type := Type.FARMER

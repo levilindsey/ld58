@@ -151,7 +151,7 @@ func _on_killed() -> void:
     var sprite := get_sprite()
     var sprite_wrapper := get_sprite_wrapper()
     sprite.stop()
-    sprite_wrapper.rotate(PI / 2)
+    sprite_wrapper.rotate(-PI / 2)
     sprite_wrapper.position.y = - get_min_radius()
 
     # AUDIO: Splat

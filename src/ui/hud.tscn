@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://cl3pkwueh4mag" path="res://src/core/main_theme.tres" id="1_4rn03"]
 [ext_resource type="Script" uid="uid://cvmchc2851mho" path="res://src/ui/hud.gd" id="1_eqvli"]
-[ext_resource type="PackedScene" uid="uid://cr5vb16maok34" path="res://src/ui/quest_list.tscn" id="3_snmo6"]
+[ext_resource type="PackedScene" uid="uid://cr5vb16maok34" path="res://src/ui/enemy_list.tscn" id="3_snmo6"]
 
 [node name="Hud" type="PanelContainer"]
 anchors_preset = 15
@@ -27,5 +27,6 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="QuestList" parent="MarginContainer/HBoxContainer" instance=ExtResource("3_snmo6")]
+[node name="QuestEnemyList" parent="MarginContainer/HBoxContainer" instance=ExtResource("3_snmo6")]
+unique_name_in_owner = true
 layout_mode = 2
