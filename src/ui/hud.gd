@@ -15,7 +15,7 @@ func _ready() -> void:
     self.visible = G.settings.show_hud
 
 
-# FIXME(levilindsey): LEFT OFF HERE: -------------------------------------
+# FIXME(levilindsey): LEFT OFF HERE: --------------------------------------
 #G.game_panel.active_quest
 #G.session.detection_score
 #G.session.health
@@ -42,5 +42,5 @@ func update() -> void:
     %CollectionCapacity.add_theme_color_override("font_color", ship_capacity_color)
 
     %QuestEnemyList.set_up_with_denominators(
-        G.session.current_enemies_collected_by_type,
+        G.session.get_combined_counts_of_collected_and_deposited(),
         G.session.active_quest.enemy_type_to_count)

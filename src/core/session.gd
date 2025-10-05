@@ -117,3 +117,13 @@ func add_enemy_that_has_detected_you(type: Enemy.Type) -> void:
 
 func is_ship_full() -> bool:
     return current_enemies_collected_count >= collection_capacity
+
+
+func get_combined_counts_of_collected_and_deposited() -> Dictionary:
+    var counts := {}
+    for type in Enemy.Type.values():
+        counts[type] = (
+            current_enemies_collected_by_type[type] +
+            current_enemies_deposited_by_type[type]
+        )
+    return counts
