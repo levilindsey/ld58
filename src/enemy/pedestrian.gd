@@ -13,12 +13,14 @@ var is_player_visible := false
 var was_player_recently_visible := false
 var is_facing_right := true
 
-var abducting_audio_player: AudioStreamPlayer
-
+var abducting_audio_player: AudioStreamPlayer2D
+var falling_audio_player: AudioStreamPlayer2D
+var splat_audio_player: AudioStreamPlayer
 
 func setup_sound():
     abducting_audio_player = sound_scene.get_node("AbductingAudioStream")
-
+    falling_audio_player = sound_scene.get_node("FallingStreamPlayer")
+    splat_audio_player = sound_scene.get_node("SplatStreamPlayer")
 
 func _physics_process(_delta: float) -> void:
     super._physics_process(_delta)
@@ -68,10 +70,10 @@ func on_beam_start() -> void:
     if is_dead():
         return
     state = State.BEING_BEAMED
+    
+    # AUDIO: Abduction
     if not abducting_audio_player.playing:
         abducting_audio_player.play()
-
-    # TODO: Alden: ABDUCTION
 
     # Trigger detection on any other enemy that can currently see this pedestrian.
     for enemy in G.enemies:
@@ -84,6 +86,14 @@ func on_beam_start() -> void:
 func on_beam_end() -> void:
     if is_dead():
         return
+    
+    # AUDIO: Falling
+    if  abducting_audio_player.playing:
+        abducting_audio_player.stop()
+    
+    if not falling_audio_player.playing:
+        falling_audio_player.play()
+
     state = State.FALLING
 
 
@@ -95,8 +105,9 @@ func _on_landed(landed_hard: bool) -> void:
         _on_killed()
         return
 
-    if abducting_audio_player.playing:
-        abducting_audio_player.stop()
+
+    if falling_audio_player.playing:
+        falling_audio_player.stop()
 
     if was_player_recently_visible:
         state = State.RETREATING
@@ -108,13 +119,17 @@ func _on_killed() -> void:
     state = State.DEAD
     # TODO
     pass
+    
+    # AUDIO: Splat
+    if falling_audio_player.playing:
+        falling_audio_player.stop()
 
-    # TODO: Alden: SPLAT
+    if not splat_audio_player.playing:
+        splat_audio_player.play()
 
 
 func on_collected() -> void:
     visible = false
-    # TODO: Alden: STOP SCREAMING ALREADY8!!!!
     if abducting_audio_player.playing:
         abducting_audio_player.stop()
 
