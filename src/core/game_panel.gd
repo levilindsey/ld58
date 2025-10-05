@@ -55,14 +55,28 @@ func _physics_process(_delta: float) -> void:
         is_shifting_chunks = true
         var right_chunk := _get_right_most_level_chunk()
         var right_chunk_bounds := right_chunk.get_bounds()
+        var right_chunk_enemies = _get_enemies_in_right_most_level_chunk(_delta)
         right_chunk.global_position.x = combined_level_chunk_bounds.position.x - right_chunk_bounds.size.x
+        for enemy in right_chunk_enemies:
+            enemy.position.x -= combined_level_chunk_bounds.size.x - 50
+            # reset the y position and velocity in case the enemy fell through
+            # the level for some unknown reason
+            enemy.position.y = -1
+            enemy.velocity.y = 0
         await get_tree().process_frame
         _update_bounds()
         is_shifting_chunks = false
     elif G.player.global_position.x > right_threshold:
         is_shifting_chunks = true
         var left_chunk := _get_left_most_level_chunk()
+        var left_chunk_enemies = _get_enemies_in_left_most_level_chunk(_delta)
         left_chunk.global_position.x = combined_level_chunk_bounds.end.x
+        for enemy in left_chunk_enemies:
+            enemy.position.x += combined_level_chunk_bounds.size.x - 50
+            # reset the y position and velocity in case the enemy fell through
+            # the level for some unknown reason
+            enemy.position.y = -1
+            enemy.velocity.y = 0
         await get_tree().process_frame
         _update_bounds()
         is_shifting_chunks = false
@@ -117,3 +131,21 @@ func _get_right_most_level_chunk() -> LevelChunk:
             return %LevelChunkB
         else:
             return %LevelChunkC
+
+func _get_enemies_in_right_most_level_chunk(delta: float) -> Array:
+    var filtered_enemies = []
+    for enemy in G.enemies:
+        var right_chunk_left_boundary = _get_right_most_level_chunk().get_bounds().position.x
+        var next_x_position = enemy.position.x + enemy.velocity.x * delta
+        if enemy.position.x > right_chunk_left_boundary or next_x_position > right_chunk_left_boundary:
+            filtered_enemies.append(enemy)
+    return filtered_enemies
+
+func _get_enemies_in_left_most_level_chunk(delta: float) -> Array:
+    var filtered_enemies = []
+    for enemy in G.enemies:
+        var left_chunk_right_boundary = _get_left_most_level_chunk().get_bounds().end.x
+        var next_x_position = enemy.position.x + enemy.velocity.x * delta
+        if enemy.position.x < left_chunk_right_boundary or next_x_position < left_chunk_right_boundary:
+            filtered_enemies.append(enemy)
+    return filtered_enemies
