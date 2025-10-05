@@ -94,7 +94,7 @@ func start_new_excursion() -> void:
 
 func deposit_enemies() -> void:
     for type in current_enemies_collected_by_type:
-        var type_count: int = current_enemies_collected_by_type[type].size()
+        var type_count: int = current_enemies_collected_by_type[type]
         total_enemies_deposited_by_type[type] += type_count
         current_enemies_deposited_by_type[type] += type_count
         current_enemies_deposited_count += type_count
@@ -113,3 +113,7 @@ func add_splatted_enemy(type: Enemy.Type) -> void:
 
 func add_enemy_that_has_detected_you(type: Enemy.Type) -> void:
     total_enemies_that_have_detected_you_by_type[type] += 1
+
+
+func is_ship_full() -> bool:
+    return current_enemies_collected_count >= collection_capacity
