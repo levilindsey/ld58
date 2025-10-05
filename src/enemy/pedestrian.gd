@@ -20,7 +20,7 @@ var detect_audio_player: AudioStreamPlayer2D
 var running_audio_player: AudioStreamPlayer2D
 
 
-func setup_sound():
+func setup_sound() -> void:
     abducting_audio_player = sound_scene.get_node("AbductingAudioStream")
     falling_audio_player = sound_scene.get_node("FallingStreamPlayer")
     splat_audio_player = sound_scene.get_node("SplatStreamPlayer")

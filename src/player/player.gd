@@ -81,7 +81,7 @@ func _slide_abductees_up_beam(delta: float) -> void:
         ped.position += Vector2.UP * SLIDE_ABDUCTEE_UP_BEAM_SPEED * delta
 
 
-func handle_beam():
+func handle_beam() -> void:
     if Input.is_action_just_pressed("Beam"):
         if not G.session.is_ship_full():
             _on_started_beam()
@@ -152,7 +152,7 @@ func _get_gravity() -> float:
     return G.session.current_enemies_collected_count * GRAVITY_DELTA_PER_ENEMY
 
 
-func is_movement_action_pressed():
+func is_movement_action_pressed() -> bool:
     return (
         Input.is_action_pressed("MoveLeft") or
         Input.is_action_pressed("MoveRight") or

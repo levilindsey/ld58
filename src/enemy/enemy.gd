@@ -58,7 +58,7 @@ func _ready() -> void:
     setup_sound()
 
 
-func setup_sound():
+func setup_sound() -> void:
     pass
 
 
