@@ -68,7 +68,7 @@ func _get_horizontal_velocity() -> float:
 
 
 func set_is_facing_right(p_is_facing_right: bool) -> void:
-    self.is_facing_right = p_is_facing_right
+    is_facing_right = p_is_facing_right
     rotation = 0
     scale = Vector2.ONE
     scale.x = 1 if is_facing_right else -1
@@ -115,8 +115,13 @@ func _on_landed(landed_hard: bool) -> void:
     if is_dead():
         return
 
+    # Sanitize some transform garbage...
     global_rotation = 0
     global_scale = Vector2.ONE
+    rotation = 0
+    scale = Vector2.ONE
+    if not is_facing_right:
+        scale.x = -1
 
     if landed_hard and state != State.STARTING:
         _on_killed()
