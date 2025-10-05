@@ -168,7 +168,7 @@ func on_collected() -> void:
         abducting_audio_player.stop()
     if not capture_audio_player.playing:
         capture_audio_player.play()
-
+        print("capture sound")
     destroy()
 
 
