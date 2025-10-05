@@ -22,6 +22,7 @@ var is_beaming = false
 @onready var beam_audio_player: AudioStreamPlayer = $TractorBeam/TractorBeamAudiostream
 @onready var ufo_audio_player: AudioStreamPlayer = $UFOAudiostream
 @onready var capture_audio_player: AudioStreamPlayer = $CaptureStreamPlayer
+@onready var reject_audio_player: AudioStreamPlayer = $RejectStreamPlayer
 
 
 func _ready() -> void:
@@ -86,7 +87,10 @@ func handle_beam() -> void:
         if not G.session.is_ship_full():
             _on_started_beam()
         else:
-            # TODO: ALDEN: Nuh-uh sound.
+            # AUDIO: Reject
+            if not reject_audio_player.playing:
+                reject_audio_player.play()
+                print("REJECT")
             pass
     if Input.is_action_just_released("Beam"):
         _on_stopped_beam()

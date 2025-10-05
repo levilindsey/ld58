@@ -1,4 +1,4 @@
-[gd_scene load_steps=92 format=3 uid="uid://cn6hdqmmufnvr"]
+[gd_scene load_steps=96 format=3 uid="uid://cn6hdqmmufnvr"]
 
 [ext_resource type="Script" uid="uid://ctdjb8phvmc71" path="res://src/player/player.gd" id="1_gkcme"]
 [ext_resource type="Texture2D" uid="uid://dsgbstsy1ok2w" path="res://assets/images/ufo.png" id="2_gmfve"]
@@ -6,6 +6,9 @@
 [ext_resource type="AudioStream" uid="uid://c6xc34578ys23" path="res://assets/audio/Tractor Beam V2.wav" id="3_mf2ua"]
 [ext_resource type="AudioStream" uid="uid://50qf35kdpd1h" path="res://assets/audio/UFO Flight_loop.cm.wav" id="4_244u8"]
 [ext_resource type="AudioStream" uid="uid://dt34fq1ggcp0e" path="res://assets/audio/Capture.wav" id="6_jiejy"]
+[ext_resource type="AudioStream" uid="uid://bq4fafekbj2cd" path="res://assets/audio/Reject/REJECT-cm-02.wav" id="7_l271a"]
+[ext_resource type="AudioStream" uid="uid://damhwvkhnqxle" path="res://assets/audio/Reject/REJECT-cm-04.wav" id="8_8ydov"]
+[ext_resource type="AudioStream" uid="uid://ern2enrp4li" path="res://assets/audio/Reject/REJECT-cm-06.wav" id="9_ylhto"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2swit"]
 atlas = ExtResource("3_5f2sf")
@@ -596,6 +599,12 @@ random_pitch = 1.16
 streams_count = 1
 stream_0/stream = ExtResource("6_jiejy")
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_cwolq"]
+streams_count = 3
+stream_0/stream = ExtResource("7_l271a")
+stream_1/stream = ExtResource("8_8ydov")
+stream_2/stream = ExtResource("9_ylhto")
+
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 2
 script = ExtResource("1_gkcme")
@@ -677,7 +686,12 @@ unique_name_in_owner = true
 
 [node name="CaptureStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamRandomizer_o822w")
-volume_db = -8.156
+volume_db = -7.0
+bus = &"SFX"
+
+[node name="RejectStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_cwolq")
+volume_db = -15.537
 bus = &"SFX"
 
 [connection signal="body_entered" from="TractorBeam/TractorBeamArea" to="." method="_on_tractor_beam_area_body_entered"]
