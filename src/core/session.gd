@@ -2,8 +2,11 @@ class_name Session
 extends RefCounted
 
 
-const INITIAL_COLLECTION_CAPACITY := 3
-const INITIAL_HEALTH := 3
+const DEFAULT_COLLECTION_CAPACITY := 3
+const DEFAULT_MAX_HEALTH := 3
+
+
+# FIXME(levilindsey): Update these other counts.
 
 
 # Dictionary<Enemy.Type, int>
@@ -25,6 +28,7 @@ var excursion_count := 0
 var collection_capacity := 0
 
 var health := 0
+var max_health := 0
 
 var detection_score := 0
 
@@ -53,8 +57,9 @@ func reset() -> void:
         current_enemies_collected_by_type[type] = 0
 
     current_enemies_collected_count = 0
-    collection_capacity = INITIAL_COLLECTION_CAPACITY
-    health = INITIAL_HEALTH
+    collection_capacity = DEFAULT_COLLECTION_CAPACITY
+    health = DEFAULT_MAX_HEALTH
+    max_health = DEFAULT_MAX_HEALTH
     detection_score = 0
 
     active_quests.clear()
@@ -66,7 +71,7 @@ func start_new_excursion() -> void:
     for type in Enemy.Type.values():
         current_enemies_collected_by_type[type] = 0
     current_enemies_collected_count = 0
-    health = INITIAL_HEALTH
+    health = DEFAULT_MAX_HEALTH
     detection_score = 0
     excursion_count += 1
 
