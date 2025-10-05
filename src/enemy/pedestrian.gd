@@ -17,7 +17,6 @@ var abducting_audio_player: AudioStreamPlayer2D
 var falling_audio_player: AudioStreamPlayer2D
 var splat_audio_player: AudioStreamPlayer
 var detect_audio_player: AudioStreamPlayer2D
-var capture_audio_player: AudioStreamPlayer
 var running_audio_player: AudioStreamPlayer2D
 
 func setup_sound():
@@ -25,7 +24,6 @@ func setup_sound():
     falling_audio_player = sound_scene.get_node("FallingStreamPlayer")
     splat_audio_player = sound_scene.get_node("SplatStreamPlayer")
     detect_audio_player = sound_scene.get_node("DetectStreamPlayer2D")
-    capture_audio_player = sound_scene.get_node("CaptureStreamPlayer")
     running_audio_player = sound_scene.get_node("RunningStreamPlayer2D")
 
 func _physics_process(_delta: float) -> void:
@@ -166,9 +164,6 @@ func on_collected() -> void:
     # AUDIO: Capture
     if abducting_audio_player.playing:
         abducting_audio_player.stop()
-    if not capture_audio_player.playing:
-        capture_audio_player.play()
-        print("capture sound")
     destroy()
 
 

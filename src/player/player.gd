@@ -21,6 +21,7 @@ var is_beaming = false
 
 @onready var beam_audio_player: AudioStreamPlayer = $TractorBeam/TractorBeamAudiostream
 @onready var ufo_audio_player: AudioStreamPlayer = $UFOAudiostream
+@onready var capture_audio_player: AudioStreamPlayer = $CaptureStreamPlayer
 
 
 func _ready() -> void:
@@ -174,3 +175,6 @@ func _on_abductee_collection_area_body_entered(body: Node2D) -> void:
         pedestrians_in_beam.erase(body)
         G.session.add_collected_enemy(body.type)
         body.on_collected()
+
+        if not capture_audio_player.playing:
+            capture_audio_player.play()
