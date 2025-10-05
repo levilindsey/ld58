@@ -73,7 +73,7 @@ func on_beam_start() -> void:
     if is_dead():
         return
     state = State.BEING_BEAMED
-    
+
     # AUDIO: Abduction
     if not abducting_audio_player.playing:
         abducting_audio_player.play()
@@ -89,11 +89,11 @@ func on_beam_start() -> void:
 func on_beam_end() -> void:
     if is_dead():
         return
-    
+
     # AUDIO: Falling
     if  abducting_audio_player.playing:
         abducting_audio_player.stop()
-    
+
     if not falling_audio_player.playing:
         falling_audio_player.play()
 
@@ -122,7 +122,7 @@ func _on_killed() -> void:
     state = State.DEAD
     # TODO
     pass
-    
+
     # AUDIO: Splat
     if falling_audio_player.playing:
         falling_audio_player.stop()

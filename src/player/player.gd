@@ -1,16 +1,21 @@
 class_name Player
 extends CharacterBody2D
 
+
 const ACCELERATION = 1000
 const MAX_ROTATION = PI / 8
 const DAMPING_FACTOR_HORIZONTAL = 0.95
 const DAMPING_FACTOR_VERTICAL = 0.8
-var max_speed = 400
-var gravity = 0
+const DEFAULT_MAX_SPEED := 400
+const MAX_SPEED_WITH_BEAM_ACTIVE := 50
+const DEFAULT_GRAVITY := 0
+
+
+var max_speed = DEFAULT_MAX_SPEED
+var gravity = DEFAULT_GRAVITY
 var pedestrians_in_beam = {}
 var pedestrians_collected = {}
 var is_beaming = false
-var max_pedestrian_capacity = 3
 
 @onready var beam_audio_player: AudioStreamPlayer = $TractorBeam/TractorBeamAudiostream
 @onready var ufo_audio_player: AudioStreamPlayer = $UFOAudiostream
@@ -18,9 +23,18 @@ var max_pedestrian_capacity = 3
 
 func _ready() -> void:
     G.player = self
+    reset()
 
 
-func _process(delta: float) -> void:
+func reset() -> void:
+    max_speed = DEFAULT_MAX_SPEED
+    gravity = DEFAULT_GRAVITY
+    pedestrians_in_beam.clear()
+    pedestrians_collected.clear()
+    is_beaming = false
+
+
+func _process(_delta: float) -> void:
     var speed = velocity.length()
     if not ufo_audio_player.playing:
         ufo_audio_player.play()
@@ -41,7 +55,7 @@ func _physics_process(delta):
     handle_movement(delta)
     handle_beam()
     abduct_pedestrians(previous_pos)
-    $CapacityLabel.text = str(pedestrians_collected.size()) + "/" + str(max_pedestrian_capacity)
+    $CapacityLabel.text = str(pedestrians_collected.size()) + "/" + str(G.session.collection_capacity)
 
 
 func handle_beam():
@@ -53,13 +67,13 @@ func handle_beam():
         if not beam_audio_player.playing:
             beam_audio_player.play()
         beamCollisionArea.set_deferred("disabled", false)
-        max_speed = 50
+        max_speed = MAX_SPEED_WITH_BEAM_ACTIVE
     if Input.is_action_just_released("ui_select"):
         is_beaming = false
         beam.visible = false
         beam_audio_player.stop()
         beamCollisionArea.set_deferred("disabled", true)
-        max_speed = 400
+        max_speed = DEFAULT_MAX_SPEED
         for ped in pedestrians_in_beam:
             ped.on_beam_end()
         pedestrians_in_beam.clear()
@@ -72,7 +86,7 @@ func abduct_pedestrians(previous_pos):
         var ped_height_offset = ped.get_node("CollisionShape2D").shape.get_height() / 2
         ped.position.x = move_toward(ped.position.x, position.x, 0.1) + player_x_delta
         ped.position.y = move_toward(ped.position.y, player_bottom_edge + ped_height_offset, 0.5)
-        if ped.position.y == player_bottom_edge + ped_height_offset and pedestrians_collected.size() < max_pedestrian_capacity:
+        if ped.position.y == player_bottom_edge + ped_height_offset and pedestrians_collected.size() < G.session.collection_capacity:
             # The pedestrian has been collected
             pedestrians_collected[ped] = true
             pedestrians_in_beam.erase(ped)

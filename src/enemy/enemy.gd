@@ -65,7 +65,7 @@ func _physics_process(delta: float) -> void:
     velocity.y += get_gravity().y * delta
 
     move_and_slide()
-    
+
     # teleport the enemy if it is going to walk off the end of the map
     if velocity.x < 0 and abs(position.x - G.game_panel.combined_level_chunk_bounds.position.x) < 50:
         position.x = G.game_panel.combined_level_chunk_bounds.end.x - 50

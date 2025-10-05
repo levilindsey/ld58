@@ -23,3 +23,6 @@ unique_name_in_owner = true
 
 [node name="LevelChunkC" parent="." instance=ExtResource("6_rcpjb")]
 unique_name_in_owner = true
+
+[node name="Enemies" type="Node2D" parent="."]
+unique_name_in_owner = true
