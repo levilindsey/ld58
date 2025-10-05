@@ -1,0 +1,83 @@
+[gd_scene load_steps=28 format=3 uid="uid://v01bkoexv76d"]
+
+[ext_resource type="AudioStream" uid="uid://ddcvc3bya2scb" path="res://assets/audio/Human Screams/Human screams-cm-01.wav" id="1_44n7j"]
+[ext_resource type="AudioStream" uid="uid://cgjv1jya2givh" path="res://assets/audio/Human Screams/Human screams-cm-02.wav" id="2_8ayot"]
+[ext_resource type="AudioStream" uid="uid://d2i6cnbe4bd5x" path="res://assets/audio/Human Screams/Human screams-cm_09-01.wav" id="3_ukmje"]
+[ext_resource type="AudioStream" uid="uid://cmmyn8d5hn1rj" path="res://assets/audio/Human Screams/Human screams-cm_09-02.wav" id="4_apwx7"]
+[ext_resource type="AudioStream" uid="uid://b46jbj8gmfeu3" path="res://assets/audio/Human Screams/Human screams-cm_010-01.wav" id="5_2f8oa"]
+[ext_resource type="AudioStream" uid="uid://dm2oekkc70lml" path="res://assets/audio/Human Screams/Human screams-cm_011-01.wav" id="6_kbba1"]
+[ext_resource type="AudioStream" uid="uid://blug0u4ip8ty0" path="res://assets/audio/Human Screams/Human screams-cm_012-01.wav" id="7_42qni"]
+[ext_resource type="AudioStream" uid="uid://btxuy5rv0npx0" path="res://assets/audio/Human Screams/Human screams-cm_013-01.wav" id="8_mxkq4"]
+[ext_resource type="AudioStream" uid="uid://bdf81kmoxxysl" path="res://assets/audio/Human Screams/Human screams-cm_01-01.wav" id="9_c0nre"]
+[ext_resource type="AudioStream" uid="uid://uuytdtxwc41" path="res://assets/audio/Human Screams/Human screams-cm_02-01.wav" id="10_nnerb"]
+[ext_resource type="AudioStream" uid="uid://cnx5pthwvrn7u" path="res://assets/audio/Human Screams/Human screams-cm_03-01.wav" id="11_olylk"]
+[ext_resource type="AudioStream" uid="uid://dalyqdg7vc1xx" path="res://assets/audio/Human Screams/Human screams-cm_04-01.wav" id="12_n4aue"]
+[ext_resource type="AudioStream" uid="uid://b2bqcmvonvxn" path="res://assets/audio/Human Screams/Human screams-cm_05-01.wav" id="13_4i2u0"]
+[ext_resource type="AudioStream" uid="uid://daionvulflr1b" path="res://assets/audio/Human Screams/Human screams-cm_06-01.wav" id="14_fcgco"]
+[ext_resource type="AudioStream" uid="uid://u74aupuag3tt" path="res://assets/audio/Human Screams/Human screams-cm_07-01.wav" id="15_28jwa"]
+[ext_resource type="AudioStream" uid="uid://co232jeneaclm" path="res://assets/audio/Human Screams/Human screams-cm_08-01.wav" id="16_710h6"]
+[ext_resource type="Script" uid="uid://djmk6640sjsth" path="res://src/enemy/abducting_audio_stream.gd" id="17_8ayot"]
+[ext_resource type="AudioStream" uid="uid://btif1x16ps1qa" path="res://assets/audio/Falling Scream/Falling scream-02.wav" id="18_kbba1"]
+[ext_resource type="AudioStream" uid="uid://chtuit46sxeit" path="res://assets/audio/Falling Scream/falling scream_1-01.wav" id="19_42qni"]
+[ext_resource type="AudioStream" uid="uid://cfaes0tcvha3q" path="res://assets/audio/Falling Scream/Falling Scream_2-01.wav" id="20_mxkq4"]
+[ext_resource type="AudioStream" uid="uid://dt4h34or14tof" path="res://assets/audio/Falling Scream/Falling scream_3-01.wav" id="21_c0nre"]
+[ext_resource type="AudioStream" uid="uid://dhirp8tdfc5g3" path="res://assets/audio/Splats/Splat.1.cm-cm-03.wav" id="22_c0nre"]
+[ext_resource type="AudioStream" uid="uid://cx6skhm0783k0" path="res://assets/audio/Splats/Splat.1.cm-cm-05.wav" id="23_nnerb"]
+[ext_resource type="AudioStream" uid="uid://bgkvjr5hkdfx1" path="res://assets/audio/Splats/Splat.1.cm-cm-06.wav" id="24_olylk"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_hnjx5"]
+streams_count = 16
+stream_0/stream = ExtResource("1_44n7j")
+stream_1/stream = ExtResource("2_8ayot")
+stream_2/stream = ExtResource("9_c0nre")
+stream_3/stream = ExtResource("10_nnerb")
+stream_4/stream = ExtResource("11_olylk")
+stream_5/stream = ExtResource("12_n4aue")
+stream_6/stream = ExtResource("13_4i2u0")
+stream_7/stream = ExtResource("14_fcgco")
+stream_8/stream = ExtResource("15_28jwa")
+stream_9/stream = ExtResource("16_710h6")
+stream_10/stream = ExtResource("3_ukmje")
+stream_11/stream = ExtResource("4_apwx7")
+stream_12/stream = ExtResource("5_2f8oa")
+stream_13/stream = ExtResource("6_kbba1")
+stream_14/stream = ExtResource("7_42qni")
+stream_15/stream = ExtResource("8_mxkq4")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_nnerb"]
+streams_count = 4
+stream_0/stream = ExtResource("18_kbba1")
+stream_1/stream = ExtResource("19_42qni")
+stream_2/stream = ExtResource("20_mxkq4")
+stream_3/stream = ExtResource("21_c0nre")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_n4aue"]
+random_pitch = 1.22
+random_volume_offset_db = 1.0
+streams_count = 3
+stream_0/stream = ExtResource("22_c0nre")
+stream_1/stream = ExtResource("23_nnerb")
+stream_2/stream = ExtResource("24_olylk")
+
+[node name="EnemySound" type="Node2D"]
+
+[node name="AbductingAudioStream" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_hnjx5")
+volume_db = 4.16
+max_distance = 248.0
+attenuation = 0.93303293
+bus = &"Voices"
+script = ExtResource("17_8ayot")
+
+[node name="FallingStreamPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_nnerb")
+volume_db = 5.847
+max_distance = 258.0
+bus = &"Voices"
+
+[node name="SplatStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_n4aue")
+volume_db = -2.537
+bus = &"SFX"
+
+[connection signal="finished" from="AbductingAudioStream" to="AbductingAudioStream" method="_on_finished"]

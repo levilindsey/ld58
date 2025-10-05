@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="Settings" load_steps=9 format=3 uid="uid://dv60bmaw1pdx6"]
+[gd_resource type="Resource" script_class="Settings" load_steps=10 format=3 uid="uid://dv60bmaw1pdx6"]
 
 [ext_resource type="PackedScene" uid="uid://c37vtw0k41rob" path="res://src/enemy/business_man.tscn" id="1_i3tmf"]
 [ext_resource type="Script" uid="uid://cqomr88ncj2d3" path="res://src/core/settings.gd" id="1_krfic"]
 [ext_resource type="PackedScene" uid="uid://dhc3gergk5jk1" path="res://src/enemy/cat.tscn" id="2_4irwu"]
 [ext_resource type="PackedScene" uid="uid://dffaiyxnj3vsv" path="res://src/enemy/elderly.tscn" id="3_bav20"]
+[ext_resource type="PackedScene" uid="uid://v01bkoexv76d" path="res://src/enemy/enemy_sound.tscn" id="4_4irwu"]
 [ext_resource type="PackedScene" uid="uid://drnwm8uaffaxb" path="res://src/enemy/farmer.tscn" id="4_e1gfc"]
 [ext_resource type="PackedScene" uid="uid://cakoqktrln4k8" path="res://src/enemy/homeless_person.tscn" id="5_32itx"]
 [ext_resource type="PackedScene" uid="uid://dtilrn7qxle35" path="res://src/enemy/kid.tscn" id="6_wuxul"]
@@ -18,3 +19,4 @@ elderly_scene = ExtResource("3_bav20")
 cat_scene = ExtResource("2_4irwu")
 business_person_scene = ExtResource("1_i3tmf")
 police_officer_scene = ExtResource("7_n131f")
+enemy_sound_scene = ExtResource("4_4irwu")
