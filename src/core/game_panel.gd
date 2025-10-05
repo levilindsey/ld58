@@ -29,6 +29,7 @@ func _ready() -> void:
 
 func start_level() -> void:
     G.player.global_position = player_start_position
+    G.session.start_new_excursion()
 
     is_shifting_chunks = true
 
@@ -112,12 +113,14 @@ func _physics_process(_delta: float) -> void:
 
 
 func _show_zoo_keeper_screen() -> void:
+    quest_manager.on_return_to_zoo()
     # TODO
     pass
 
 
 func _return_from_zoo_keeper_screen() -> void:
     G.player.global_position = player_start_position
+    G.session.start_new_excursion()
     # TODO
     pass
 

@@ -13,6 +13,10 @@ var quest_schedule: Array[Quest] = [
 
 var next_schedule_index := 0
 
+var newly_fulfilled_quests: Array[Quest] = []
+var newly_failed_quests: Array[Quest] = []
+var newly_active_quests: Array[Quest] = []
+
 
 func _ready() -> void:
     quest_schedule.sort_custom(
@@ -22,6 +26,24 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
     _check_for_next_quest()
     _check_for_expired_quests()
+
+
+func on_return_to_zoo() -> void:
+    # Record any fulfilled quests.
+    for quest in G.session.active_quests:
+        var collected_count: int = G.session.current_enemies_collected_by_type[quest.enemy_type]
+        if quest.enemy_count <= collected_count:
+            newly_fulfilled_quests.push_back(quest)
+
+    # Remove fulfilled quests from active collection.
+    for quest in newly_fulfilled_quests:
+        G.session.active_quests.erase(quest)
+
+    # Record any remaining quests as failed.
+    for quest in G.session.active_quests:
+        newly_failed_quests.push_back(quest)
+
+    G.session.active_quests.clear()
 
 
 func _check_for_next_quest() -> void:
@@ -34,6 +56,7 @@ func _check_for_next_quest() -> void:
     var next_quest_start_time := next_quest.start_time
     if currentTime >= next_quest_start_time:
         G.session.active_quests.push_back(next_quest)
+        newly_active_quests.push_back(next_quest)
         next_schedule_index += 1
 
 
@@ -46,3 +69,4 @@ func _check_for_expired_quests() -> void:
     for quest in failed_quests:
         G.session.active_quests.erase(quest)
         G.session.failed_quests.push_back(quest)
+        newly_failed_quests.push_back(quest)

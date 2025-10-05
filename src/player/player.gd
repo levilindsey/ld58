@@ -55,7 +55,10 @@ func _physics_process(delta):
     handle_movement(delta)
     handle_beam()
     abduct_pedestrians(previous_pos)
-    $CapacityLabel.text = str(pedestrians_collected.size()) + "/" + str(G.session.collection_capacity)
+    $CapacityLabel.text = (
+        str(G.session.current_enemies_collected_count) +
+        "/" + str(G.session.collection_capacity)
+    )
 
 
 func handle_beam():
@@ -86,10 +89,12 @@ func abduct_pedestrians(previous_pos):
         var ped_height_offset = ped.get_node("CollisionShape2D").shape.get_height() / 2
         ped.position.x = move_toward(ped.position.x, position.x, 0.1) + player_x_delta
         ped.position.y = move_toward(ped.position.y, player_bottom_edge + ped_height_offset, 0.5)
-        if ped.position.y == player_bottom_edge + ped_height_offset and pedestrians_collected.size() < G.session.collection_capacity:
+        if (ped.position.y == player_bottom_edge + ped_height_offset and
+                G.session.current_enemies_collected_count < G.session.collection_capacity):
             # The pedestrian has been collected
             pedestrians_collected[ped] = true
             pedestrians_in_beam.erase(ped)
+            G.session.add_collected_enemy(ped.type)
             gravity += 100
             ped.on_collected()
 
