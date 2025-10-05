@@ -15,8 +15,10 @@ var is_facing_right := true
 
 var abducting_audio_player: AudioStreamPlayer
 
+
 func setup_sound():
     abducting_audio_player = sound_scene.get_node("AbductingAudioStream")
+
 
 func _physics_process(_delta: float) -> void:
     super._physics_process(_delta)
@@ -56,6 +58,7 @@ func _get_horizontal_velocity() -> float:
             G.utils.ensure(false)
             return 0
 
+
 func set_is_facing_right(is_facing_right: bool) -> void:
     self.is_facing_right = is_facing_right
     scale.x = 1 if is_facing_right else -1
@@ -67,8 +70,6 @@ func on_beam_start() -> void:
     state = State.BEING_BEAMED
     if not abducting_audio_player.playing:
         abducting_audio_player.play()
-        
-        
 
     # TODO: Alden: ABDUCTION
 
@@ -94,6 +95,9 @@ func _on_landed(landed_hard: bool) -> void:
         _on_killed()
         return
 
+    if abducting_audio_player.playing:
+        abducting_audio_player.stop()
+
     if was_player_recently_visible:
         state = State.RETREATING
     else:
@@ -106,7 +110,13 @@ func _on_killed() -> void:
     pass
 
     # TODO: Alden: SPLAT
-    sound_scene
+
+
+func on_collected() -> void:
+    visible = false
+    # TODO: Alden: STOP SCREAMING ALREADY8!!!!
+    if abducting_audio_player.playing:
+        abducting_audio_player.stop()
 
 
 func _on_detection_start() -> void:

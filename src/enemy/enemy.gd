@@ -48,9 +48,9 @@ func _ready() -> void:
 
     sound_scene = G.settings.enemy_sound_scene.instantiate()
     add_child(sound_scene)
-    
+
     setup_sound()
-    
+
 func setup_sound():
     pass
 

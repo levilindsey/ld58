@@ -15,8 +15,10 @@ var max_pedestrian_capacity = 3
 @onready var beam_audio_player: AudioStreamPlayer = $TractorBeam/TractorBeamAudiostream
 @onready var ufo_audio_player: AudioStreamPlayer = $UFOAudiostream
 
+
 func _ready() -> void:
     G.player = self
+
 
 func _process(delta: float) -> void:
     var speed = velocity.length()
@@ -32,6 +34,7 @@ func _process(delta: float) -> void:
     var min_db = -32.0
     var max_db = -20.0
     ufo_audio_player.volume_db = lerp(min_db, max_db, clamp(speed / max_speed, 0.0, 1.0))
+
 
 func _physics_process(delta):
     var previous_pos = position
@@ -61,6 +64,7 @@ func handle_beam():
             ped.on_beam_end()
         pedestrians_in_beam.clear()
 
+
 func abduct_pedestrians(previous_pos):
     var player_x_delta = position.x - previous_pos.x
     var player_bottom_edge = %PlayerBodyCollisionShape.shape.get_height() / 2.0 + global_position.y
@@ -71,9 +75,10 @@ func abduct_pedestrians(previous_pos):
         if ped.position.y == player_bottom_edge + ped_height_offset and pedestrians_collected.size() < max_pedestrian_capacity:
             # The pedestrian has been collected
             pedestrians_collected[ped] = true
-            ped.visible = false
             pedestrians_in_beam.erase(ped)
             gravity += 100
+            ped.on_collected()
+
 
 func handle_movement(delta):
     if Input.is_action_pressed("ui_left"):
