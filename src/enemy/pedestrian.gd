@@ -87,7 +87,7 @@ func on_beam_start() -> void:
             cow_audio_player.play()
         elif type == Type.CAT:
             cat_audio_player.play()
-        elif type == Type.CHICKEN:
+        elif type == Type.CHICKEN or type == Type.GOLDEN_CHICKEN:
             chicken_audio_player.play()
         else:
             abducting_audio_player.play()
@@ -195,7 +195,7 @@ func _on_alerted() -> void:
         cow_audio_player.play()
     elif type == Type.CAT:
         cat_audio_player.play()
-    elif type == Type.CHICKEN:
+    elif type == Type.CHICKEN or type == Type.GOLDEN_CHICKEN:
         chicken_audio_player.play()
     elif detect_audio_player.playing:
         detect_audio_player.play()

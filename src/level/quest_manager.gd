@@ -21,6 +21,9 @@ var quest_schedule: Array[Quest] = [
     }, 10),
     Quest.new({
         Enemy.Type.POLICE_OFFICER: 5
+    }, 10),
+    Quest.new({
+        Enemy.Type.GOLDEN_CHICKEN: 1
     }, 10)
 ]
 
