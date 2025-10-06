@@ -3,6 +3,9 @@ extends PanelContainer
 
 const ZOOKEEPER_GREETING = "I am the Zookeeper. Hear me roar. I would like you to collect earthlings for me."
 
+@onready var zoo_speech_audio_player: AudioStreamPlayer = $"../ZooSpeechStreamPlayer"
+
+# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     G.zoo_keeper = self
 
@@ -14,7 +17,7 @@ func _update_zookeeper_text(text: String) -> void:
     await tween.finished # Wait for the tween to complete
     tween.kill() # Clean up the tween
 
-func zookeeper_welcome() -> void:
+func zookeeper_welcome() ->    void:
     %DropEarthlings.grab_focus.call_deferred()
     _update_zookeeper_text(ZOOKEEPER_GREETING)
 

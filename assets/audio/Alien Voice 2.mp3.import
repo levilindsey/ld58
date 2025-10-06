@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cuvynce1ly56c"
+path="res://.godot/imported/Alien Voice 2.mp3-fae9ff18651bf4513cf6ea3737f383c9.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/Alien Voice 2.mp3"
+dest_files=["res://.godot/imported/Alien Voice 2.mp3-fae9ff18651bf4513cf6ea3737f383c9.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

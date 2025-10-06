@@ -4,6 +4,8 @@ extends Node2D
 
 @export var settings: Settings
 @onready var click_audio_player: AudioStreamPlayer = $ClickStreamPlayer
+@onready var theme_audio_player: AudioStreamPlayer = $ThemeStreamPlayer
+
 
 var is_paused := true:
     get:
