@@ -229,5 +229,4 @@ func _on_killed() -> void:
     print("Ship destroyed")
     self.modulate.a = 0
     # TODO(ALDEN): Sounds (KABLOOEY)
-    G.session.is_game_ended = true
-    G.main.open_screen(Main.ScreenType.GAME_OVER)
+    G.game_panel.on_player_killed()

@@ -14,11 +14,11 @@ var has_shot := false
 func _ready() -> void:
     var offset_x := G.game_panel.chunk_edge_distance_threshold_for_chunk_repositioning + 40
     velocity = Vector2.RIGHT * SPEED
-    velocity.x *= -1
-    # FIXME: backwards when lfetwards
     if randf() < 0.5:
         offset_x *= -1
+    else:
         velocity.x *= -1
+        %AnimatedSprite2D.scale.x = -1
     global_position.x = G.player.global_position.x + offset_x
     global_position.y = G.player.global_position.y + VERTICAL_OFFSET_FROM_PLAYER
 
