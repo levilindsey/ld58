@@ -2,10 +2,21 @@ class_name Main
 extends Node2D
 
 
+enum ScreenType {
+    MAIN_MENU,
+    GAME_OVER,
+    WIN,
+    ZOO_KEEPER,
+    GAME,
+}
+
+
 @export var settings: Settings
 @onready var click_audio_player: AudioStreamPlayer = $ClickStreamPlayer
 @onready var theme_audio_player: AudioStreamPlayer = $ThemeStreamPlayer
 @onready var zoo_audio_player: AudioStreamPlayer = $ZooThemeStreamPlayer
+
+var current_screen := ScreenType.MAIN_MENU
 
 
 var is_paused := true:
@@ -36,11 +47,13 @@ func _ready() -> void:
 
 
 func start_game() -> void:
-    var screen_name := "game_screen" if G.settings.start_in_game else "main_menu_screen"
-    open_screen(screen_name)
+    var screen_type := ScreenType.GAME_OVER if G.settings.start_in_game else ScreenType.MAIN_MENU
+    open_screen(screen_type)
 
 
-func open_screen(screen_name: String) -> void:
+func open_screen(screen_type: ScreenType) -> void:
+    current_screen = screen_type
+
     get_tree().paused = true
 
     G.main_menu_screen.visible = false
@@ -48,24 +61,26 @@ func open_screen(screen_name: String) -> void:
     G.win_screen.visible = false
     G.zoo_keeper_screen.visible = false
 
-    match screen_name:
-        "main_menu_screen":
+    match screen_type:
+        ScreenType.MAIN_MENU:
             G.game_panel.reset()
             G.main_menu_screen.visible = true
-        "game_over_screen":
+        ScreenType.GAME_OVER:
             G.game_panel.reset()
             G.game_over_screen.visible = true
             G.game_over_screen.update()
-        "win_screen":
+        ScreenType.WIN:
             G.game_panel.reset()
             G.win_screen.visible = true
-        "zoo_keeper_screen":
+        ScreenType.ZOO_KEEPER:
             G.zoo_keeper_screen.visible = true
             G.zoo_keeper_screen.on_return_to_zoo()
             # AUDIO: Music Switch
             G.main.fade_to_zoo_theme()
-        "game_screen":
+        ScreenType.GAME:
             G.game_panel.return_from_screen()
+
+    G.hud.update_visibility()
 
 
 func _notification(notification_type: int) -> void:

@@ -83,7 +83,7 @@ func _update_upgrade_button_ui(button: Button, upgrade_levels: UpgradeLevels, te
 
 func _on_earth_button_pressed() -> void:
     G.main.click_sound()
-    G.main.open_screen("game_screen")
+    G.main.open_screen(Main.ScreenType.GAME)
 
 func _on_upgrade_speed_pressed() -> void:
      _on_upgrade_button_pressed(%SpeedLevels, %UpgradeSpeed)

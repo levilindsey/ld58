@@ -27,7 +27,7 @@ script = ExtResource("1_avv2o")
 settings = ExtResource("2_ivtyw")
 
 [node name="Hud" type="CanvasLayer" parent="."]
-layer = 100
+layer = 200
 
 [node name="Hud" parent="Hud" instance=ExtResource("2_ukt3u")]
 
@@ -35,7 +35,7 @@ layer = 100
 position = Vector2(0, -7)
 
 [node name="Screens" type="CanvasLayer" parent="."]
-layer = 200
+layer = 100
 
 [node name="ZooKeeperScreen" parent="Screens" instance=ExtResource("5_w61mg")]
 unique_name_in_owner = true

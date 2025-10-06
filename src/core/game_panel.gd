@@ -141,7 +141,7 @@ func show_zoo_keeper_screen() -> void:
     quest_manager.on_return_to_zoo()
     # zoo_keeper_screen.on_return_to_zoo must come after deposit enemies
     # and quest_manager.on_return_to_zoo for proper behavior.
-    G.main.open_screen("zoo_keeper_screen")
+    G.main.open_screen(Main.ScreenType.ZOO_KEEPER)
 
 
 func return_from_screen() -> void:

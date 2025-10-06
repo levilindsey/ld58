@@ -8,4 +8,4 @@ func _ready() -> void:
 
 func _on_button_pressed() -> void:
     G.main.click_sound()
-    G.main.open_screen("main_menu_screen")
+    G.main.open_screen(Main.ScreenType.MAIN_MENU)

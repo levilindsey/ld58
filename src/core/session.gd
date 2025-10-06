@@ -96,6 +96,9 @@ func start_new_quest(next_quest: Quest) -> void:
     active_quest = next_quest
     health = DEFAULT_MAX_HEALTH
     detection_score = 0
+    for type in Enemy.Type.values():
+        current_enemies_deposited_by_type[type] = 0
+    current_enemies_deposited_count = 0
     G.hud.update_quest()
 
 

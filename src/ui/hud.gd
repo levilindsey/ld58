@@ -35,6 +35,26 @@ func _ready() -> void:
     %DetectionBar.add_theme_stylebox_override("fill", detection_bar_stylebox)
 
 
+func update_visibility() -> void:
+    match G.main.current_screen:
+        Main.ScreenType.MAIN_MENU, \
+        Main.ScreenType.GAME_OVER, \
+        Main.ScreenType.WIN:
+            %LeftContent.visible = false
+            %ShipCapacityWrapper.visible = false
+            %QuestEnemyList.visible = false
+        Main.ScreenType.ZOO_KEEPER:
+            %LeftContent.visible = false
+            %ShipCapacityWrapper.visible = false
+            %QuestEnemyList.visible = true
+        Main.ScreenType.GAME:
+            %LeftContent.visible = true
+            %ShipCapacityWrapper.visible = true
+            %QuestEnemyList.visible = true
+        _:
+            G.utils.ensure(false)
+
+
 func update_health() -> void:
     var health_progress := float(G.session.health) / G.session.max_health
     %HealthBar.value = health_progress
