@@ -2,7 +2,6 @@ class_name Session
 extends RefCounted
 
 
-const DEFAULT_COLLECTION_CAPACITY := 3
 const DEFAULT_MAX_HEALTH := 3
 
 
@@ -12,6 +11,9 @@ var total_enemies_deposited_by_type := {}
 var total_enemies_splatted_by_type := {}
 # Dictionary<Enemy.Type, int>
 var total_enemies_that_have_detected_you_by_type := {}
+
+# Dictionary<UpgradeType, int>
+var ship_upgrade_levels := {}
 
 # Dictionary<Enemy.Type, int>
 var current_enemies_deposited_by_type := {}
@@ -24,7 +26,11 @@ var current_enemies_collected_count := 0
 var total_excursion_count := 0
 var current_quest_excursion_count := 0
 
+# Upgradeable attributes
 var collection_capacity := 0
+var beam_scale := 0.0
+var max_speed := 0
+var max_speed_beaming := 0
 
 var health := 0
 var max_health := 0
@@ -49,6 +55,7 @@ func reset() -> void:
     total_enemies_that_have_detected_you_by_type.clear()
     current_enemies_deposited_by_type.clear()
     current_enemies_collected_by_type.clear()
+    ship_upgrade_levels.clear()
 
     # Initialize map entries with zero counts.
     for type in Enemy.Type.values():
@@ -57,12 +64,18 @@ func reset() -> void:
         total_enemies_that_have_detected_you_by_type[type] = 0
         current_enemies_deposited_by_type[type] = 0
         current_enemies_collected_by_type[type] = 0
+        
+    for type in UpgradeLevels.UpgradeTypes.values():
+        ship_upgrade_levels[type] = 0
 
     current_enemies_deposited_count = 0
     current_enemies_collected_count = 0
     total_excursion_count = 0
     current_quest_excursion_count = 0
-    collection_capacity = DEFAULT_COLLECTION_CAPACITY
+    collection_capacity = Settings.SHIP_UPGRADE_VALUES[UpgradeLevels.UpgradeTypes.CAPACITY][0]
+    beam_scale = Settings.SHIP_UPGRADE_VALUES[UpgradeLevels.UpgradeTypes.BEAM][0]
+    max_speed = Settings.SHIP_UPGRADE_VALUES[UpgradeLevels.UpgradeTypes.SPEED][0][0]
+    max_speed_beaming = Settings.SHIP_UPGRADE_VALUES[UpgradeLevels.UpgradeTypes.SPEED][0][1]
     health = DEFAULT_MAX_HEALTH
     max_health = DEFAULT_MAX_HEALTH
     money = 0

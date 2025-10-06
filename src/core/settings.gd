@@ -26,6 +26,37 @@ extends Resource
 
 @export var enemy_sound_scene: PackedScene
 
+const SHIP_UPGRADE_VALUES := {
+    # Max speed value for each level
+    UpgradeLevels.UpgradeTypes.SPEED: {
+        0: [150, 50],
+        1: [200, 70],
+        2: [300, 100],
+        3: [450, 150]
+    },
+    # Beam values are the scale factor of the beam.
+    UpgradeLevels.UpgradeTypes.BEAM: {
+        0: 0.3,
+        1: 0.5,
+        2: 0.7,
+        3: 1.0
+    },
+    # Capacity values are the raw capcity values.
+    UpgradeLevels.UpgradeTypes.CAPACITY: {
+        0: 3,
+        1: 4,
+        2: 6,
+        3: 10
+    },
+    # 
+    UpgradeLevels.UpgradeTypes.STEALTH: {
+        0: 100,
+        1: 200,
+        2: 300,
+        3: 400
+    }
+}
+
 const ENEMY_CONFIGS := {
     Enemy.Type.FARMER: {
         walking_speed = [45, 55],

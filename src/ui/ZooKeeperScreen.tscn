@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://dg8tvc66eq6c5"]
+[gd_scene load_steps=12 format=3 uid="uid://dg8tvc66eq6c5"]
 
 [ext_resource type="Texture2D" uid="uid://dj2ig84eome17" path="res://assets/images/background_color.png" id="1_e6fyj"]
 [ext_resource type="Theme" uid="uid://cl3pkwueh4mag" path="res://src/core/main_theme.tres" id="1_lpqvl"]
 [ext_resource type="Script" uid="uid://bkdd7i01q1ow5" path="res://src/ui/zoo_keeper_screen.gd" id="2_lpqvl"]
 [ext_resource type="Texture2D" uid="uid://ccrh0uyxuhy7h" path="res://assets/images/background_stars.png" id="2_npo0w"]
 [ext_resource type="Texture2D" uid="uid://crgbkxjhlafc1" path="res://assets/images/zookeeper_portrait.png" id="5_lpqvl"]
+[ext_resource type="PackedScene" uid="uid://dxk142g0m4br0" path="res://src/ui/upgrade_levels.tscn" id="5_ntcfd"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lpqvl"]
 texture = ExtResource("1_e6fyj")
@@ -72,27 +73,59 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="DropEarthlings" type="Button" parent="MarginContainer/LeftPanel/Options"]
+[node name="BeamBox" type="HBoxContainer" parent="MarginContainer/LeftPanel/Options"]
+layout_mode = 2
+
+[node name="UpgradeBeam" type="Button" parent="MarginContainer/LeftPanel/Options/BeamBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+focus_neighbor_top = NodePath("../../EarthButton")
+text = "Boost tractor beam"
+
+[node name="BeamLevels" parent="MarginContainer/LeftPanel/Options/BeamBox" instance=ExtResource("5_ntcfd")]
 unique_name_in_owner = true
 layout_mode = 2
-focus_neighbor_top = NodePath("../EarthButton")
-disabled = true
-text = "Drop off earthlings"
+type = 1
 
-[node name="UpgradeCapacity" type="Button" parent="MarginContainer/LeftPanel/Options"]
+[node name="CapacityBox" type="HBoxContainer" parent="MarginContainer/LeftPanel/Options"]
 layout_mode = 2
-disabled = true
-text = "Add ship capacity (+1)"
 
-[node name="UpgradeStealth" type="Button" parent="MarginContainer/LeftPanel/Options"]
+[node name="UpgradeCapacity" type="Button" parent="MarginContainer/LeftPanel/Options/CapacityBox"]
+custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
-disabled = true
-text = "Improve stealth (+20%)"
+text = "Add ship capacity"
+icon_alignment = 1
 
-[node name="UpgradeSpeed" type="Button" parent="MarginContainer/LeftPanel/Options"]
+[node name="CapacityLevels" parent="MarginContainer/LeftPanel/Options/CapacityBox" instance=ExtResource("5_ntcfd")]
+unique_name_in_owner = true
 layout_mode = 2
-disabled = true
-text = "Upgrade speed (+10%)"
+type = 2
+
+[node name="StealthBox" type="HBoxContainer" parent="MarginContainer/LeftPanel/Options"]
+layout_mode = 2
+
+[node name="UpgradeStealth" type="Button" parent="MarginContainer/LeftPanel/Options/StealthBox"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Upgrade stealth"
+
+[node name="StealthLevels" parent="MarginContainer/LeftPanel/Options/StealthBox" instance=ExtResource("5_ntcfd")]
+unique_name_in_owner = true
+layout_mode = 2
+type = 3
+
+[node name="SpeedBox" type="HBoxContainer" parent="MarginContainer/LeftPanel/Options"]
+layout_mode = 2
+
+[node name="UpgradeSpeed" type="Button" parent="MarginContainer/LeftPanel/Options/SpeedBox"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+text = "Improve speed"
+
+[node name="SpeedLevels" parent="MarginContainer/LeftPanel/Options/SpeedBox" instance=ExtResource("5_ntcfd")]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="Spacer2" type="Control" parent="MarginContainer/LeftPanel/Options"]
 custom_minimum_size = Vector2(0, 80)
@@ -100,7 +133,7 @@ layout_mode = 2
 
 [node name="EarthButton" type="Button" parent="MarginContainer/LeftPanel/Options"]
 layout_mode = 2
-focus_neighbor_bottom = NodePath("../DropEarthlings")
+focus_neighbor_bottom = NodePath("../BeamBox/UpgradeBeam")
 text = "Return to earth"
 
 [node name="Spacer2" type="Control" parent="MarginContainer/LeftPanel"]
@@ -143,8 +176,8 @@ text = "I am the Zookeeper. Hear me roar. I would like you to collect humans for
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[connection signal="pressed" from="MarginContainer/LeftPanel/Options/DropEarthlings" to="." method="_on_drop_earthlings_pressed"]
-[connection signal="pressed" from="MarginContainer/LeftPanel/Options/UpgradeCapacity" to="." method="_on_upgrade_capacity_pressed"]
-[connection signal="pressed" from="MarginContainer/LeftPanel/Options/UpgradeStealth" to="." method="_on_upgrade_stealth_pressed"]
-[connection signal="pressed" from="MarginContainer/LeftPanel/Options/UpgradeSpeed" to="." method="_on_upgrade_speed_pressed"]
+[connection signal="pressed" from="MarginContainer/LeftPanel/Options/BeamBox/UpgradeBeam" to="." method="_on_upgrade_beam_pressed"]
+[connection signal="pressed" from="MarginContainer/LeftPanel/Options/CapacityBox/UpgradeCapacity" to="." method="_on_upgrade_capacity_pressed"]
+[connection signal="pressed" from="MarginContainer/LeftPanel/Options/StealthBox/UpgradeStealth" to="." method="_on_upgrade_stealth_pressed"]
+[connection signal="pressed" from="MarginContainer/LeftPanel/Options/SpeedBox/UpgradeSpeed" to="." method="_on_upgrade_speed_pressed"]
 [connection signal="pressed" from="MarginContainer/LeftPanel/Options/EarthButton" to="." method="_on_earth_button_pressed"]

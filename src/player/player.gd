@@ -6,15 +6,11 @@ const ACCELERATION = 1000
 const MAX_ROTATION = PI / 8
 const DAMPING_FACTOR_HORIZONTAL = 0.95
 const DAMPING_FACTOR_VERTICAL = 0.8
-const DEFAULT_MAX_SPEED := 400
-const MAX_SPEED_WITH_BEAM_ACTIVE := 50
 const DEFAULT_GRAVITY := 0
 const GRAVITY_DELTA_PER_ENEMY := 100
 const SLIDE_ABDUCTEE_TOWARD_BEAM_CENTER_SPEED := 50
 const SLIDE_ABDUCTEE_UP_BEAM_SPEED := 30
 
-
-var max_speed = DEFAULT_MAX_SPEED
 # Dictionary<Pedestrian, boolean>
 var pedestrians_in_beam = {}
 var is_beaming = false
@@ -27,11 +23,11 @@ var is_beaming = false
 
 func _ready() -> void:
     G.player = self
+    update_beam_scale()
     reset()
 
 
 func reset() -> void:
-    max_speed = DEFAULT_MAX_SPEED
     pedestrians_in_beam.clear()
     is_beaming = false
 
@@ -47,12 +43,12 @@ func _process(_delta: float) -> void:
     # Map speed to pitch (1.0 = normal)
     var min_pitch = 0.4
     var max_pitch = 1.1
-    ufo_audio_player.pitch_scale = lerp(min_pitch, max_pitch, clamp(speed / max_speed, 0.0, 1.0))
+    ufo_audio_player.pitch_scale = lerp(min_pitch, max_pitch, clamp(speed / _get_max_speed(), 0.0, 1.0))
 
     # Map speed to volume in decibels
     var min_db = -32.0
     var max_db = -20.0
-    ufo_audio_player.volume_db = lerp(min_db, max_db, clamp(speed / max_speed, 0.0, 1.0))
+    ufo_audio_player.volume_db = lerp(min_db, max_db, clamp(speed / _get_max_speed(), 0.0, 1.0))
 
 
 func _physics_process(delta):
@@ -97,7 +93,10 @@ func handle_beam() -> void:
             pass
     if Input.is_action_just_released("Beam"):
         _on_stopped_beam()
-
+        
+func update_beam_scale() -> void:
+    %TractorBeamArea.scale.x = G.session.beam_scale
+    %TractorBeamArea.scale.y = G.session.beam_scale
 
 func _on_started_beam() -> void:
     print("_on_started_beam")
@@ -108,8 +107,6 @@ func _on_started_beam() -> void:
     if not beam_audio_player.playing:
         beam_audio_player.play()
     beamCollisionArea.disabled = false
-    max_speed = MAX_SPEED_WITH_BEAM_ACTIVE
-
 
 func _on_stopped_beam() -> void:
     print("_on_stopped_beam")
@@ -119,7 +116,6 @@ func _on_stopped_beam() -> void:
     beam.visible = false
     beam_audio_player.stop()
     beamCollisionArea.disabled = true
-    max_speed = DEFAULT_MAX_SPEED
     for ped in pedestrians_in_beam:
         ped.reparent(G.game_panel.get_enemy_container())
         ped.on_beam_end()
@@ -127,6 +123,7 @@ func _on_stopped_beam() -> void:
 
 
 func handle_movement(delta):
+    var max_speed = _get_max_speed()
     if Input.is_action_pressed("MoveLeft"):
         velocity.x = clamp(velocity.x + ACCELERATION * delta * -1, max_speed * -1, max_speed)
         rotation = clamp(velocity.x / max_speed * MAX_ROTATION, MAX_ROTATION * -1, max_speed)
@@ -154,10 +151,14 @@ func handle_movement(delta):
         velocity.y += _get_gravity() * delta
     move_and_slide()
 
+func _get_max_speed() -> int:
+    if is_beaming:
+        return G.session.max_speed_beaming
+    else:
+        return G.session.max_speed
 
 func _get_gravity() -> float:
     return G.session.current_enemies_collected_count * GRAVITY_DELTA_PER_ENEMY
-
 
 func is_movement_action_pressed() -> bool:
     return (

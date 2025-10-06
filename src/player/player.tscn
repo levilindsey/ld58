@@ -617,26 +617,30 @@ zoom = Vector2(1.5, 1.5)
 visible = false
 
 [node name="TractorBeamArea" type="Area2D" parent="TractorBeam"]
+unique_name_in_owner = true
+position = Vector2(0, 15)
 collision_layer = 64
 collision_mask = 4
 monitorable = false
 
 [node name="TractorBeamCollisionPolygon" type="CollisionPolygon2D" parent="TractorBeam/TractorBeamArea"]
 unique_name_in_owner = true
-polygon = PackedVector2Array(-8, 14, -33, 271, -13, 279, 14, 279, 33, 271, 8, 14)
+position = Vector2(0, -12)
+polygon = PackedVector2Array(-8, 14, -33, 271, -13, 279, 14, 279, 33, 271, 10.749725, 42.267128, 8, 14)
 disabled = true
+
+[node name="TractorBeamAnimation" type="AnimatedSprite2D" parent="TractorBeam/TractorBeamArea"]
+unique_name_in_owner = true
+position = Vector2(0, 140.00003)
+sprite_frames = SubResource("SpriteFrames_6b11c")
+animation = &"new_animation"
+autoplay = "new_animation"
+frame_progress = 0.39660043
 
 [node name="TractorBeamAudiostream" type="AudioStreamPlayer" parent="TractorBeam"]
 stream = ExtResource("3_mf2ua")
 volume_db = -20.459
 bus = &"SFX"
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TractorBeam"]
-position = Vector2(0, 151)
-sprite_frames = SubResource("SpriteFrames_6b11c")
-animation = &"new_animation"
-autoplay = "new_animation"
-frame_progress = 0.39660043
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_gmfve")
