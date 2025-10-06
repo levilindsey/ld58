@@ -82,7 +82,12 @@ func on_beam_start() -> void:
         running_audio_player.stop()
 
     if not abducting_audio_player.playing:
-        abducting_audio_player.play()
+        if type == Type.COW:
+            cow_audio_player.play()
+        elif type == Type.CAT:
+            cat_audio_player.play()
+        else:
+            abducting_audio_player.play()
 
     # Trigger detection on any other enemy that can currently see this pedestrian.
     for enemy in G.enemies:
@@ -113,8 +118,12 @@ func on_beam_end() -> void:
     # AUDIO: Falling
     if abducting_audio_player.playing:
         abducting_audio_player.stop()
+    if cow_audio_player.playing:
+        cow_audio_player.stop()
+    if cat_audio_player.playing:
+        cat_audio_player.stop()
 
-    if not falling_audio_player.playing:
+    if not falling_audio_player.playing and type != Type.COW and type != Type.CAT and type != Type.CHICKEN:
         falling_audio_player.play()
 
 
@@ -158,6 +167,10 @@ func on_collected() -> void:
     # AUDIO: Capture
     if abducting_audio_player.playing:
         abducting_audio_player.stop()
+    if cow_audio_player.playing:
+        cow_audio_player.stop()
+    if cat_audio_player.playing:
+        cat_audio_player.stop()
     destroy()
     G.game_panel.enemy_spawner.spawn_enemy(type)
 
@@ -171,13 +184,21 @@ func _on_alerted() -> void:
     was_on_floor = false
 
     # AUDIO: SCREAM
-    if not detect_audio_player.playing:
+    if type == Type.COW:
+        cow_audio_player.play()
+    elif type == Type.CAT:
+        cat_audio_player.play()
+    elif not detect_audio_player.playing:
         detect_audio_player.play()
 
     await get_tree().create_timer(0.5).timeout
 
     if state == State.FLEEING:
-        if not running_audio_player.playing:
+        if type == Type.COW:
+            cow_audio_player.play()
+        elif type == Type.CAT:
+            cat_audio_player.play()
+        elif not running_audio_player.playing:
             running_audio_player.play()
     elif state == State.CHASING:
         # TODO(ALDEN): Sound me up, baby
