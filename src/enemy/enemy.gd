@@ -330,6 +330,9 @@ func _on_killed() -> void:
 
     G.game_panel.enemy_spawner.spawn_enemy(type)
 
+    if get_is_security():
+         _set_is_searching(false)
+
 
 func _on_alerted() -> void:
     state = get_alerted_state()
@@ -343,6 +346,9 @@ func _on_alerted() -> void:
 
 
 func _set_is_searching(value: bool) -> void:
+    if is_dead():
+        return
+
     var was_searching := is_searching
     is_searching = value
     if not was_searching and is_searching:
