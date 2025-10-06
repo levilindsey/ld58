@@ -48,28 +48,28 @@ extends Resource
 const SHIP_UPGRADE_VALUES := {
     # [max_speed, max_speed_while_beaming, gravity_per_enemy]
     UpgradeLevels.UpgradeTypes.SPEED: {
-        0: [450, 150, 0],
+        0: [150, 50, 100],
         1: [200, 70, 80],
         2: [300, 100, 50],
         3: [450, 150, 0]
     },
     # Beam values are the scale factor of the beam.
     UpgradeLevels.UpgradeTypes.BEAM: {
-        0: 1.0,
+        0: 0.3,
         1: 0.5,
         2: 0.7,
         3: 1.0
     },
     # Capacity values are the raw capcity values.
     UpgradeLevels.UpgradeTypes.CAPACITY: {
-        0: 10,
+        0: 3,
         1: 4,
         2: 6,
         3: 10
     },
     # number of enemies to fill the detection bar
     UpgradeLevels.UpgradeTypes.STEALTH: {
-        0: 100,
+        0: 4,
         1: 6,
         2: 10,
         3: 15
