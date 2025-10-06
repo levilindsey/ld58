@@ -11,6 +11,7 @@ extends HBoxContainer
 @export var police_officer_icon: Texture2D
 @export var cow_icon: Texture2D
 @export var chicken_icon: Texture2D
+@export var golden_chicken_icon: Texture2D
 
 @export var normal_color := Color(1, 1, 1, 1)
 @export var unfulfilled_color := Color("fffda3ff")
@@ -73,6 +74,8 @@ func get_icon_texture(type: Enemy.Type) -> Texture2D:
             return cow_icon
         Enemy.Type.CHICKEN:
             return chicken_icon
+        Enemy.Type.GOLDEN_CHICKEN:
+            return golden_chicken_icon
         _:
             G.utils.ensure(false)
             return null
@@ -98,6 +101,8 @@ func get_label(type: Enemy.Type) -> String:
             return "Cow"
         Enemy.Type.CHICKEN:
             return "Chicken"
+        Enemy.Type.GOLDEN_CHICKEN:
+            return "Golden hen"
         _:
             G.utils.ensure(false)
             return ""

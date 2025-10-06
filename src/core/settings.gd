@@ -9,7 +9,7 @@ extends Resource
 @export var count_multiplier_for_alert_security_enemy := 1
 
 @export var extra_security_enemies_count_min := 0
-@export var extra_security_enemies_count_max := 20
+@export var extra_security_enemies_count_max := 10
 
 @export var bullet_damage := 1
 @export var bullet_speed := 210.0
@@ -39,6 +39,7 @@ extends Resource
 @export var police_officer_scene: PackedScene
 @export var cow_scene: PackedScene
 @export var chicken_scene: PackedScene
+@export var golden_chicken_scene: PackedScene
 
 @export var bullet_scene: PackedScene
 @export var missile_scene: PackedScene
@@ -210,6 +211,18 @@ const ENEMY_CONFIGS := {
         regions = [Region.Type.RURAL],
         population_weight = 30,
     },
+    Enemy.Type.GOLDEN_CHICKEN: {
+        walking_speed = [60, 120],
+        running_speed = [220, 300],
+        jump_boost = [80, 100],
+        approach_distance = [40, 100],
+        stop_alert_delay = [10, 12],
+        shoot_period = [0.5, 0.8],
+        initial_shoot_delay = [0.2, 0.5],
+        is_security = false,
+        regions = [Region.Type.RURAL, Region.Type.SUBURBS, Region.Type.CITY],
+        population_weight = 10,
+    },
 }
 
 
@@ -233,6 +246,8 @@ func instantiate_enemy(enemyType: Enemy.Type):
             return cow_scene.instantiate()
         Enemy.Type.CHICKEN:
             return chicken_scene.instantiate()
+        Enemy.Type.GOLDEN_CHICKEN:
+            return golden_chicken_scene.instantiate()
         _:
             G.utils.ensure(false)
             return

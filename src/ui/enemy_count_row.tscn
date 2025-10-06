@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://df16bptff2ndq"]
+[gd_scene load_steps=12 format=3 uid="uid://df16bptff2ndq"]
 
 [ext_resource type="Script" uid="uid://dswqir8cnqd1k" path="res://src/ui/enemy_count_row.gd" id="1_u12d0"]
 [ext_resource type="Texture2D" uid="uid://cvqdaew7ui3np" path="res://assets/images/business-man.png" id="2_xv6mq"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bt3yqi0uj5k44" path="res://assets/images/police-officer.png" id="8_2idbw"]
 [ext_resource type="Texture2D" uid="uid://2ejjy5r8vfsd" path="res://assets/images/cow.png" id="9_ble8c"]
 [ext_resource type="Texture2D" uid="uid://brqwhqbkgo7yx" path="res://assets/images/chicken.png" id="10_ssewe"]
+[ext_resource type="Texture2D" uid="uid://cfeqjtv8lf000" path="res://assets/images/golden_chicken.png" id="11_ssewe"]
 
 [node name="EnemyCountRow" type="HBoxContainer"]
 offset_right = 8.0
@@ -26,6 +27,7 @@ kid_icon = ExtResource("7_bxwgy")
 police_officer_icon = ExtResource("8_2idbw")
 cow_icon = ExtResource("9_ble8c")
 chicken_icon = ExtResource("10_ssewe")
+golden_chicken_icon = ExtResource("11_ssewe")
 fulfilled_color = Color(0.5529412, 0.7882353, 0.31764707, 1)
 
 [node name="Control" type="Control" parent="."]

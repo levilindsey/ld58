@@ -128,7 +128,7 @@ func on_beam_end() -> void:
     if chicken_audio_player.playing:
         chicken_audio_player.stop()
 
-    if not falling_audio_player.playing and type != Type.COW and type != Type.CAT and type != Type.CHICKEN:
+    if not falling_audio_player.playing and type != Type.COW and type != Type.CAT and type != Type.CHICKEN and type != Type.GOLDEN_CHICKEN:
         falling_audio_player.play()
 
 

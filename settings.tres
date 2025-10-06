@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Settings" load_steps=15 format=3 uid="uid://dv60bmaw1pdx6"]
+[gd_resource type="Resource" script_class="Settings" load_steps=16 format=3 uid="uid://dv60bmaw1pdx6"]
 
 [ext_resource type="PackedScene" uid="uid://di1dddin37gml" path="res://src/enemy/bullet.tscn" id="1_bav20"]
 [ext_resource type="PackedScene" uid="uid://c37vtw0k41rob" path="res://src/enemy/business_man.tscn" id="1_i3tmf"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://dtilrn7qxle35" path="res://src/enemy/kid.tscn" id="6_wuxul"]
 [ext_resource type="PackedScene" uid="uid://dbqcor0mf1viv" path="res://src/enemy/police_officer.tscn" id="7_n131f"]
 [ext_resource type="PackedScene" uid="uid://djfr2r8sg5xy0" path="res://src/enemy/jet.tscn" id="8_e1gfc"]
+[ext_resource type="PackedScene" uid="uid://be534ne1k0fpy" path="res://src/enemy/golden_chicken.tscn" id="9_b2txj"]
 [ext_resource type="PackedScene" uid="uid://wofrfllh71c3" path="res://src/enemy/missile.tscn" id="10_32itx"]
 
 [resource]
@@ -27,6 +28,7 @@ business_person_scene = ExtResource("1_i3tmf")
 police_officer_scene = ExtResource("7_n131f")
 cow_scene = ExtResource("5_b2txj")
 chicken_scene = ExtResource("4_n131f")
+golden_chicken_scene = ExtResource("9_b2txj")
 bullet_scene = ExtResource("1_bav20")
 missile_scene = ExtResource("10_32itx")
 jet_scene = ExtResource("8_e1gfc")

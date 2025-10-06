@@ -12,6 +12,7 @@ enum Type {
     POLICE_OFFICER,
     COW,
     CHICKEN,
+    GOLDEN_CHICKEN,
     # TODO: Add stuff here!
     #POLICE_CAR,
     #TANK,
