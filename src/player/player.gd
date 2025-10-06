@@ -18,6 +18,7 @@ var is_beaming = false
 @onready var capture_audio_player: AudioStreamPlayer = $CaptureStreamPlayer
 @onready var reject_audio_player: AudioStreamPlayer = $RejectStreamPlayer
 @onready var warning_audio_player: AudioStreamPlayer = $WarningStreamPlayer
+@onready var explosion_audio_player: AudioStreamPlayer = $ExplosionStreamPlayer
 
 
 func _ready() -> void:
@@ -228,5 +229,6 @@ func is_dead() -> bool:
 func _on_killed() -> void:
     print("Ship destroyed")
     self.modulate.a = 0
-    # TODO(ALDEN): Sounds (KABLOOEY)
+    #AUDIO: Explosion    
+    explosion_audio_player.play()
     G.game_panel.on_player_killed()
