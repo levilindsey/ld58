@@ -19,7 +19,7 @@ extends Resource
 @export var missile_speed := 400.0
 @export var missile_scale := 1.5
 
-@export var max_health := 7
+@export var max_health := 5
 
 @export var start_in_game := false
 @export var full_screen := false

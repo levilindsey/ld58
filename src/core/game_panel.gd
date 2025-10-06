@@ -2,7 +2,7 @@ class_name GamePanel
 extends Node2D
 
 
-const ZOO_KEEPER_SPACE_HEIGHT_THRESHOLD := -900
+const ZOO_KEEPER_SPACE_HEIGHT_THRESHOLD := -700
 
 var player_start_position := Vector2.ZERO
 var chunk_edge_distance_threshold_for_chunk_repositioning: int
@@ -158,6 +158,8 @@ func _physics_process(_delta: float) -> void:
 
 func show_zoo_keeper_screen() -> void:
     G.session.deposit_enemies()
+    G.session.set_health(G.session.max_health)
+    G.session.set_detection_score(0)
     quest_manager.on_return_to_zoo()
     # zoo_keeper_screen.on_return_to_zoo must come after deposit enemies
     # and quest_manager.on_return_to_zoo for proper behavior.
@@ -304,8 +306,16 @@ func get_random_region(types: Array[Region.Type]) -> Region:
 func on_player_killed() -> void:
     %ExplosionVFX.global_position = G.player.global_position
     %ExplosionVFX.emitting = true
-    G.session.is_game_ended = true
 
-    await get_tree().create_timer(2.0).timeout
+    var start_over_on_death := false
 
-    G.main.open_screen(Main.ScreenType.GAME_OVER)
+    if start_over_on_death:
+        G.session.is_game_ended = true
+        await get_tree().create_timer(2.0).timeout
+        G.main.open_screen(Main.ScreenType.GAME_OVER)
+    else:
+        for type in Enemy.Type.values():
+            G.session.current_enemies_collected_by_type[type] = 0
+        G.session.current_enemies_collected_count = 0
+        await get_tree().create_timer(2.0).timeout
+        show_zoo_keeper_screen()
