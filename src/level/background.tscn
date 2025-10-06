@@ -64,8 +64,8 @@ scale = Vector2(2, 2)
 texture = ExtResource("4_bbilr")
 
 [node name="Forest" type="Parallax2D" parent="."]
-scroll_scale = Vector2(0.1, 0.6)
-scroll_offset = Vector2(0, 160)
+scroll_scale = Vector2(0.4, 0.6)
+scroll_offset = Vector2(0, 60)
 repeat_size = Vector2(2048, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="Forest"]
