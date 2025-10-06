@@ -40,6 +40,10 @@ func on_beam_start() -> void:
     if is_dead():
         return
 
+    # Beaming enemies don't count toward the detection score.
+    if is_alerted():
+        G.session.remove_alerted_enemy(type)
+
     state = State.BEING_BEAMED
 
     # AUDIO: Abduction
@@ -69,6 +73,12 @@ func on_beam_end() -> void:
 
     state = get_alerted_state()
 
+    was_dropped_from_lethal_height = abs(global_position.y) > LETHAL_DROP_HEIGHT
+
+    # If they are going to survive the fall, they count toward the detection score.
+    if not was_dropped_from_lethal_height:
+        G.session.add_alerted_enemy(type)
+
     # AUDIO: Falling
     if abducting_audio_player.playing:
         abducting_audio_player.stop()
@@ -77,8 +87,9 @@ func on_beam_end() -> void:
         falling_audio_player.play()
 
 
-func _on_landed(landed_hard: bool) -> void:
-    super._on_landed(landed_hard)
+func _on_landed() -> void:
+    var dropped_from_lethal_height := was_dropped_from_lethal_height
+    super._on_landed()
 
     if is_dead():
         return
@@ -91,7 +102,7 @@ func _on_landed(landed_hard: bool) -> void:
     if not is_facing_right:
         scale.x = -1
 
-    if landed_hard and state != State.STARTING:
+    if dropped_from_lethal_height:
         _on_killed()
         return
 
