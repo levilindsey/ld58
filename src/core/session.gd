@@ -102,9 +102,6 @@ func reset() -> void:
 
 
 func start_new_quest(next_quest: Quest) -> void:
-    if is_instance_valid(active_quest):
-        fulfilled_quests.push_back(active_quest)
-    total_quest_count += 1
     active_quest = next_quest
     health = DEFAULT_MAX_HEALTH
     detection_score = 0

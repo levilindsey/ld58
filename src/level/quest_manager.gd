@@ -7,7 +7,7 @@ var quest_schedule: Array[Quest] = [
         Enemy.Type.FARMER: 3,
     }, 5),
      Quest.new({
-        Enemy.Type.OLD_PERSON: 2,
+        Enemy.Type.CAT: 2,
         Enemy.Type.KID: 2
     }, 5),
 ]
@@ -31,12 +31,13 @@ func on_return_to_zoo() -> void:
 
     # Start the next quest.
     if is_quest_fulfilled:
+        G.session.fulfilled_quests.push_back(G.session.active_quest)
         G.session.money += G.session.active_quest.money_reward
         schedule_index += 1
         var next_quest: Quest
         if schedule_index < quest_schedule.size():
             next_quest = quest_schedule[schedule_index]
             G.session.start_new_quest(next_quest)
+            G.session.total_quest_count += 1
         else:
-            pass
-            # game over you win?
+            G.main.open_screen(G.main.ScreenType.WIN)
