@@ -55,10 +55,6 @@ func _physics_process(delta):
     if is_beaming:
         _slide_abductees_toward_beam_center(delta)
         _slide_abductees_up_beam(delta)
-    $CapacityLabel.text = (
-        str(G.session.current_enemies_collected_count) +
-        "/" + str(G.session.collection_capacity)
-    )
 
 
 func _slide_abductees_toward_beam_center(delta: float) -> void:

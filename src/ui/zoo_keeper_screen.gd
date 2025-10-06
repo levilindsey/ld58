@@ -25,7 +25,11 @@ func _update_zookeeper_text(text: String) -> void:
     tween.kill() # Clean up the tween
     zoo_speech_audio_player.stop()
 
-func focus_first_enabled_button() -> void:
+func on_return_to_zoo() -> void:
+    _focus_first_enabled_button()
+    _update_upgrades_ui()
+
+func _focus_first_enabled_button() -> void:
     if not %UpgradeBeam.disabled:
         %UpgradeBeam.grab_focus.call_deferred()
     elif not %UpgradeCapacity.disabled:
@@ -41,7 +45,7 @@ func focus_first_enabled_button() -> void:
 
 
 func zookeeper_welcome() ->    void:
-    focus_first_enabled_button()
+    _focus_first_enabled_button()
     _update_zookeeper_text(ZOOKEEPER_GREETING)
     
 func _update_wallet_text() -> void:
@@ -80,23 +84,23 @@ func _update_upgrade_button_ui(button: Button, upgrade_levels: UpgradeLevels, te
 func _on_earth_button_pressed() -> void:
     G.main.click_sound()
     G.game_panel.return_from_zoo_keeper_screen()
-
+        
 func _on_upgrade_speed_pressed() -> void:
-    G.main.click_sound()
-    %SpeedLevels.set_level(%SpeedLevels.get_level() + 1)
-    _update_upgrades_ui()
+     _on_upgrade_button_pressed(%SpeedLevels, %UpgradeSpeed)
 
 func _on_upgrade_stealth_pressed() -> void:
-    G.main.click_sound()
-    %StealthLevels.set_level(%StealthLevels.get_level() + 1)
-    _update_upgrades_ui()
+     _on_upgrade_button_pressed(%StealthLevels, %UpgradeStealth)
 
 func _on_upgrade_capacity_pressed() -> void:
-    G.main.click_sound()
-    %CapacityLevels.set_level(%CapacityLevels.get_level() + 1)
-    _update_upgrades_ui()
+     _on_upgrade_button_pressed(%CapacityLevels, %UpgradeCapacity)
 
 func _on_upgrade_beam_pressed() -> void:
+    _on_upgrade_button_pressed(%BeamLevels, %UpgradeBeam)  
+
+func _on_upgrade_button_pressed(upgradeLevels: UpgradeLevels, button: Button) -> void:
     G.main.click_sound()
-    %BeamLevels.set_level(%BeamLevels.get_level() + 1)
+    G.session.money -= upgradeLevels.get_upgrade_cost()
+    upgradeLevels.set_level(upgradeLevels.get_level() + 1)
     _update_upgrades_ui()
+    if button.disabled:
+        _focus_first_enabled_button()

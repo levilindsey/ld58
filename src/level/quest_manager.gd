@@ -5,13 +5,11 @@ extends Node
 var quest_schedule: Array[Quest] = [
     Quest.new({
         Enemy.Type.FARMER: 3,
-    }),
-]
-
-var end_game_quests: Array[Quest] = [
-    Quest.new({
-        Enemy.Type.FARMER: 10,
-    }),
+    }, 5),
+     Quest.new({
+        Enemy.Type.OLD_PERSON: 2,
+        Enemy.Type.KID: 2
+    }, 5),
 ]
 
 var schedule_index := 0
@@ -33,12 +31,12 @@ func on_return_to_zoo() -> void:
 
     # Start the next quest.
     if is_quest_fulfilled:
+        G.session.money += G.session.active_quest.money_reward
         schedule_index += 1
         var next_quest: Quest
         if schedule_index < quest_schedule.size():
             next_quest = quest_schedule[schedule_index]
+            G.session.start_new_quest(next_quest)
         else:
-            var index := randi_range(0, end_game_quests.size() - 1)
-            next_quest = end_game_quests[index]
-
-        G.session.start_new_quest(next_quest)
+            pass
+            # game over you win?

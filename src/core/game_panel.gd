@@ -137,11 +137,13 @@ func _physics_process(_delta: float) -> void:
 
 
 func show_zoo_keeper_screen() -> void:
-    quest_manager.on_return_to_zoo()
     get_tree().paused = true
     G.zoo_keeper.visible = true
-    G.zoo_keeper.focus_first_enabled_button()
     G.session.deposit_enemies()
+    quest_manager.on_return_to_zoo()
+    # zoo_keeper.on_return_to_zoo must come after deposit enemies
+    # and quest_manager.on_return_to_zoo for proper behavior.
+    G.zoo_keeper.on_return_to_zoo()
     # AUDIO: Music Switch
     G.main.fade_to_zoo_theme()
 
