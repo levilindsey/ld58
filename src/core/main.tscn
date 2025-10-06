@@ -11,7 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://dvhroq3jf64ma" path="res://assets/audio/Zookeeper_02.wav" id="7_7561f"]
 [ext_resource type="AudioStream" uid="uid://b3achb3rytv11" path="res://assets/audio/Click/Click-cm-06.wav" id="8_7o0du"]
 [ext_resource type="AudioStream" uid="uid://qk2yfhofcotd" path="res://assets/audio/Click/Click-cm-07.wav" id="9_7561f"]
-[ext_resource type="AudioStream" uid="uid://bsrrqlihg8pnd" path="res://assets/audio/LD58_UFOOO_01.wav" id="11_7o0du"]
+[ext_resource type="AudioStream" uid="uid://cehcojmxljntb" path="res://assets/audio/LD58_UFOOO_03.wav" id="12_7561f"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_0g4b3"]
 streams_count = 4
@@ -53,11 +53,11 @@ bus = &"Music"
 [node name="ClickStreamPlayer" type="AudioStreamPlayer" parent="."]
 process_mode = 3
 stream = SubResource("AudioStreamRandomizer_0g4b3")
-volume_db = -12.142
+volume_db = -9.723
 bus = &"SFX"
 
 [node name="ThemeStreamPlayer" type="AudioStreamPlayer" parent="."]
 process_mode = 3
-stream = ExtResource("11_7o0du")
+stream = ExtResource("12_7561f")
 volume_db = -8.0
 bus = &"Music"
