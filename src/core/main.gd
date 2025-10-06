@@ -5,7 +5,7 @@ extends Node2D
 @export var settings: Settings
 @onready var click_audio_player: AudioStreamPlayer = $ClickStreamPlayer
 @onready var theme_audio_player: AudioStreamPlayer = $ThemeStreamPlayer
-@onready var zoo_audio_player: AudioStreamPlayer = $ZooKeeper/ZooThemeStreamPlayer
+@onready var zoo_audio_player: AudioStreamPlayer = $ZooThemeStreamPlayer
 
 
 var is_paused := true:
@@ -36,10 +36,36 @@ func _ready() -> void:
 
 
 func start_game() -> void:
-    if G.settings.start_in_zookeeper_screen:
-        G.zoo_keeper.zookeeper_welcome()
-    else:
-        G.game_panel.return_from_zoo_keeper_screen()
+    var screen_name := "game_screen" if G.settings.start_in_game else "main_menu_screen"
+    open_screen(screen_name)
+
+
+func open_screen(screen_name: String) -> void:
+    get_tree().paused = true
+
+    G.main_menu_screen.visible = false
+    G.game_over_screen.visible = false
+    G.win_screen.visible = false
+    G.zoo_keeper_screen.visible = false
+
+    match screen_name:
+        "main_menu_screen":
+            G.game_panel.reset()
+            G.main_menu_screen.visible = true
+        "game_over_screen":
+            G.game_panel.reset()
+            G.game_over_screen.visible = true
+            G.game_over_screen.update()
+        "win_screen":
+            G.game_panel.reset()
+            G.win_screen.visible = true
+        "zoo_keeper_screen":
+            G.zoo_keeper_screen.visible = true
+            G.zoo_keeper_screen.on_return_to_zoo()
+            # AUDIO: Music Switch
+            G.main.fade_to_zoo_theme()
+        "game_screen":
+            G.game_panel.return_from_screen()
 
 
 func _notification(notification_type: int) -> void:

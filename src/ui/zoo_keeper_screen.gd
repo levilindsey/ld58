@@ -8,11 +8,11 @@ const UPGRADE_CAPACITY_TEXT = "Add ship capacity"
 const UPGRADE_STEALTH_TEXT = "Upgrade stealth"
 const UPGRADE_SPEED_TEXT = "Improve speed"
 
-@onready var zoo_speech_audio_player: AudioStreamPlayer = $"../ZooSpeechStreamPlayer"
+@onready var zoo_speech_audio_player: AudioStreamPlayer = $ZooSpeechStreamPlayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-    G.zoo_keeper = self
+    G.zoo_keeper_screen = self
     _update_upgrades_ui()
 
 func _update_zookeeper_text(text: String) -> void:
@@ -47,13 +47,13 @@ func _focus_first_enabled_button() -> void:
 func zookeeper_welcome() ->    void:
     _focus_first_enabled_button()
     _update_zookeeper_text(ZOOKEEPER_GREETING)
-    
+
 func _update_wallet_text() -> void:
     if G.session.money == 1:
         %Wallet.text = "You have " + str(G.session.money) + " alien bucks."
     else:
         %Wallet.text = "You have " + str(G.session.money) + " alien buck."
-    
+
 func _update_upgrades_ui() -> void:
     for widget in [%BeamLevels, %CapacityLevels, %StealthLevels, %SpeedLevels]:
         widget.update_levels_ui()
@@ -73,18 +73,18 @@ func _update_upgrade_button_ui(button: Button, upgrade_levels: UpgradeLevels, te
         button.text = text + "  (max)"
     else:
         button.text = text + "  ($" + str(upgrade_cost) + ")"
-    
+
     if upgrade_level == 3 or upgrade_cost > G.session.money:
         button.disabled = true
         button.focus_mode = Control.FOCUS_NONE
     else:
         button.disabled = false
         button.focus_mode = Control.FOCUS_ALL
- 
+
 func _on_earth_button_pressed() -> void:
     G.main.click_sound()
-    G.game_panel.return_from_zoo_keeper_screen()
-        
+    G.main.open_screen("game_screen")
+
 func _on_upgrade_speed_pressed() -> void:
      _on_upgrade_button_pressed(%SpeedLevels, %UpgradeSpeed)
 
@@ -95,7 +95,7 @@ func _on_upgrade_capacity_pressed() -> void:
      _on_upgrade_button_pressed(%CapacityLevels, %UpgradeCapacity)
 
 func _on_upgrade_beam_pressed() -> void:
-    _on_upgrade_button_pressed(%BeamLevels, %UpgradeBeam)  
+    _on_upgrade_button_pressed(%BeamLevels, %UpgradeBeam)
 
 func _on_upgrade_button_pressed(upgradeLevels: UpgradeLevels, button: Button) -> void:
     G.main.click_sound()

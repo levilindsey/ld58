@@ -87,8 +87,8 @@ func start_level() -> void:
     has_fully_initialized = true
 
 
-# TODO: Call this at some point!
 func reset() -> void:
+    # FIXME: Reset enemies?
     G.session.reset()
     G.player.reset()
     start_level()
@@ -137,19 +137,19 @@ func _physics_process(_delta: float) -> void:
 
 
 func show_zoo_keeper_screen() -> void:
-    get_tree().paused = true
-    G.zoo_keeper.visible = true
     G.session.deposit_enemies()
     quest_manager.on_return_to_zoo()
-    # zoo_keeper.on_return_to_zoo must come after deposit enemies
+    # zoo_keeper_screen.on_return_to_zoo must come after deposit enemies
     # and quest_manager.on_return_to_zoo for proper behavior.
-    G.zoo_keeper.on_return_to_zoo()
-    # AUDIO: Music Switch
-    G.main.fade_to_zoo_theme()
+    G.main.open_screen("zoo_keeper_screen")
 
 
-func return_from_zoo_keeper_screen() -> void:
-    G.zoo_keeper.visible = false
+func return_from_screen() -> void:
+    G.zoo_keeper_screen.visible = false
+    G.main_menu_screen.visible = false
+    G.game_over_screen.visible = false
+    G.win_screen.visible = false
+
     get_tree().paused = false
     G.player.global_position = player_start_position
     G.session.start_new_excursion()

@@ -6,7 +6,10 @@ extends Node
 var main: Main
 var settings: Settings
 var hud: Hud
-var zoo_keeper: PanelContainer
+var main_menu_screen: PanelContainer
+var game_over_screen: PanelContainer
+var win_screen: PanelContainer
+var zoo_keeper_screen: PanelContainer
 var game_panel: GamePanel
 var utils := Utils.new()
 var geometry := Geometry.new()

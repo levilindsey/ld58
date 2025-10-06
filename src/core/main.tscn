@@ -1,16 +1,18 @@
-[gd_scene load_steps=14 format=3 uid="uid://bpnl5pn3ydite"]
+[gd_scene load_steps=16 format=3 uid="uid://bpnl5pn3ydite"]
 
 [ext_resource type="Script" uid="uid://cb3gdybtwy0ry" path="res://src/core/main.gd" id="1_avv2o"]
 [ext_resource type="Resource" uid="uid://dv60bmaw1pdx6" path="res://settings.tres" id="2_ivtyw"]
 [ext_resource type="PackedScene" uid="uid://bt1la6s52krxe" path="res://src/ui/hud.tscn" id="2_ukt3u"]
 [ext_resource type="PackedScene" uid="uid://luccssf71n0" path="res://src/core/game_panel.tscn" id="3_x62ka"]
 [ext_resource type="PackedScene" uid="uid://dg8tvc66eq6c5" path="res://src/ui/ZooKeeperScreen.tscn" id="5_w61mg"]
-[ext_resource type="AudioStream" uid="uid://cuvynce1ly56c" path="res://assets/audio/Alien Voice 2.mp3" id="6_2in8s"]
 [ext_resource type="AudioStream" uid="uid://505pi6oqhfst" path="res://assets/audio/Click/Click-cm-02.wav" id="6_nlf45"]
 [ext_resource type="AudioStream" uid="uid://dmh678v0gek8c" path="res://assets/audio/Click/Click-cm-04.wav" id="7_2in8s"]
 [ext_resource type="AudioStream" uid="uid://dvhroq3jf64ma" path="res://assets/audio/Zookeeper_02.wav" id="7_7561f"]
 [ext_resource type="AudioStream" uid="uid://b3achb3rytv11" path="res://assets/audio/Click/Click-cm-06.wav" id="8_7o0du"]
+[ext_resource type="PackedScene" uid="uid://bqvcbt8m2jvy1" path="res://src/ui/main_menu_screen.tscn" id="8_m33k1"]
 [ext_resource type="AudioStream" uid="uid://qk2yfhofcotd" path="res://assets/audio/Click/Click-cm-07.wav" id="9_7561f"]
+[ext_resource type="PackedScene" uid="uid://hrkm0p3okgms" path="res://src/ui/game_over_screen.tscn" id="9_i5nkp"]
+[ext_resource type="PackedScene" uid="uid://ddl2sry3xhy84" path="res://src/ui/win_screen.tscn" id="10_qgou3"]
 [ext_resource type="AudioStream" uid="uid://cehcojmxljntb" path="res://assets/audio/LD58_UFOOO_03.wav" id="12_7561f"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_0g4b3"]
@@ -32,18 +34,44 @@ layer = 100
 [node name="GamePanel" parent="." instance=ExtResource("3_x62ka")]
 position = Vector2(0, -7)
 
-[node name="ZooKeeper" type="CanvasLayer" parent="."]
+[node name="Screens" type="CanvasLayer" parent="."]
 layer = 200
 
-[node name="ZooKeeperScreen" parent="ZooKeeper" instance=ExtResource("5_w61mg")]
+[node name="ZooKeeperScreen" parent="Screens" instance=ExtResource("5_w61mg")]
 unique_name_in_owner = true
+visible = false
 
-[node name="ZooSpeechStreamPlayer" type="AudioStreamPlayer" parent="ZooKeeper"]
-process_mode = 3
-stream = ExtResource("6_2in8s")
-bus = &"Voices"
+[node name="MainMenuScreen" parent="Screens" instance=ExtResource("8_m33k1")]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="ZooThemeStreamPlayer" type="AudioStreamPlayer" parent="ZooKeeper"]
+[node name="GameOverScreen" parent="Screens" instance=ExtResource("9_i5nkp")]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="WinScreen" parent="Screens" instance=ExtResource("10_qgou3")]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ZooThemeStreamPlayer" type="AudioStreamPlayer" parent="."]
 process_mode = 3
 stream = ExtResource("7_7561f")
 volume_db = 2.247

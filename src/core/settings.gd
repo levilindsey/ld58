@@ -15,7 +15,7 @@ extends Resource
 @export var bullet_speed := 210.0
 @export var bullet_scale := 1.0
 
-@export var start_in_zookeeper_screen := true
+@export var start_in_game := false
 @export var full_screen := false
 # TODO: Hook this up.
 @export var mute_music := false

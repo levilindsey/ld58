@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dg8tvc66eq6c5"]
+[gd_scene load_steps=13 format=3 uid="uid://dg8tvc66eq6c5"]
 
 [ext_resource type="Texture2D" uid="uid://dj2ig84eome17" path="res://assets/images/background_color.png" id="1_e6fyj"]
 [ext_resource type="Theme" uid="uid://cl3pkwueh4mag" path="res://src/core/main_theme.tres" id="1_lpqvl"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ccrh0uyxuhy7h" path="res://assets/images/background_stars.png" id="2_npo0w"]
 [ext_resource type="Texture2D" uid="uid://crgbkxjhlafc1" path="res://assets/images/zookeeper_portrait.png" id="5_lpqvl"]
 [ext_resource type="PackedScene" uid="uid://dxk142g0m4br0" path="res://src/ui/upgrade_levels.tscn" id="5_ntcfd"]
+[ext_resource type="AudioStream" uid="uid://cuvynce1ly56c" path="res://assets/audio/Alien Voice 2.mp3" id="7_oxfrs"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lpqvl"]
 texture = ExtResource("1_e6fyj")
@@ -184,6 +185,11 @@ size_flags_vertical = 6
 text = "I am the Zookeeper. Hear me roar. I would like you to collect humans for me."
 horizontal_alignment = 1
 autowrap_mode = 3
+
+[node name="ZooSpeechStreamPlayer" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("7_oxfrs")
+bus = &"Voices"
 
 [connection signal="pressed" from="MarginContainer/HBox/Options/BeamBox/UpgradeBeam" to="." method="_on_upgrade_beam_pressed"]
 [connection signal="pressed" from="MarginContainer/HBox/Options/CapacityBox/UpgradeCapacity" to="." method="_on_upgrade_capacity_pressed"]
