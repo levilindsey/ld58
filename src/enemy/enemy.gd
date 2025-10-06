@@ -18,16 +18,15 @@ enum Type {
 
 enum State {
     STARTING,
-    DEAD,
-    IDLE,
-    RETREATING,
-    APPROACHING,
-    ATTACKING,
-    FALLING,
+    WALKING,
+    FLEEING,
+    CHASING,
     BEING_BEAMED,
+    DEAD,
 }
 
 const LANDED_HARD_SPEED_THRESHOLD := 270
+const FADE_DELAY_AFTER_DEATH := 5
 
 
 @export var type := Type.FARMER
@@ -63,6 +62,9 @@ func setup_sound() -> void:
 
 
 func _physics_process(delta: float) -> void:
+    if not G.game_panel.has_fully_initialized:
+        return
+
     # Hacky catch-all fix to prevent falling-through-the-world edge-cases.
     if global_position.y > 1:
         # Enemies get pushed under the floor when being beamed from an angle.
@@ -70,27 +72,27 @@ func _physics_process(delta: float) -> void:
             push_warning("Enemy is below the floor")
         global_position.y = -0.01
 
-    if state == State.BEING_BEAMED:
-        return
-
-    var time_since_dead = Time.get_ticks_msec() / 1000.0 - death_time
-    if is_dead() and time_since_dead >= 5:
+    var time_since_dead := Time.get_ticks_msec() / 1000.0 - death_time
+    if is_dead() and time_since_dead >= FADE_DELAY_AFTER_DEATH:
         _fade_out_death()
 
     previous_velocity = velocity
 
     velocity.x = _get_horizontal_velocity()
 
-    velocity.y += get_gravity().y * delta
+    if state == State.BEING_BEAMED:
+        velocity.y = 0
+    else:
+        velocity.y += get_gravity().y * delta
 
     move_and_slide()
 
     # teleport the enemy if it is going to walk off the end of the map
     if not G.game_panel.is_shifting_chunks:
-        if position.x < G.game_panel.combined_level_chunk_bounds.position.x + 2:
-            position.x = G.game_panel.combined_level_chunk_bounds.end.x - 2
-        if position.x > G.game_panel.combined_level_chunk_bounds.end.x - 2:
-            position.x = G.game_panel.combined_level_chunk_bounds.position.x + 2
+        if global_position.x < G.game_panel.combined_level_chunk_bounds.position.x + 2:
+            global_position.x = G.game_panel.combined_level_chunk_bounds.end.x - 2
+        if global_position.x > G.game_panel.combined_level_chunk_bounds.end.x - 2:
+            global_position.x = G.game_panel.combined_level_chunk_bounds.position.x + 2
 
     # Detect when we start and stop contacting the floor.
     var next_is_on_floor = is_on_floor()
@@ -119,6 +121,7 @@ func _exit_tree() -> void:
 
 
 func destroy() -> void:
+    print("Critter destroyed")
     # Remove references to this enemy.
     for enemy in G.enemies:
         if not is_instance_valid(enemy):
@@ -131,7 +134,8 @@ func destroy() -> void:
 
 
 func _on_landed(_landed_hard: bool) -> void:
-    pass
+    if state == State.STARTING:
+        state = State.WALKING
 
 
 func _on_lifted_off() -> void:
@@ -145,6 +149,10 @@ func _get_horizontal_velocity() -> float:
 
 func is_dead() -> bool:
     return state == State.DEAD
+
+
+func is_falling() -> bool:
+    return not was_on_floor and state != State.BEING_BEAMED
 
 
 func get_sprite() -> AnimatedSprite2D:
@@ -171,3 +179,27 @@ func get_min_radius() -> float:
 func get_max_radius() -> float:
     var size := Geometry.calculate_half_width_height(get_shape(), false)
     return max(size.x, size.y)
+
+
+func is_alerted() -> bool:
+    return state == State.FLEEING or state == State.CHASING
+
+
+func get_alerted_state() -> State:
+    return State.CHASING if chases_when_alerted() else State.FLEEING
+
+
+func chases_when_alerted():
+    match type:
+        Type.FARMER, \
+        Type.KID, \
+        Type.ELDERLY, \
+        Type.CAT, \
+        Type.HOMELESS_PERSON, \
+        Type.BUSINESS_MAN:
+            return false
+        Type.POLICE_OFFICER:
+            return true
+        _:
+            G.utils.ensure(false)
+            return false

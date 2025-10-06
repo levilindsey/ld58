@@ -7,6 +7,8 @@ const RUNNING_SPEED := 240
 const JUMP_VELOCITY_BOOST := 200
 const STILL_SCARED_AFTER_DETECTION_ENDED_DELAY := 8
 
+const SPLATTER_VFX_SCENE := preload("res://src/enemy/splatter_vfx.tscn")
+
 
 var last_player_sighting_time := -INF
 var is_player_visible := false
@@ -18,6 +20,14 @@ var falling_audio_player: AudioStreamPlayer2D
 var splat_audio_player: AudioStreamPlayer
 var detect_audio_player: AudioStreamPlayer2D
 var running_audio_player: AudioStreamPlayer2D
+
+var splatter_vfx: CPUParticles2D
+
+
+func _ready() -> void:
+    super._ready()
+    splatter_vfx = SPLATTER_VFX_SCENE.instantiate()
+    add_child(splatter_vfx)
 
 
 func setup_sound() -> void:
@@ -44,28 +54,29 @@ func _physics_process(_delta: float) -> void:
 
 func _on_done_running_away() -> void:
     was_player_recently_visible = false
-    if state == State.RETREATING:
-        state = State.IDLE
+    if is_alerted():
+        state = State.WALKING
     if running_audio_player.playing:
         running_audio_player.stop()
 
 
 func _get_horizontal_velocity() -> float:
+    if is_falling():
+        return velocity.x
+
     var direction_multiplier := 1 if is_facing_right else -1
     match state:
         State.STARTING:
             return 0
         State.DEAD:
             return 0
-        State.IDLE:
+        State.WALKING:
             # Preserve whichever direction they were facing.
             return WALKING_SPEED * direction_multiplier
-        State.RETREATING, \
-        State.APPROACHING:
+        State.FLEEING, \
+        State.CHASING:
             # Preserve whichever direction they were facing.
             return RUNNING_SPEED * direction_multiplier
-        State.FALLING:
-            return velocity.x
         State.BEING_BEAMED:
             return 0
         _:
@@ -83,6 +94,7 @@ func set_is_facing_right(p_is_facing_right: bool) -> void:
 func on_beam_start() -> void:
     if is_dead():
         return
+
     state = State.BEING_BEAMED
 
     # AUDIO: Abduction
@@ -110,6 +122,8 @@ func on_beam_end() -> void:
     if is_dead():
         return
 
+    state = get_alerted_state()
+
     # AUDIO: Falling
     if abducting_audio_player.playing:
         abducting_audio_player.stop()
@@ -117,10 +131,10 @@ func on_beam_end() -> void:
     if not falling_audio_player.playing:
         falling_audio_player.play()
 
-    state = State.FALLING
-
 
 func _on_landed(landed_hard: bool) -> void:
+    super._on_landed(landed_hard)
+
     if is_dead():
         return
 
@@ -139,11 +153,6 @@ func _on_landed(landed_hard: bool) -> void:
     if falling_audio_player.playing:
         falling_audio_player.stop()
 
-    if was_player_recently_visible:
-        state = State.RETREATING
-    else:
-        state = State.IDLE
-
 
 func _on_killed() -> void:
     state = State.DEAD
@@ -153,6 +162,8 @@ func _on_killed() -> void:
     sprite.stop()
     sprite_wrapper.rotate(-PI / 2)
     sprite_wrapper.position.y = - get_min_radius()
+
+    splatter_vfx.emitting = true
 
     # AUDIO: Splat
     if falling_audio_player.playing:
@@ -174,6 +185,7 @@ func on_collected() -> void:
 func _on_detection_start() -> void:
     if is_dead():
         return
+
     is_player_visible = true
     _on_ufo_or_beamed_player_detection_start()
 
@@ -181,21 +193,23 @@ func _on_detection_start() -> void:
 func _on_ufo_or_beamed_player_detection_start() -> void:
     if is_dead():
         return
+
     was_player_recently_visible = true
     last_player_sighting_time = Time.get_ticks_msec() / 1000.0
 
-    if state == State.IDLE or state == State.FALLING or state == State.RETREATING:
+    if state != State.DEAD and state != State.BEING_BEAMED:
         # Face away from the player.
         set_is_facing_right(position.x >= G.player.position.x)
 
-    if state == State.IDLE:
-        state = State.FALLING
+    if state == State.WALKING:
+        state = get_alerted_state()
 
         G.session.add_enemy_that_has_detected_you(type)
 
         # Jump in fear.
         velocity.x = 0
         velocity.y = - JUMP_VELOCITY_BOOST
+        was_on_floor = false
 
         # AUDIO: SCREAM
         if not detect_audio_player.playing:
@@ -203,9 +217,12 @@ func _on_ufo_or_beamed_player_detection_start() -> void:
 
         await get_tree().create_timer(.5).timeout
 
-        if state == State.FALLING or state == State.RETREATING:
+        if state == State.FLEEING:
             if not running_audio_player.playing:
                 running_audio_player.play()
+        elif state == State.CHASING:
+            # TODO(ALDEN): Sound me up, baby
+            pass
 
 
 func _on_detection_end() -> void:
@@ -220,6 +237,7 @@ func _on_detection_end() -> void:
 func _on_detection_area_body_entered(body: Node2D) -> void:
     if is_dead():
         return
+
     if body is Player:
         _on_detection_start()
     elif body is Enemy:
@@ -231,6 +249,7 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
 func _on_detection_area_body_exited(body: Node2D) -> void:
     if is_dead():
         return
+
     if body is Player:
         _on_detection_end()
     elif body is Enemy:

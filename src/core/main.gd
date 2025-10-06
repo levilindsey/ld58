@@ -14,10 +14,6 @@ var is_paused := true:
         is_paused = value
 
 
-func _enter_tree() -> void:
-    get_tree().paused = true
-
-
 func _ready() -> void:
     print("main._ready")
 
@@ -25,6 +21,8 @@ func _ready() -> void:
 
     G.main = self
     G.settings = settings
+
+    get_tree().paused = true
 
     await get_tree().process_frame
 

@@ -13,6 +13,7 @@ var chunk_c_bounds: Rect2
 var combined_level_chunk_bounds: Rect2
 
 var is_shifting_chunks := false
+var has_fully_initialized := false
 var enemy_spawner : EnemySpawner
 var quest_manager : QuestManager
 
@@ -32,6 +33,8 @@ func start_level() -> void:
     G.session.start_new_excursion()
 
     is_shifting_chunks = true
+
+    has_fully_initialized = false
 
     %LevelChunkA.global_position.x = 0
 
@@ -61,6 +64,8 @@ func start_level() -> void:
     add_child(quest_manager)
 
     chunk_edge_distance_threshold_for_chunk_repositioning = get_viewport().size.x / get_viewport().get_camera_2d().zoom.x / 2 + 50
+
+    has_fully_initialized = true
 
 
 # TODO: Call this at some point!

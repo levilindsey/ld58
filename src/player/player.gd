@@ -37,6 +37,9 @@ func reset() -> void:
 
 
 func _process(_delta: float) -> void:
+    if not G.game_panel.has_fully_initialized:
+        return
+
     var speed = velocity.length()
     if not ufo_audio_player.playing:
         ufo_audio_player.play()
@@ -177,6 +180,7 @@ func _on_tractor_beam_area_body_entered(body: Node2D) -> void:
 
     if body is Pedestrian and not body.is_dead():
         # Add pedestrian to dictionary to keep them unique. Value is meaningless
+        print("Critter entered beam ")
         pedestrians_in_beam[body] = true
         body.call_deferred("reparent", %EnemiesInBeam)
         body.on_beam_start()
@@ -187,6 +191,7 @@ func _on_abductee_collection_area_body_entered(body: Node2D) -> void:
             pedestrians_in_beam.has(body) and
             not G.session.is_ship_full()):
         # The pedestrian has been collected
+        print("Critter abducted")
         pedestrians_in_beam.erase(body)
         G.session.add_collected_enemy(body.type)
         body.on_collected()
