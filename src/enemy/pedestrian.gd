@@ -2,18 +2,8 @@ class_name Pedestrian
 extends Enemy
 
 
-const WALKING_SPEED := 60
-const RUNNING_SPEED := 240
-const JUMP_VELOCITY_BOOST := 200
-const STILL_SCARED_AFTER_DETECTION_ENDED_DELAY := 8
-
 const SPLATTER_VFX_SCENE := preload("res://src/enemy/splatter_vfx.tscn")
 
-
-var last_player_sighting_time := -INF
-var is_player_visible := false
-var was_player_recently_visible := false
-var is_facing_right := true
 
 var abducting_audio_player: AudioStreamPlayer2D
 var falling_audio_player: AudioStreamPlayer2D
@@ -38,57 +28,10 @@ func setup_sound() -> void:
     running_audio_player = sound_scene.get_node("RunningStreamPlayer2D")
 
 
-func _physics_process(_delta: float) -> void:
-    super._physics_process(_delta)
-
-    if is_dead():
-        return
-
-    var is_past_scared_cut_off := (
-        last_player_sighting_time + STILL_SCARED_AFTER_DETECTION_ENDED_DELAY <
-                Time.get_ticks_msec() / 1000.0
-    )
-    if was_player_recently_visible and is_past_scared_cut_off:
-        _on_done_running_away()
-
-
 func _on_done_running_away() -> void:
-    was_player_recently_visible = false
-    if is_alerted():
-        state = State.WALKING
+    super._on_done_running_away()
     if running_audio_player.playing:
         running_audio_player.stop()
-
-
-func _get_horizontal_velocity() -> float:
-    if is_falling():
-        return velocity.x
-
-    var direction_multiplier := 1 if is_facing_right else -1
-    match state:
-        State.STARTING:
-            return 0
-        State.DEAD:
-            return 0
-        State.WALKING:
-            # Preserve whichever direction they were facing.
-            return WALKING_SPEED * direction_multiplier
-        State.FLEEING, \
-        State.CHASING:
-            # Preserve whichever direction they were facing.
-            return RUNNING_SPEED * direction_multiplier
-        State.BEING_BEAMED:
-            return 0
-        _:
-            G.utils.ensure(false)
-            return 0
-
-
-func set_is_facing_right(p_is_facing_right: bool) -> void:
-    is_facing_right = p_is_facing_right
-    rotation = 0
-    scale = Vector2.ONE
-    scale.x = 1 if is_facing_right else -1
 
 
 func on_beam_start() -> void:
@@ -155,13 +98,7 @@ func _on_landed(landed_hard: bool) -> void:
 
 
 func _on_killed() -> void:
-    state = State.DEAD
-    death_time = Time.get_ticks_msec() / 1000.0
-    var sprite := get_sprite()
-    var sprite_wrapper := get_sprite_wrapper()
-    sprite.stop()
-    sprite_wrapper.rotate(-PI / 2)
-    sprite_wrapper.position.y = - get_min_radius()
+    super._on_killed()
 
     splatter_vfx.emitting = true
 
@@ -172,8 +109,6 @@ func _on_killed() -> void:
     if not splat_audio_player.playing:
         splat_audio_player.play()
 
-    G.session.add_splatted_enemy(type)
-
 
 func on_collected() -> void:
     # AUDIO: Capture
@@ -182,75 +117,23 @@ func on_collected() -> void:
     destroy()
 
 
-func _on_detection_start() -> void:
-    if is_dead():
-        return
+func _on_alerted() -> void:
+    super._on_alerted()
 
-    is_player_visible = true
-    _on_ufo_or_beamed_player_detection_start()
+    # Jump in fear.
+    velocity.x = 0
+    velocity.y = -get_jump_boost()
+    was_on_floor = false
 
+    # AUDIO: SCREAM
+    if not detect_audio_player.playing:
+        detect_audio_player.play()
 
-func _on_ufo_or_beamed_player_detection_start() -> void:
-    if is_dead():
-        return
+    await get_tree().create_timer(.5).timeout
 
-    was_player_recently_visible = true
-    last_player_sighting_time = Time.get_ticks_msec() / 1000.0
-
-    if state != State.DEAD and state != State.BEING_BEAMED:
-        # Face away from the player.
-        set_is_facing_right(position.x >= G.player.position.x)
-
-    if state == State.WALKING:
-        state = get_alerted_state()
-
-        G.session.add_enemy_that_has_detected_you(type)
-
-        # Jump in fear.
-        velocity.x = 0
-        velocity.y = - JUMP_VELOCITY_BOOST
-        was_on_floor = false
-
-        # AUDIO: SCREAM
-        if not detect_audio_player.playing:
-            detect_audio_player.play()
-
-        await get_tree().create_timer(.5).timeout
-
-        if state == State.FLEEING:
-            if not running_audio_player.playing:
-                running_audio_player.play()
-        elif state == State.CHASING:
-            # TODO(ALDEN): Sound me up, baby
-            pass
-
-
-func _on_detection_end() -> void:
-    if is_dead():
-        return
-
-    is_player_visible = false
-    was_player_recently_visible = true
-    last_player_sighting_time = Time.get_ticks_msec() / 1000.0
-
-
-func _on_detection_area_body_entered(body: Node2D) -> void:
-    if is_dead():
-        return
-
-    if body is Player:
-        _on_detection_start()
-    elif body is Enemy:
-        visible_enemies[body] = true
-        if body.state == State.BEING_BEAMED:
-            _on_ufo_or_beamed_player_detection_start()
-
-
-func _on_detection_area_body_exited(body: Node2D) -> void:
-    if is_dead():
-        return
-
-    if body is Player:
-        _on_detection_end()
-    elif body is Enemy:
-        visible_enemies.erase(body)
+    if state == State.FLEEING:
+        if not running_audio_player.playing:
+            running_audio_player.play()
+    elif state == State.CHASING:
+        # TODO(ALDEN): Sound me up, baby
+        pass

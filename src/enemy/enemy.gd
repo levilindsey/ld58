@@ -28,13 +28,41 @@ enum State {
 const LANDED_HARD_SPEED_THRESHOLD := 270
 const FADE_DELAY_AFTER_DEATH := 5
 
+# FIXME:
+const ENEMY_CONFIG_TEMPLATES := {
+    Type.FARMER: {
+        walking_speed = [45, 55],
+        running_speed = [190, 220],
+        jump_boost = [150, 170],
+        approach_distance = [28, 36],
+        stop_alert_delay = [8, 8],
+        chases = false,
+    },
+    # FIXME:
+    #FARMER,
+    #KID,
+    #ELDERLY,
+    #CAT,
+    #HOMELESS_PERSON,
+    #BUSINESS_MAN,
+    #POLICE_OFFICER,
+}
+
 
 @export var type := Type.FARMER
+
+# This should match the properties on ENEMY_CONFIG_TEMPLATES.
+var config: Dictionary
 
 var state := State.STARTING
 var was_on_floor := false
 var previous_velocity := Vector2.ZERO
 var death_time := -INF
+
+var last_player_sighting_time := -INF
+var is_player_visible := false
+var was_player_recently_visible := false
+var is_facing_right := true
 
 # Dictionary<Enemy, bool>
 var visible_enemies := {}
@@ -50,6 +78,8 @@ func _ready() -> void:
         return
 
     G.enemies.push_back(self)
+
+    record_config()
 
     sound_scene = G.settings.enemy_sound_scene.instantiate()
     add_child(sound_scene)
@@ -75,6 +105,13 @@ func _physics_process(delta: float) -> void:
     var time_since_dead := Time.get_ticks_msec() / 1000.0 - death_time
     if is_dead() and time_since_dead >= FADE_DELAY_AFTER_DEATH:
         _fade_out_death()
+
+    var is_past_alerted_cut_off := (
+        last_player_sighting_time + get_stop_alert_delay() <
+                Time.get_ticks_msec() / 1000.0
+    )
+    if was_player_recently_visible and is_past_alerted_cut_off:
+        _on_done_running_away()
 
     previous_velocity = velocity
 
@@ -103,6 +140,19 @@ func _physics_process(delta: float) -> void:
         else:
             _on_lifted_off()
     was_on_floor = next_is_on_floor
+
+
+func _on_done_running_away() -> void:
+    was_player_recently_visible = false
+    if is_alerted():
+        state = State.WALKING
+
+
+func set_is_facing_right(p_is_facing_right: bool) -> void:
+    is_facing_right = p_is_facing_right
+    rotation = 0
+    scale = Vector2.ONE
+    scale.x = 1 if is_facing_right else -1
 
 
 func _fade_out_death() -> void:
@@ -142,9 +192,107 @@ func _on_lifted_off() -> void:
     pass
 
 
+func _on_detection_start() -> void:
+    if is_dead():
+        return
+
+    is_player_visible = true
+    _on_ufo_or_beamed_player_detection_start()
+
+
+func _on_ufo_or_beamed_player_detection_start() -> void:
+    if is_dead():
+        return
+
+    was_player_recently_visible = true
+    last_player_sighting_time = Time.get_ticks_msec() / 1000.0
+
+    if state != State.DEAD and state != State.BEING_BEAMED:
+        # Face away from the player.
+        set_is_facing_right(global_position.x >= G.player.position.x)
+
+    if state == State.WALKING:
+        _on_alerted()
+
+
+func _on_killed() -> void:
+    state = State.DEAD
+    death_time = Time.get_ticks_msec() / 1000.0
+
+    var sprite := get_sprite()
+    var sprite_wrapper := get_sprite_wrapper()
+    sprite.stop()
+    sprite_wrapper.rotate(-PI / 2)
+    sprite_wrapper.position.y = - get_min_radius()
+
+    G.session.add_splatted_enemy(type)
+
+
+func _on_alerted() -> void:
+    state = get_alerted_state()
+
+    G.session.add_enemy_that_has_detected_you(type)
+
+
+func _on_detection_end() -> void:
+    if is_dead():
+        return
+
+    is_player_visible = false
+    was_player_recently_visible = true
+    last_player_sighting_time = Time.get_ticks_msec() / 1000.0
+
+
+func _on_detection_area_body_entered(body: Node2D) -> void:
+    if is_dead():
+        return
+
+    if body is Player:
+        _on_detection_start()
+    elif body is Enemy:
+        visible_enemies[body] = true
+        if body.state == State.BEING_BEAMED:
+            _on_ufo_or_beamed_player_detection_start()
+
+
+func _on_detection_area_body_exited(body: Node2D) -> void:
+    if is_dead():
+        return
+
+    if body is Player:
+        _on_detection_end()
+    elif body is Enemy:
+        visible_enemies.erase(body)
+
+
 func _get_horizontal_velocity() -> float:
-    G.utils.ensure(false, "_get_horizontal_velocity is abstract and must be overridden.")
-    return 0
+    if is_falling():
+        return velocity.x
+
+    var direction_multiplier := 1 if is_facing_right else -1
+    match state:
+        State.STARTING:
+            return 0
+        State.DEAD:
+            return 0
+        State.WALKING:
+            # Preserve whichever direction they were facing.
+            return get_walking_speed() * direction_multiplier
+        State.FLEEING:
+                # Preserve whichever direction they were facing.
+                return get_running_speed() * direction_multiplier
+        State.CHASING:
+            var horizontal_distance := absf(G.player.global_position.x - global_position.x)
+            if get_approach_distance() < horizontal_distance:
+                return 0
+            else:
+                # Preserve whichever direction they were facing.
+                return get_running_speed() * direction_multiplier
+        State.BEING_BEAMED:
+            return 0
+        _:
+            G.utils.ensure(false)
+            return 0
 
 
 func is_dead() -> bool:
@@ -189,17 +337,29 @@ func get_alerted_state() -> State:
     return State.CHASING if chases_when_alerted() else State.FLEEING
 
 
-func chases_when_alerted():
-    match type:
-        Type.FARMER, \
-        Type.KID, \
-        Type.ELDERLY, \
-        Type.CAT, \
-        Type.HOMELESS_PERSON, \
-        Type.BUSINESS_MAN:
-            return false
-        Type.POLICE_OFFICER:
-            return true
-        _:
-            G.utils.ensure(false)
-            return false
+func record_config() -> void:
+    G.utils.ensure(ENEMY_CONFIG_TEMPLATES.has(type))
+    var config_template: Dictionary = ENEMY_CONFIG_TEMPLATES[type]
+    for key in [
+        "walking_speed",
+        "running_speed",
+        "jump_boost",
+        "approach_distance",
+        "stop_alert_delay",
+    ]:
+        config[key] = randf_range(config_template[key][0], config_template[key][1])
+    config.chases = config_template.chases
+
+
+func get_walking_speed() -> float:
+    return config.walking_speed
+func get_running_speed() -> float:
+    return config.running_speed
+func get_jump_boost() -> float:
+    return config.jump_boost
+func get_approach_distance() -> float:
+    return config.approach_distance
+func get_stop_alert_delay() -> float:
+    return config.stop_alert_delay
+func chases_when_alerted() -> bool:
+    return config.chases

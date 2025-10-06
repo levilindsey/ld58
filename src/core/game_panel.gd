@@ -93,7 +93,7 @@ func _physics_process(_delta: float) -> void:
             enemy.global_position.x -= combined_level_chunk_bounds.size.x
             # reset the y position and velocity in case the enemy fell through
             # the level for some unknown reason
-            enemy.position.y = -1
+            enemy.global_position.y = -1
             enemy.velocity.y = 0
         await get_tree().process_frame
         _update_bounds()
@@ -107,7 +107,7 @@ func _physics_process(_delta: float) -> void:
             enemy.global_position.x += combined_level_chunk_bounds.size.x
             # reset the y position and velocity in case the enemy fell through
             # the level for some unknown reason
-            enemy.position.y = -1
+            enemy.global_position.y = -1
             enemy.velocity.y = 0
         await get_tree().process_frame
         _update_bounds()

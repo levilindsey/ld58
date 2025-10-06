@@ -22,7 +22,7 @@ func _physics_process(_delta: float) -> void:
 func spawn_enemy(enemyType: Enemy.Type):
     var enemy = G.settings.getEnemyScene(enemyType)
     # always spawn player the opposite way of players direction
-    enemy.position.y = 0
+    enemy.global_position.y = 0
     var rng = RandomNumberGenerator.new()
     var level_left = G.game_panel.combined_level_chunk_bounds.position.x + LEVEL_EDGE_MARGIN
     var level_right = G.game_panel.combined_level_chunk_bounds.end.x - LEVEL_EDGE_MARGIN
@@ -38,7 +38,7 @@ func spawn_enemy(enemyType: Enemy.Type):
         else:
             random_x_position += camera_width
 
-    enemy.position.x = int(random_x_position)
+    enemy.global_position.x = int(random_x_position)
     # randomize starting direction
     enemy.set_is_facing_right(int(random_x_position) % 2 == 0)
     G.game_panel.get_enemy_container().add_child(enemy)
