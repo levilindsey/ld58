@@ -37,10 +37,10 @@ func _update_zookeeper_text(text: String) -> void:
     %ZooKeeperText.text = text
     %ZooKeeperText.visible_characters = 0
     var tween = create_tween()
-    tween.tween_property(%ZooKeeperText, "visible_characters", text.length(), int(text.length() / 20.0))
+    tween.tween_property(%ZooKeeperText, "visible_characters", text.length(), int(text.length() / 30.0))
     await tween.finished # Wait for the tween to complete
     tween.kill() # Clean up the tween
-    zoo_speech_audio_player.stop()
+    stop_zookeeper_audio()
 
 func stop_zookeeper_audio() -> void:
     if zoo_speech_audio_player.playing:
@@ -77,9 +77,9 @@ func zookeeper_welcome() ->    void:
 
 func _update_wallet_text() -> void:
     if G.session.money == 1:
-        %Wallet.text = "You have " + str(G.session.money) + " alien bucks."
-    else:
         %Wallet.text = "You have " + str(G.session.money) + " alien buck."
+    else:
+        %Wallet.text = "You have " + str(G.session.money) + " alien bucks."
 
 func _update_upgrades_ui() -> void:
     for widget in [%BeamLevels, %CapacityLevels, %StealthLevels, %SpeedLevels]:
@@ -131,3 +131,8 @@ func _on_upgrade_button_pressed(upgradeLevels: UpgradeLevels, button: Button) ->
     _update_upgrades_ui()
     if button.disabled:
         _focus_first_enabled_button()
+
+
+func _on_zoo_speech_stream_player_finished() -> void:
+    # keep repeating alien voice until text is finished.
+    zoo_speech_audio_player.play()

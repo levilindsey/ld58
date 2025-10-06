@@ -10,6 +10,9 @@ var quest_schedule: Array[Quest] = [
         Enemy.Type.CAT: 2,
         Enemy.Type.KID: 2
     }, 5),
+    Quest.new({
+        Enemy.Type.CAT: 5
+    }, 5),
 ]
 
 var schedule_index := 0

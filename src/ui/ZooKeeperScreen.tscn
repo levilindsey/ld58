@@ -196,3 +196,4 @@ bus = &"Voices"
 [connection signal="pressed" from="MarginContainer/HBox/Options/StealthBox/UpgradeStealth" to="." method="_on_upgrade_stealth_pressed"]
 [connection signal="pressed" from="MarginContainer/HBox/Options/SpeedBox/UpgradeSpeed" to="." method="_on_upgrade_speed_pressed"]
 [connection signal="pressed" from="MarginContainer/HBox/Options/EarthButton" to="." method="_on_earth_button_pressed"]
+[connection signal="finished" from="ZooSpeechStreamPlayer" to="." method="_on_zoo_speech_stream_player_finished"]
