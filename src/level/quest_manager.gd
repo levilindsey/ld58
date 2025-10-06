@@ -50,6 +50,9 @@ func on_return_to_zoo() -> void:
         G.session.money += calculate_money_for_quest(G.session.active_quest)
         G.session.fulfilled_quests.push_back(G.session.active_quest)
         schedule_index += 1
+
+        G.main.play_quest_complete_sound()
+
         var next_quest: Quest
         if schedule_index < quest_schedule.size():
             next_quest = quest_schedule[schedule_index]

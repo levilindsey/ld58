@@ -18,6 +18,7 @@
 
 [resource]
 script = ExtResource("1_krfic")
+full_screen = true
 pauses_on_focus_out = false
 farmer_scene = ExtResource("4_e1gfc")
 kid_scene = ExtResource("6_wuxul")

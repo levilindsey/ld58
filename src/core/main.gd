@@ -164,3 +164,7 @@ func fade_to_main_theme() -> void:
 func play_theme() -> void:
     if not theme_audio_player.playing:
         theme_audio_player.play()
+
+func play_quest_complete_sound() -> void:
+    if not %MissionAccomplishedStreamPlayer.playing:
+        %MissionAccomplishedStreamPlayer.play()

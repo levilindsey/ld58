@@ -92,6 +92,8 @@ volume_db = -8.0
 bus = &"Music"
 
 [node name="MissionAccomplishedStreamPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+process_mode = 3
 stream = ExtResource("15_m33k1")
 volume_db = -3.612
 pitch_scale = 0.8
