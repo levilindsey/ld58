@@ -1,11 +1,8 @@
-class_name  EnemySpawner extends Node
+class_name EnemySpawner extends Node
 
 
 # Dictionary<Enemy.Type, int>
-var target_enemy_counts_by_type := {}
-
-# Dictionary<Enemy.Type, int>
-var active_enemy_counts_by_type := {}
+var enemy_counts_by_type := {}
 
 # Dictionary<Enemy.Type, int>
 var extra_security_enemies_by_type := {}
@@ -15,14 +12,11 @@ var extra_security_enemies_by_type := {}
 
 
 func _ready() -> void:
-    for type in Enemy.Type.values():
-        active_enemy_counts_by_type[type] = 0
-
-    _record_target_enemy_counts_by_type()
+    _record_enemy_counts_by_type()
     _populate_enemies()
 
 
-func _record_target_enemy_counts_by_type() -> void:
+func _record_enemy_counts_by_type() -> void:
     var total_population_weight := 0
     for type in Enemy.Type.values():
         total_population_weight += Settings.ENEMY_CONFIGS[type].population_weight
@@ -30,12 +24,12 @@ func _record_target_enemy_counts_by_type() -> void:
     for type in Enemy.Type.values():
         var ratio: float = float(Settings.ENEMY_CONFIGS[type].population_weight) / total_population_weight
         var count := roundi(ratio * G.settings.total_enemy_count)
-        target_enemy_counts_by_type[type] = count
+        enemy_counts_by_type[type] = count
 
 
 func _populate_enemies() -> void:
     for type in Enemy.Type.values():
-        for i in target_enemy_counts_by_type[type]:
+        for i in enemy_counts_by_type[type]:
             spawn_enemy(type)
 
 

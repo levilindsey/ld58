@@ -10,7 +10,7 @@ var total_enemies_deposited_by_type := {}
 # Dictionary<Enemy.Type, int>
 var total_enemies_splatted_by_type := {}
 # Dictionary<Enemy.Type, int>
-var total_enemies_that_have_detected_you_by_type := {}
+var total_alerted_enemies_by_type := {}
 
 # Dictionary<UpgradeType, int>
 var ship_upgrade_levels := {}
@@ -22,6 +22,10 @@ var current_enemies_deposited_count := 0
 # Dictionary<Enemy.Type, int>
 var current_enemies_collected_by_type := {}
 var current_enemies_collected_count := 0
+
+# Dictionary<Enemy.Type, int>
+var current_alerted_enemies_by_type := {}
+var current_alerted_enemies_count := 0
 
 var total_excursion_count := 0
 var current_quest_excursion_count := 0
@@ -52,24 +56,27 @@ func _init() -> void:
 func reset() -> void:
     total_enemies_deposited_by_type.clear()
     total_enemies_splatted_by_type.clear()
-    total_enemies_that_have_detected_you_by_type.clear()
+    total_alerted_enemies_by_type.clear()
     current_enemies_deposited_by_type.clear()
     current_enemies_collected_by_type.clear()
     ship_upgrade_levels.clear()
+    current_alerted_enemies_by_type.clear()
 
     # Initialize map entries with zero counts.
     for type in Enemy.Type.values():
         total_enemies_deposited_by_type[type] = 0
         total_enemies_splatted_by_type[type] = 0
-        total_enemies_that_have_detected_you_by_type[type] = 0
+        total_alerted_enemies_by_type[type] = 0
         current_enemies_deposited_by_type[type] = 0
         current_enemies_collected_by_type[type] = 0
+        current_alerted_enemies_by_type[type] = 0
         
     for type in UpgradeLevels.UpgradeTypes.values():
         ship_upgrade_levels[type] = 0
 
     current_enemies_deposited_count = 0
     current_enemies_collected_count = 0
+    current_alerted_enemies_count = 0
     total_excursion_count = 0
     current_quest_excursion_count = 0
     collection_capacity = Settings.SHIP_UPGRADE_VALUES[UpgradeLevels.UpgradeTypes.CAPACITY][0]
@@ -97,7 +104,9 @@ func start_new_quest(next_quest: Quest) -> void:
 func start_new_excursion() -> void:
     for type in Enemy.Type.values():
         current_enemies_collected_by_type[type] = 0
+        current_alerted_enemies_by_type[type] = 0
     current_enemies_collected_count = 0
+    current_alerted_enemies_count = 0
     total_excursion_count += 1
     current_quest_excursion_count += 1
     G.hud.update_quest()
@@ -124,10 +133,6 @@ func add_splatted_enemy(type: Enemy.Type) -> void:
     total_enemies_splatted_by_type[type] += 1
 
 
-func add_enemy_that_has_detected_you(type: Enemy.Type) -> void:
-    total_enemies_that_have_detected_you_by_type[type] += 1
-
-
 func is_ship_full() -> bool:
     return current_enemies_collected_count >= collection_capacity
 
@@ -147,6 +152,34 @@ func set_health(value: int) -> void:
     G.hud.update_health()
 
 
-func set_detection_score(value: float) -> void:
-    detection_score = value
+func remove_alerted_enemy(type: Enemy.Type) -> void:
+    current_alerted_enemies_by_type[type] -= 1
+    current_alerted_enemies_count -= 1
+
+    if not G.utils.ensure(current_alerted_enemies_by_type[type] >= 0):
+        current_alerted_enemies_by_type[type] = 0
+    if not G.utils.ensure(current_alerted_enemies_count >= 0):
+        current_alerted_enemies_count = 0
+
+    _update_detection_score()
+
+
+func add_alerted_enemy(type: Enemy.Type) -> void:
+    current_alerted_enemies_by_type[type] += 1
+    current_alerted_enemies_count += 1
+    total_alerted_enemies_by_type[type] += 1
+    _update_detection_score()
+
+
+func _update_detection_score() -> void:
+    var scaled_alerted_enemy_count := 0.0
+    for type in current_alerted_enemies_by_type:
+        var multiplier := Enemy.get_alerted_enemy_multiplier_by_type(type)
+        scaled_alerted_enemy_count += current_alerted_enemies_by_type[type] * multiplier
+
+    scaled_alerted_enemy_count = clamp(
+        scaled_alerted_enemy_count, 0, G.settings.alert_enemies_count_for_max_detection)
+
+    detection_score = scaled_alerted_enemy_count / G.settings.alert_enemies_count_for_max_detection
+
     G.hud.update_detection()

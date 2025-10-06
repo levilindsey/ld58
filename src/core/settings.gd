@@ -6,6 +6,8 @@ extends Resource
 @export var draw_annotations := false
 
 @export var total_enemy_count := 40
+@export var alert_enemies_count_for_max_detection := 20
+@export var count_multiplier_for_alert_security_enemy := 4
 
 @export var start_in_zookeeper_screen := true
 @export var full_screen := false
@@ -16,13 +18,13 @@ extends Resource
 
 @export var show_hud := true
 
-@export var farmer_scene : PackedScene
-@export var kid_scene : PackedScene
-@export var homeless_person_scene : PackedScene
-@export var elderly_scene : PackedScene
-@export var cat_scene : PackedScene
-@export var business_person_scene : PackedScene
-@export var police_officer_scene : PackedScene
+@export var farmer_scene: PackedScene
+@export var kid_scene: PackedScene
+@export var homeless_person_scene: PackedScene
+@export var elderly_scene: PackedScene
+@export var cat_scene: PackedScene
+@export var business_person_scene: PackedScene
+@export var police_officer_scene: PackedScene
 
 @export var enemy_sound_scene: PackedScene
 
@@ -64,7 +66,7 @@ const ENEMY_CONFIGS := {
         jump_boost = [150, 170],
         approach_distance = [28, 36],
         stop_alert_delay = [6, 8],
-        chases = false,
+        is_security = false,
         regions = [Region.Type.RURAL],
         population_weight = 10,
     },
@@ -74,7 +76,7 @@ const ENEMY_CONFIGS := {
         jump_boost = [150, 170],
         approach_distance = [28, 36],
         stop_alert_delay = [6, 8],
-        chases = false,
+        is_security = false,
         regions = [Region.Type.RURAL],
         population_weight = 10,
     },
@@ -84,7 +86,7 @@ const ENEMY_CONFIGS := {
         jump_boost = [150, 170],
         approach_distance = [28, 36],
         stop_alert_delay = [6, 8],
-        chases = false,
+        is_security = false,
         regions = [Region.Type.RURAL],
         population_weight = 10,
     },
@@ -94,7 +96,7 @@ const ENEMY_CONFIGS := {
         jump_boost = [150, 170],
         approach_distance = [28, 36],
         stop_alert_delay = [6, 8],
-        chases = false,
+        is_security = false,
         regions = [Region.Type.RURAL],
         population_weight = 10,
     },
@@ -104,7 +106,7 @@ const ENEMY_CONFIGS := {
         jump_boost = [150, 170],
         approach_distance = [28, 36],
         stop_alert_delay = [6, 8],
-        chases = false,
+        is_security = false,
         regions = [Region.Type.RURAL],
         population_weight = 10,
     },
@@ -114,7 +116,7 @@ const ENEMY_CONFIGS := {
         jump_boost = [150, 170],
         approach_distance = [28, 36],
         stop_alert_delay = [6, 8],
-        chases = false,
+        is_security = false,
         regions = [Region.Type.RURAL],
         population_weight = 10,
     },
@@ -124,7 +126,7 @@ const ENEMY_CONFIGS := {
         jump_boost = [150, 170],
         approach_distance = [28, 36],
         stop_alert_delay = [10, 12],
-        chases = true,
+        is_security = true,
         regions = [Region.Type.SUBURBS, Region.Type.CITY],
         population_weight = 10,
     },

@@ -25,7 +25,7 @@ enum State {
     DEAD,
 }
 
-const LANDED_HARD_SPEED_THRESHOLD := 270
+const LETHAL_DROP_HEIGHT := 50.0
 const FADE_DELAY_AFTER_DEATH := 5
 
 
@@ -40,6 +40,7 @@ var state := State.STARTING
 var was_on_floor := false
 var previous_velocity := Vector2.ZERO
 var death_time := -INF
+var was_dropped_from_lethal_height := false
 
 var last_player_sighting_time := -INF
 var is_player_visible := false
@@ -104,6 +105,8 @@ func _physics_process(delta: float) -> void:
     if was_player_recently_visible and is_past_alerted_cut_off:
         _on_done_running_away()
 
+    _fix_facing_direction_for_walking_back_to_home_region()
+
     previous_velocity = velocity
 
     velocity.x = _get_horizontal_velocity()
@@ -126,8 +129,7 @@ func _physics_process(delta: float) -> void:
     var next_is_on_floor = is_on_floor()
     if next_is_on_floor != was_on_floor:
         if next_is_on_floor:
-            var landed_hard := previous_velocity.y > LANDED_HARD_SPEED_THRESHOLD
-            _on_landed(landed_hard)
+            _on_landed()
         else:
             _on_lifted_off()
     was_on_floor = next_is_on_floor
@@ -144,6 +146,7 @@ func _hack_sanitize_weird_transform_state() -> void:
 func _on_done_running_away() -> void:
     was_player_recently_visible = false
     if is_alerted():
+        G.session.remove_alerted_enemy(type)
         state = State.WALKING
 
 
@@ -182,7 +185,8 @@ func destroy() -> void:
         queue_free()
 
 
-func _on_landed(_landed_hard: bool) -> void:
+func _on_landed() -> void:
+    was_dropped_from_lethal_height = false
     if state == State.STARTING:
         state = State.WALKING
 
@@ -232,7 +236,7 @@ func _on_killed() -> void:
 func _on_alerted() -> void:
     state = get_alerted_state()
 
-    G.session.add_enemy_that_has_detected_you(type)
+    G.session.add_alerted_enemy(type)
 
 
 func _on_detection_end() -> void:
@@ -266,11 +270,49 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
         visible_enemies.erase(body)
 
 
+func _fix_facing_direction_for_walking_back_to_home_region() -> void:
+    if state != State.WALKING:
+        return
+
+    var is_in_home_region := (
+        global_position.x >= home_region.global_start_x and
+        global_position.x <= home_region.global_end_x
+    )
+    if is_in_home_region:
+        return
+
+    # Have them face back toward their home region.
+    var is_enemy_left_of_region := \
+        global_position.x < home_region.global_start_x
+    var distance_leftward_from_enemy_to_region := (
+        (
+            (global_position.x -
+                G.game_panel.combined_level_chunk_bounds.position.x) +
+            (G.game_panel.combined_level_chunk_bounds.end.x -
+                home_region.global_end_x)
+        ) if
+        is_enemy_left_of_region else
+        global_position.x - home_region.global_end_x
+    )
+    var distance_rightward_from_enemy_to_region := (
+        home_region.global_start_x - global_position.x if
+        is_enemy_left_of_region else
+        (
+            (G.game_panel.combined_level_chunk_bounds.end.x -
+                global_position.x) +
+            (home_region.global_start_x -
+                G.game_panel.combined_level_chunk_bounds.position.x)
+        )
+    )
+    var is_left_closer := distance_leftward_from_enemy_to_region < distance_rightward_from_enemy_to_region
+    set_is_facing_right(not is_left_closer)
+
+
 func _get_horizontal_velocity() -> float:
     if is_falling():
         return velocity.x
 
-    var direction_multiplier := 1 if is_facing_right else -1
+    var facing_direction_multiplier := 1 if is_facing_right else -1
     match state:
         State.STARTING:
             return 0
@@ -278,17 +320,17 @@ func _get_horizontal_velocity() -> float:
             return 0
         State.WALKING:
             # Preserve whichever direction they were facing.
-            return get_walking_speed() * direction_multiplier
+            return get_walking_speed() * facing_direction_multiplier
         State.FLEEING:
                 # Preserve whichever direction they were facing.
-                return get_running_speed() * direction_multiplier
+                return get_running_speed() * facing_direction_multiplier
         State.CHASING:
             var horizontal_distance := absf(G.player.global_position.x - global_position.x)
             if get_approach_distance() < horizontal_distance:
                 return 0
             else:
                 # Preserve whichever direction they were facing.
-                return get_running_speed() * direction_multiplier
+                return get_running_speed() * facing_direction_multiplier
         State.BEING_BEAMED:
             return 0
         _:
@@ -335,12 +377,12 @@ func is_alerted() -> bool:
 
 
 func get_alerted_state() -> State:
-    return State.CHASING if chases_when_alerted() else State.FLEEING
+    return State.CHASING if get_is_security() else State.FLEEING
 
 
 func assign_config() -> void:
-    G.utils.ensure(Settings.ENEMY_CONFIGS.has(type))
-    var config_template: Dictionary = Settings.ENEMY_CONFIGS[type]
+    G.utils.ensure(G.settings.ENEMY_CONFIGS.has(type))
+    var config_template: Dictionary = G.settings.ENEMY_CONFIGS[type]
     for key in [
         "walking_speed",
         "running_speed",
@@ -349,7 +391,7 @@ func assign_config() -> void:
         "stop_alert_delay",
     ]:
         config[key] = randf_range(config_template[key][0], config_template[key][1])
-    config.chases = config_template.chases
+    config.is_security = config_template.is_security
 
 
 func get_walking_speed() -> float:
@@ -362,5 +404,17 @@ func get_approach_distance() -> float:
     return config.approach_distance
 func get_stop_alert_delay() -> float:
     return config.stop_alert_delay
-func chases_when_alerted() -> bool:
-    return config.chases
+func get_is_security() -> bool:
+    return config.is_security
+
+
+static func get_is_security_enemy_by_type(p_type: Type) -> bool:
+    return G.settings.ENEMY_CONFIGS[p_type].is_security
+
+
+static func get_alerted_enemy_multiplier_by_type(p_type: Type) -> float:
+    return (
+        G.settings.count_multiplier_for_alert_security_enemy if
+        get_is_security_enemy_by_type(p_type) else
+        1
+    )
