@@ -20,7 +20,7 @@ var gunshot_audio_player: AudioStreamPlayer2D
 var cat_audio_player: AudioStreamPlayer2D
 var cow_audio_player: AudioStreamPlayer2D
 var thefuzz_audio_player: AudioStreamPlayer2D
-
+var chicken_audio_player: AudioStreamPlayer2D
 
 var splatter_vfx: CPUParticles2D
 
@@ -60,6 +60,7 @@ func setup_sound() -> void:
     cat_audio_player = sound_scene.get_node("CatStreamPlayer2D")
     cow_audio_player = sound_scene.get_node("CowStreamPlayer2D")
     thefuzz_audio_player = sound_scene.get_node("TheFuzzStreamPlayer2D")
+    chicken_audio_player = sound_scene.get_node("ChickenStreamPlayer2D")
 
 func _on_done_running_away() -> void:
     super._on_done_running_away()
