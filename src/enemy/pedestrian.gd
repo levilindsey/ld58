@@ -87,6 +87,8 @@ func on_beam_start() -> void:
             cow_audio_player.play()
         elif type == Type.CAT:
             cat_audio_player.play()
+        elif type == Type.CHICKEN:
+            chicken_audio_player.play()
         else:
             abducting_audio_player.play()
 
@@ -123,6 +125,8 @@ func on_beam_end() -> void:
         cow_audio_player.stop()
     if cat_audio_player.playing:
         cat_audio_player.stop()
+    if chicken_audio_player.playing:
+        chicken_audio_player.stop()
 
     if not falling_audio_player.playing and type != Type.COW and type != Type.CAT and type != Type.CHICKEN:
         falling_audio_player.play()
@@ -172,6 +176,8 @@ func on_collected() -> void:
         cow_audio_player.stop()
     if cat_audio_player.playing:
         cat_audio_player.stop()
+    if chicken_audio_player.playing:
+        chicken_audio_player.stop()
     destroy()
     G.game_panel.enemy_spawner.spawn_enemy(type)
 
@@ -189,7 +195,9 @@ func _on_alerted() -> void:
         cow_audio_player.play()
     elif type == Type.CAT:
         cat_audio_player.play()
-    elif not detect_audio_player.playing:
+    elif type == Type.CHICKEN:
+        chicken_audio_player.play()
+    elif detect_audio_player.playing:
         detect_audio_player.play()
 
     await get_tree().create_timer(0.5).timeout
@@ -199,6 +207,8 @@ func _on_alerted() -> void:
             cow_audio_player.play()
         elif type == Type.CAT:
             cat_audio_player.play()
+        elif type == Type.CHICKEN:
+            chicken_audio_player.play()
         elif not running_audio_player.playing:
             running_audio_player.play()
     elif state == State.CHASING:
