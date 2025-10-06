@@ -214,7 +214,8 @@ func damage(value: int) -> void:
         return
 
     if value == G.settings.bullet_damage:
-        # TODO(Alden): Hit by a bullet!
+        # AUDIO: BulletHit
+        bullethit_audio_player.play()
         pass
 
     var next_health := maxi(G.session.health - value, 0)
