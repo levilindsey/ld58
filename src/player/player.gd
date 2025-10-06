@@ -6,8 +6,6 @@ const ACCELERATION = 1000
 const MAX_ROTATION = PI / 8
 const DAMPING_FACTOR_HORIZONTAL = 0.95
 const DAMPING_FACTOR_VERTICAL = 0.8
-const DEFAULT_GRAVITY := 0
-const GRAVITY_DELTA_PER_ENEMY := 100
 const SLIDE_ABDUCTEE_TOWARD_BEAM_CENTER_SPEED := 50
 const SLIDE_ABDUCTEE_UP_BEAM_SPEED := 30
 
@@ -158,7 +156,7 @@ func _get_max_speed() -> int:
         return G.session.max_speed
 
 func _get_gravity() -> float:
-    return G.session.current_enemies_collected_count * GRAVITY_DELTA_PER_ENEMY
+    return G.session.current_enemies_collected_count * G.session.gravity_per_enemy
 
 func is_movement_action_pressed() -> bool:
     return (

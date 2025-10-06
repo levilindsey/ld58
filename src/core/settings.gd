@@ -29,12 +29,12 @@ extends Resource
 @export var enemy_sound_scene: PackedScene
 
 const SHIP_UPGRADE_VALUES := {
-    # Max speed value for each level
+    # [max_speed, max_speed_while_beaming, gravity_per_enemy]
     UpgradeLevels.UpgradeTypes.SPEED: {
-        0: [150, 50],
-        1: [200, 70],
-        2: [300, 100],
-        3: [450, 150]
+        0: [150, 50, 100],
+        1: [200, 70, 80],
+        2: [300, 100, 50],
+        3: [450, 150, 0]
     },
     # Beam values are the scale factor of the beam.
     UpgradeLevels.UpgradeTypes.BEAM: {

@@ -20,6 +20,7 @@ func set_level(level: int) -> void:
         UpgradeTypes.SPEED:
             G.session.max_speed = updated_ability_value[0]
             G.session.max_speed_beaming = updated_ability_value[1]
+            G.session.gravity_per_enemy = updated_ability_value[2]
         UpgradeTypes.BEAM:
             G.session.beam_scale = updated_ability_value
             G.player.update_beam_scale()
