@@ -213,6 +213,10 @@ func damage(value: int) -> void:
     if is_dead():
         return
 
+    if value == G.settings.bullet_damage:
+        # TODO(Alden): Hit by a bullet!
+        pass
+
     var next_health := maxi(G.session.health - value, 0)
     G.session.set_health(next_health)
     print("Ship damaged: %d [%d / %d]" % [value, G.session.health, G.session.max_health])
