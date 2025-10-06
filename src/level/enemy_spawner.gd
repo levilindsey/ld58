@@ -1,50 +1,59 @@
 class_name  EnemySpawner extends Node
 
 
-const LEVEL_EDGE_MARGIN = 100
-var mostRecentSpawnTime := -INF
-var spawnRateSeconds := 1.0
+# Dictionary<Enemy.Type, int>
+var target_enemy_counts_by_type := {}
+
+# Dictionary<Enemy.Type, int>
+var active_enemy_counts_by_type := {}
+
+# Dictionary<Enemy.Type, int>
+var extra_security_enemies_by_type := {}
+
+
+# FIXME: LEFT OFF HERE: Update extra_security_enemies_by_type dynamically to match the current G.session.detection_score.
 
 
 func _ready() -> void:
-    mostRecentSpawnTime = Time.get_ticks_msec() / 1000.0
-    # spawn 1 farmer to start
-    spawn_enemy(Enemy.Type.FARMER)
+    for type in Enemy.Type.values():
+        active_enemy_counts_by_type[type] = 0
+
+    _record_target_enemy_counts_by_type()
+    _populate_enemies()
 
 
-func _physics_process(_delta: float) -> void:
-    var currentTime = Time.get_ticks_msec() / 1000.0
-    if currentTime - mostRecentSpawnTime > spawnRateSeconds:
-        spawn_enemy(Enemy.Type.FARMER)
-        mostRecentSpawnTime = currentTime
+func _record_target_enemy_counts_by_type() -> void:
+    var total_population_weight := 0
+    for type in Enemy.Type.values():
+        total_population_weight += Settings.ENEMY_CONFIGS[type].population_weight
+
+    for type in Enemy.Type.values():
+        var ratio: float = float(Settings.ENEMY_CONFIGS[type].population_weight) / total_population_weight
+        var count := roundi(ratio * G.settings.total_enemy_count)
+        target_enemy_counts_by_type[type] = count
 
 
-func spawn_enemy(enemyType: Enemy.Type):
-    var enemy = G.settings.instantiate_enemy(enemyType)
-
-    # FIXME:
-
-    #enemy.home_region
+func _populate_enemies() -> void:
+    for type in Enemy.Type.values():
+        for i in target_enemy_counts_by_type[type]:
+            spawn_enemy(type)
 
 
-    # always spawn player the opposite way of players direction
-    enemy.global_position.y = 0
-    var rng = RandomNumberGenerator.new()
-    var level_left = G.game_panel.combined_level_chunk_bounds.position.x + LEVEL_EDGE_MARGIN
-    var level_right = G.game_panel.combined_level_chunk_bounds.end.x - LEVEL_EDGE_MARGIN
-    var random_x_position = rng.randi_range(level_left, level_right)
+func spawn_enemy(type: Enemy.Type):
+    var enemy = G.settings.instantiate_enemy(type)
 
-    var camera_width = get_viewport().size.x / get_viewport().get_camera_2d().zoom.x
-    var no_spawn_width = camera_width / 2 + 50
+    # Assign a random region.
+    var possible_regions: Array[Region.Type]
+    possible_regions.assign(Settings.ENEMY_CONFIGS[type].regions)
+    var region := G.game_panel.get_random_region(possible_regions)
+    enemy.home_region = region
 
-    # If the random spawn position is inside of the viewport then bump it outside.
-    if random_x_position > G.player.position.x - no_spawn_width and random_x_position <  G.player.position.x + no_spawn_width:
-        if random_x_position < G.player.position.x:
-            random_x_position -= camera_width
-        else:
-            random_x_position += camera_width
+    # Assign a random position within the region.
+    var offset := randf() * region.width
+    enemy.global_position.x = region.global_start_x + offset
+    enemy.global_position.y = -0.1
 
-    enemy.global_position.x = int(random_x_position)
-    # randomize starting direction
-    enemy.set_is_facing_right(int(random_x_position) % 2 == 0)
+    # Assign a random start direction.
+    enemy.set_is_facing_right(int(offset) % 2 == 0)
+
     G.game_panel.get_enemy_container().add_child(enemy)

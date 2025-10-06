@@ -8,7 +8,7 @@ var size := Vector2.ZERO
 # Sorted on x position.
 var regions: Array[Region] = []
 
-# Dictionary<Enemy.RegionType, float>
+# Dictionary<Region.Type, float>
 var total_width_per_region_type := {}
 
 
@@ -31,9 +31,14 @@ func _record_regions() -> void:
         func (a: RegionMarker, b: RegionMarker):
             return a.position.x < b.position.x)
 
-    G.utils.ensure(markers.size() >= 2)
+    if not Engine.is_editor_hint():
+        G.utils.ensure(markers.size() >= 2)
 
     regions.clear()
+
+    var synthetic_end_marker := RegionMarker.new()
+    synthetic_end_marker.position.x = size.x
+    markers.push_back(synthetic_end_marker)
 
     for i in range(1, markers.size()):
         var start_marker := markers[i - 1]
@@ -44,11 +49,9 @@ func _record_regions() -> void:
             start_marker.position.x,
             end_marker.position.x)
         regions.push_back(region)
-    # FIXME
-
 
     # Calculate the cumulative width for each region type in this chunk.
-    for type in Enemy.RegionType.values():
+    for type in Region.Type.values():
         total_width_per_region_type[type] = 0
     for region in regions:
         total_width_per_region_type[region.type] += region.width

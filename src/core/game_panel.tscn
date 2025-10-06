@@ -13,7 +13,7 @@ script = ExtResource("1_lii62")
 [node name="Background" parent="." instance=ExtResource("2_v30hu")]
 
 [node name="Player" parent="." instance=ExtResource("3_0qy1w")]
-position = Vector2(355, -73)
+position = Vector2(354, -125)
 
 [node name="LevelChunkA" parent="." instance=ExtResource("2_6i81m")]
 unique_name_in_owner = true

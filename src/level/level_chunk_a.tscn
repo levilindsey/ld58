@@ -16,6 +16,8 @@ tile_set = ExtResource("2_dk6lr")
 
 [node name="RegionMarker2" parent="." instance=ExtResource("3_dk6lr")]
 position = Vector2(222, 0)
+type = 1
 
 [node name="RegionMarker3" parent="." instance=ExtResource("3_dk6lr")]
 position = Vector2(457, 0)
+type = 2

@@ -6,7 +6,7 @@ extends Node2D
 const DEBUG_ANNOTATION_LINE_LENGTH := 500
 
 
-@export var type: Enemy.RegionType = Enemy.RegionType.RURAL
+@export var type: Region.Type = Region.Type.RURAL
 
 
 func _draw() -> void:

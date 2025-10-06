@@ -5,10 +5,10 @@ extends CharacterBody2D
 enum Type {
     FARMER,
     KID,
-    ELDERLY,
+    OLD_PERSON,
     CAT,
     HOMELESS_PERSON,
-    BUSINESS_MAN,
+    BUSINESS_PERSON,
     POLICE_OFFICER,
     # TODO: Add stuff here!
     #POLICE_CAR,
@@ -25,51 +25,13 @@ enum State {
     DEAD,
 }
 
-enum RegionType {
-    RURAL,
-    SUBURBS,
-    CITY,
-}
-
 const LANDED_HARD_SPEED_THRESHOLD := 270
 const FADE_DELAY_AFTER_DEATH := 5
-
-# FIXME:
-const ENEMY_CONFIG_TEMPLATES := {
-    Type.FARMER: {
-        walking_speed = [45, 55],
-        running_speed = [190, 220],
-        jump_boost = [150, 170],
-        approach_distance = [28, 36],
-        stop_alert_delay = [6, 8],
-        chases = false,
-        regions = [RegionType.RURAL],
-        population_weight = 10,
-    },
-    Type.POLICE_OFFICER: {
-        walking_speed = [55, 65],
-        running_speed = [200, 240],
-        jump_boost = [150, 170],
-        approach_distance = [28, 36],
-        stop_alert_delay = [10, 12],
-        chases = true,
-        regions = [RegionType.SUBURBS, RegionType.CITY],
-        population_weight = 10,
-    },
-    # FIXME:
-    #FARMER,
-    #KID,
-    #ELDERLY,
-    #CAT,
-    #HOMELESS_PERSON,
-    #BUSINESS_MAN,
-    #POLICE_OFFICER,
-}
 
 
 @export var type := Type.FARMER
 
-# This should match the properties on ENEMY_CONFIG_TEMPLATES.
+# This should match the properties on Settings.ENEMY_CONFIGS.
 var config: Dictionary
 
 var home_region: Region
@@ -99,12 +61,17 @@ func _ready() -> void:
 
     G.enemies.push_back(self)
 
-    record_config()
+    assign_config()
 
     sound_scene = G.settings.enemy_sound_scene.instantiate()
     add_child(sound_scene)
 
     setup_sound()
+
+    # Fade-in.
+    var tween := create_tween()
+    modulate.a = 0
+    tween.tween_property(self, "modulate:a", 1, 0.5)
 
 
 func setup_sound() -> void:
@@ -120,7 +87,11 @@ func _physics_process(delta: float) -> void:
         # Enemies get pushed under the floor when being beamed from an angle.
         if not state == State.BEING_BEAMED:
             push_warning("Enemy is below the floor")
-        global_position.y = -0.01
+        _hack_sanitize_weird_transform_state()
+    if position.y > 1 and get_parent() == G.game_panel.get_enemy_container():
+        # NOTE: This somehow happens a lot.
+        #push_warning("Enemy is below the floor, AND GLOBAL_POSITION IS SOMEHOW BORKED!")
+        _hack_sanitize_weird_transform_state()
 
     var time_since_dead := Time.get_ticks_msec() / 1000.0 - death_time
     if is_dead() and time_since_dead >= FADE_DELAY_AFTER_DEATH:
@@ -160,6 +131,14 @@ func _physics_process(delta: float) -> void:
         else:
             _on_lifted_off()
     was_on_floor = next_is_on_floor
+
+
+func _hack_sanitize_weird_transform_state() -> void:
+    global_position.y = -10
+    velocity = Vector2.ZERO
+    await get_tree().process_frame
+    global_position.y = -10
+    velocity = Vector2.ZERO
 
 
 func _on_done_running_away() -> void:
@@ -246,6 +225,8 @@ func _on_killed() -> void:
     sprite_wrapper.position.y = - get_min_radius()
 
     G.session.add_splatted_enemy(type)
+
+    G.game_panel.enemy_spawner.spawn_enemy(type)
 
 
 func _on_alerted() -> void:
@@ -357,9 +338,9 @@ func get_alerted_state() -> State:
     return State.CHASING if chases_when_alerted() else State.FLEEING
 
 
-func record_config() -> void:
-    G.utils.ensure(ENEMY_CONFIG_TEMPLATES.has(type))
-    var config_template: Dictionary = ENEMY_CONFIG_TEMPLATES[type]
+func assign_config() -> void:
+    G.utils.ensure(Settings.ENEMY_CONFIGS.has(type))
+    var config_template: Dictionary = Settings.ENEMY_CONFIGS[type]
     for key in [
         "walking_speed",
         "running_speed",

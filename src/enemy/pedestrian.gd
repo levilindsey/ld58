@@ -29,6 +29,7 @@ func setup_sound() -> void:
     running_audio_player = sound_scene.get_node("RunningStreamPlayer2D")
     gunshot_audio_player = sound_scene.get_node("GunshotStreamPlayer2D")
 
+
 func _on_done_running_away() -> void:
     super._on_done_running_away()
     if running_audio_player.playing:
@@ -116,6 +117,7 @@ func on_collected() -> void:
     if abducting_audio_player.playing:
         abducting_audio_player.stop()
     destroy()
+    G.game_panel.enemy_spawner.spawn_enemy(type)
 
 
 func _on_alerted() -> void:

@@ -22,7 +22,7 @@ var has_fully_initialized := false
 var enemy_spawner : EnemySpawner
 var quest_manager : QuestManager
 
-# Dictionary<Enemy.RegionType, float>
+# Dictionary<Region.Type, float>
 var total_width_per_region_type := {}
 
 
@@ -35,7 +35,7 @@ func _ready() -> void:
     player_start_position = G.player.global_position
 
     # Calculate the cumulative width for each region type across the world.
-    for type in Enemy.RegionType.values():
+    for type in Region.Type.values():
         total_width_per_region_type[type] = 0
     for chunk in chunks:
         for type in chunk.total_width_per_region_type:
@@ -209,7 +209,7 @@ func _get_enemies_in_left_most_level_chunk() -> Array:
     return filtered_enemies
 
 
-func get_random_region(types: Array[Region]) -> Region:
+func get_random_region(types: Array[Region.Type]) -> Region:
     var types_set := {}
     var total_width := 0
     for type in types:

@@ -2,8 +2,14 @@ class_name Region
 extends RefCounted
 
 
+enum Type {
+    RURAL,
+    SUBURBS,
+    CITY,
+}
+
 var chunk: LevelChunk
-var type: Enemy.RegionType = Enemy.RegionType.RURAL
+var type: Region.Type = Region.Type.RURAL
 var local_start_x := 0.0
 var local_end_x := 0.0
 
@@ -19,7 +25,7 @@ var width: float:
         return local_end_x - local_start_x
 
 
-func _init(p_chunk: LevelChunk, p_type: Enemy.RegionType, p_local_start_x: float, p_local_end_x: float) -> void:
+func _init(p_chunk: LevelChunk, p_type: Region.Type, p_local_start_x: float, p_local_end_x: float) -> void:
     chunk = p_chunk
     type = p_type
     local_start_x = p_local_start_x

@@ -57,9 +57,9 @@ func get_icon_texture(type: Enemy.Type) -> Texture2D:
             return farmer_icon
         Enemy.Type.KID:
             return kid_icon
-        Enemy.Type.BUSINESS_MAN:
+        Enemy.Type.BUSINESS_PERSON:
             return business_man_icon
-        Enemy.Type.ELDERLY:
+        Enemy.Type.OLD_PERSON:
             return elderly_icon
         Enemy.Type.HOMELESS_PERSON:
             return homeless_person_icon
@@ -78,9 +78,9 @@ func get_label(type: Enemy.Type) -> String:
             return "Farmer"
         Enemy.Type.KID:
             return "Kid"
-        Enemy.Type.BUSINESS_MAN:
+        Enemy.Type.BUSINESS_PERSON:
             return "Businessperson"
-        Enemy.Type.ELDERLY:
+        Enemy.Type.OLD_PERSON:
             return "Old person"
         Enemy.Type.HOMELESS_PERSON:
             return "Houseless person"
