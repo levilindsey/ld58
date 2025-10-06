@@ -28,8 +28,7 @@ func _ready() -> void:
     _update_upgrades_ui()
 
 func reset() -> void:
-    pass
-    # TODO(JAKE)
+    fulfilled_quests = 0
 
 func _update_zookeeper_text(text: String) -> void:
     zoo_speech_audio_player.play()
@@ -45,9 +44,9 @@ func on_return_to_zoo() -> void:
     _focus_first_enabled_button()
     _update_upgrades_ui()
     if G.session.fulfilled_quests.size() > fulfilled_quests:
-        update_zookeeper_text(ZOOKEEPER_QUEST_FULFILLED)
+        _update_zookeeper_text(ZOOKEEPER_QUEST_FULFILLED)
     else:
-        update_zookeeper_text(ZOOKEEPER_QUEST_FAILED)
+        _update_zookeeper_text(ZOOKEEPER_QUEST_FAILED)
         
 
 func _focus_first_enabled_button() -> void:
@@ -67,7 +66,7 @@ func _focus_first_enabled_button() -> void:
 
 func zookeeper_welcome() ->    void:
     _focus_first_enabled_button()
-    update_zookeeper_text(ZOOKEEPER_GREETING)
+    _update_zookeeper_text(ZOOKEEPER_GREETING)
 
 func _update_wallet_text() -> void:
     if G.session.money == 1:
