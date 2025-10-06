@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://wofrfllh71c3"]
+
+[ext_resource type="Script" uid="uid://bdkemqwddjvrh" path="res://src/enemy/missile.gd" id="1_8he3e"]
+[ext_resource type="Texture2D" uid="uid://6opw4khbj8lp" path="res://assets/images/missile.png" id="2_8he3e"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q8lag"]
+atlas = ExtResource("2_8he3e")
+region = Rect2(0, 0, 13, 5)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ihlj7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q8lag")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mdaoh"]
+radius = 2.5
+height = 12.5
+
+[node name="Missile" type="Node2D"]
+script = ExtResource("1_8he3e")
+metadata/_custom_type_script = "uid://btsacaexd8opk"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ihlj7")
+autoplay = "default"
+frame_progress = 0.49010557
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 8
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_mdaoh")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

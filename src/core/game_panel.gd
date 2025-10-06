@@ -22,6 +22,8 @@ var has_fully_initialized := false
 var enemy_spawner : EnemySpawner
 var quest_manager : QuestManager
 
+var has_spawned_jet := false
+
 # Dictionary<Region.Type, float>
 var total_width_per_region_type := {}
 
@@ -104,6 +106,7 @@ func clear_level_entities() -> void:
         child.queue_free()
     for child in get_projectile_container().get_children():
         child.queue_free()
+    has_spawned_jet = false
 
 
 func _physics_process(_delta: float) -> void:
@@ -147,6 +150,11 @@ func _physics_process(_delta: float) -> void:
     if G.player.global_position.y < ZOO_KEEPER_SPACE_HEIGHT_THRESHOLD:
         show_zoo_keeper_screen()
 
+    if G.session.detection_score >= 0.99 and not has_spawned_jet:
+        has_spawned_jet = true
+        var jet := G.settings.jet_scene.instantiate()
+        %Enemies.add_child(jet)
+
 
 func show_zoo_keeper_screen() -> void:
     G.session.deposit_enemies()
@@ -168,6 +176,7 @@ func return_from_screen() -> void:
     G.session.start_new_excursion()
     # AUDIO: Music Switch
     G.main.fade_to_main_theme()
+    G.zoo_keeper_screen.stop_zookeeper_audio()
 
     enemy_spawner.spawn()
 

@@ -40,4 +40,9 @@ func on_return_to_zoo() -> void:
             G.session.start_new_quest(next_quest)
             G.session.total_quest_count += 1
         else:
-            G.main.open_screen(G.main.ScreenType.WIN)
+            on_win()
+
+
+func on_win() -> void:
+    G.player.global_position = G.game_panel.player_start_position
+    G.main.open_screen(G.main.ScreenType.WIN)

@@ -42,6 +42,10 @@ func _update_zookeeper_text(text: String) -> void:
     tween.kill() # Clean up the tween
     zoo_speech_audio_player.stop()
 
+func stop_zookeeper_audio() -> void:
+    if zoo_speech_audio_player.playing:
+        zoo_speech_audio_player.stop()
+
 func on_return_to_zoo() -> void:
     _focus_first_enabled_button()
     _update_upgrades_ui()
