@@ -20,7 +20,13 @@ func _physics_process(_delta: float) -> void:
 
 
 func spawn_enemy(enemyType: Enemy.Type):
-    var enemy = G.settings.getEnemyScene(enemyType)
+    var enemy = G.settings.instantiate_enemy(enemyType)
+
+    # FIXME:
+
+    #enemy.home_region
+
+
     # always spawn player the opposite way of players direction
     enemy.global_position.y = 0
     var rng = RandomNumberGenerator.new()

@@ -25,6 +25,12 @@ enum State {
     DEAD,
 }
 
+enum RegionType {
+    RURAL,
+    SUBURBS,
+    CITY,
+}
+
 const LANDED_HARD_SPEED_THRESHOLD := 270
 const FADE_DELAY_AFTER_DEATH := 5
 
@@ -35,8 +41,20 @@ const ENEMY_CONFIG_TEMPLATES := {
         running_speed = [190, 220],
         jump_boost = [150, 170],
         approach_distance = [28, 36],
-        stop_alert_delay = [8, 8],
+        stop_alert_delay = [6, 8],
         chases = false,
+        regions = [RegionType.RURAL],
+        population_weight = 10,
+    },
+    Type.POLICE_OFFICER: {
+        walking_speed = [55, 65],
+        running_speed = [200, 240],
+        jump_boost = [150, 170],
+        approach_distance = [28, 36],
+        stop_alert_delay = [10, 12],
+        chases = true,
+        regions = [RegionType.SUBURBS, RegionType.CITY],
+        population_weight = 10,
     },
     # FIXME:
     #FARMER,
@@ -53,6 +71,8 @@ const ENEMY_CONFIG_TEMPLATES := {
 
 # This should match the properties on ENEMY_CONFIG_TEMPLATES.
 var config: Dictionary
+
+var home_region: Region
 
 var state := State.STARTING
 var was_on_floor := false

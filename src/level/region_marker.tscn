@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ck5n7g0tio823"]
+
+[ext_resource type="Script" uid="uid://5e2obajq0onk" path="res://src/level/region_marker.gd" id="1_r7ulx"]
+
+[node name="RegionMarker" type="Node2D"]
+script = ExtResource("1_r7ulx")

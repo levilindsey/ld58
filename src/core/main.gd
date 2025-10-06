@@ -97,21 +97,21 @@ func fade_to_zoo_theme() -> void:
         var tween := create_tween()
         tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
         tween.tween_property(theme_audio_player, "volume_db", -80.0, .2)
-         
+
         await tween.step_finished
         theme_audio_player.stream_paused = true
-        
+
     if not zoo_audio_player.playing:
         zoo_audio_player.play()
-    
+
 func fade_to_main_theme() -> void:
     zoo_audio_player.stop()
-        
+
     theme_audio_player.stream_paused = false
     var tween := create_tween()
     tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-    tween.tween_property(theme_audio_player, "volume_db", -8.0, .2)       
-        
+    tween.tween_property(theme_audio_player, "volume_db", -8.0, .2)
+
     if not theme_audio_player.playing:
         theme_audio_player.play()
 

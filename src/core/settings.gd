@@ -3,6 +3,7 @@ extends Resource
 
 
 @export var dev_mode := true
+@export var draw_annotations := false
 
 @export var start_in_zookeeper_screen := true
 @export var full_screen := false
@@ -24,7 +25,7 @@ extends Resource
 @export var enemy_sound_scene: PackedScene
 
 
-func getEnemyScene(enemyType: Enemy.Type):
+func instantiate_enemy(enemyType: Enemy.Type):
     match enemyType:
         Enemy.Type.FARMER:
             return farmer_scene.instantiate()

@@ -11,12 +11,19 @@ var chunk_a_bounds: Rect2
 var chunk_b_bounds: Rect2
 var chunk_c_bounds: Rect2
 var combined_level_chunk_bounds: Rect2
+@onready var chunks: Array[LevelChunk] = [
+    %LevelChunkA,
+    %LevelChunkB,
+    %LevelChunkC,
+]
 
 var is_shifting_chunks := false
 var has_fully_initialized := false
 var enemy_spawner : EnemySpawner
 var quest_manager : QuestManager
 
+# Dictionary<Enemy.RegionType, float>
+var total_width_per_region_type := {}
 
 
 func _enter_tree() -> void:
@@ -26,6 +33,14 @@ func _enter_tree() -> void:
 func _ready() -> void:
     G.game_panel = self
     player_start_position = G.player.global_position
+
+    # Calculate the cumulative width for each region type across the world.
+    for type in Enemy.RegionType.values():
+        total_width_per_region_type[type] = 0
+    for chunk in chunks:
+        for type in chunk.total_width_per_region_type:
+            total_width_per_region_type[type] += chunk.total_width_per_region_type[type]
+
     start_level()
 
 
@@ -125,7 +140,7 @@ func show_zoo_keeper_screen() -> void:
     G.session.deposit_enemies()
     # AUDIO: Music Switch
     G.main.fade_to_zoo_theme()
-    
+
 
 func return_from_zoo_keeper_screen() -> void:
     G.zoo_keeper.visible = false
@@ -192,3 +207,26 @@ func _get_enemies_in_left_most_level_chunk() -> Array:
         if enemy.global_position.x < left_chunk_right_boundary:
             filtered_enemies.append(enemy)
     return filtered_enemies
+
+
+func get_random_region(types: Array[Region]) -> Region:
+    var types_set := {}
+    var total_width := 0
+    for type in types:
+        types_set[type] = true
+        total_width += total_width_per_region_type[type]
+
+    var offset := randf() * total_width - 0.1
+
+    var current_width := 0.0
+    for chunk in chunks:
+        for region in chunk.regions:
+            if not types_set.has(region.type):
+                continue
+            current_width += region.width
+            if current_width > offset:
+                return region
+
+    G.utils.ensure(false)
+
+    return chunks[0].regions[0]

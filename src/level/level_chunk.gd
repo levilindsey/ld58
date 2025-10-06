@@ -3,11 +3,59 @@ class_name LevelChunk
 extends Node2D
 
 
-const DRAW_DEBUG_BOUNDS_IN_GAME := false
+var size := Vector2.ZERO
+
+# Sorted on x position.
+var regions: Array[Region] = []
+
+# Dictionary<Enemy.RegionType, float>
+var total_width_per_region_type := {}
+
+
+func _ready() -> void:
+    var start_bounds := get_bounds()
+    size = start_bounds.size
+
+    _record_regions()
+
+
+func _record_regions() -> void:
+    var markers: Array[RegionMarker] = []
+
+    for child in get_children():
+        if not child is RegionMarker:
+            continue
+        markers.push_back(child)
+
+    markers.sort_custom(
+        func (a: RegionMarker, b: RegionMarker):
+            return a.position.x < b.position.x)
+
+    G.utils.ensure(markers.size() >= 2)
+
+    regions.clear()
+
+    for i in range(1, markers.size()):
+        var start_marker := markers[i - 1]
+        var end_marker := markers[i]
+        var region := Region.new(
+            self,
+            start_marker.type,
+            start_marker.position.x,
+            end_marker.position.x)
+        regions.push_back(region)
+    # FIXME
+
+
+    # Calculate the cumulative width for each region type in this chunk.
+    for type in Enemy.RegionType.values():
+        total_width_per_region_type[type] = 0
+    for region in regions:
+        total_width_per_region_type[region.type] += region.width
 
 
 func _draw() -> void:
-    if not Engine.is_editor_hint() and not DRAW_DEBUG_BOUNDS_IN_GAME:
+    if not Engine.is_editor_hint() and not G.settings.draw_annotations:
         return
 
     var bounds := _get_bounds_local()
