@@ -45,11 +45,12 @@ height = 5.0
 
 [node name="Bullet" type="Node2D"]
 script = ExtResource("1_rfh5u")
+metadata/_custom_type_script = "uid://btsacaexd8opk"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_h0q4g")
 autoplay = "default"
-frame_progress = 0.5439282
+frame_progress = 0.80022174
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 8

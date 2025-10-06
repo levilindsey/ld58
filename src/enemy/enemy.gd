@@ -176,7 +176,32 @@ func _hack_sanitize_weird_transform_state() -> void:
 
 func _shoot() -> void:
     last_shoot_time = Time.get_ticks_msec() / 1000.0
-    # FIXME
+
+    var projectile_scene: PackedScene
+    var projectile_speed: float
+    var projectile_scale: float
+    match type:
+        Type.POLICE_OFFICER:
+            projectile_scene = G.settings.bullet_scene
+            projectile_speed = G.settings.bullet_speed
+            projectile_scale = G.settings.bullet_scale
+        _:
+            G.utils.ensure(false)
+            return
+
+    var spawn_position := get_projectile_spawn_position().global_position
+    var direction := (G.player.global_position - spawn_position).normalized()
+    var spawn_rotation := direction.angle()
+    var spawn_velocity := direction * projectile_speed
+    var spawn_scale := Vector2.ONE * projectile_scale
+
+    var bullet: Bullet = projectile_scene.instantiate()
+    bullet.position = spawn_position
+    bullet.velocity = spawn_velocity
+    bullet.rotation = spawn_rotation
+    bullet.scale = spawn_scale
+    bullet.damage = G.settings.bullet_damage
+    G.game_panel.get_projectile_container().add_child(bullet)
 
 
 func queue_extra_security_dismissed() -> void:
@@ -447,6 +472,10 @@ func get_collision_shape() -> CollisionShape2D:
 
 func get_detection_area() -> Area2D:
     return get_node("DetectionArea")
+
+
+func get_projectile_spawn_position() -> Node2D:
+    return get_node("ProjectileSpawnPosition")
 
 
 func get_shape() -> Shape2D:

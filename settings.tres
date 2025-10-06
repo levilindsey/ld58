@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="Settings" load_steps=10 format=3 uid="uid://dv60bmaw1pdx6"]
+[gd_resource type="Resource" script_class="Settings" load_steps=11 format=3 uid="uid://dv60bmaw1pdx6"]
 
+[ext_resource type="PackedScene" uid="uid://di1dddin37gml" path="res://src/enemy/bullet.tscn" id="1_bav20"]
 [ext_resource type="PackedScene" uid="uid://c37vtw0k41rob" path="res://src/enemy/business_man.tscn" id="1_i3tmf"]
 [ext_resource type="Script" uid="uid://cqomr88ncj2d3" path="res://src/core/settings.gd" id="1_krfic"]
 [ext_resource type="PackedScene" uid="uid://dhc3gergk5jk1" path="res://src/enemy/cat.tscn" id="2_4irwu"]
@@ -21,4 +22,5 @@ elderly_scene = ExtResource("3_bav20")
 cat_scene = ExtResource("2_4irwu")
 business_person_scene = ExtResource("1_i3tmf")
 police_officer_scene = ExtResource("7_n131f")
+bullet_scene = ExtResource("1_bav20")
 enemy_sound_scene = ExtResource("4_4irwu")

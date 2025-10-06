@@ -195,6 +195,10 @@ func get_enemy_container() -> Node2D:
     return %Enemies
 
 
+func get_projectile_container() -> Node2D:
+    return %Projectiles
+
+
 func _update_bounds() -> void:
     chunk_a_bounds = %LevelChunkA.get_bounds()
     chunk_b_bounds = %LevelChunkB.get_bounds()

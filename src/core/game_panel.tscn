@@ -26,3 +26,6 @@ unique_name_in_owner = true
 
 [node name="Enemies" type="Node2D" parent="."]
 unique_name_in_owner = true
+
+[node name="Projectiles" type="Node2D" parent="."]
+unique_name_in_owner = true

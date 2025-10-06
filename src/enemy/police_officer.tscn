@@ -86,6 +86,10 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Light/LightArea"]
 shape = SubResource("ConvexPolygonShape2D_4bnun")
 
+[node name="ProjectileSpawnPosition" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(3, -8)
+
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
 [connection signal="body_entered" from="Light/LightArea" to="." method="_on_light_area_body_entered"]

@@ -88,9 +88,11 @@ func handle_beam() -> void:
     if Input.is_action_just_released("Beam"):
         _on_stopped_beam()
 
+
 func update_beam_scale() -> void:
     %TractorBeamArea.scale.x = G.session.beam_scale
     %TractorBeamArea.scale.y = G.session.beam_scale
+
 
 func _on_started_beam() -> void:
     print("_on_started_beam")
@@ -146,14 +148,17 @@ func handle_movement(delta):
         velocity.y += _get_gravity() * delta
     move_and_slide()
 
+
 func _get_max_speed() -> int:
     if is_beaming:
         return G.session.max_speed_beaming
     else:
         return G.session.max_speed
 
+
 func _get_gravity() -> float:
     return G.session.current_enemies_collected_count * G.session.gravity_per_enemy
+
 
 func is_movement_action_pressed() -> bool:
     return (
@@ -197,3 +202,28 @@ func _on_abductee_collection_area_body_entered(body: Node2D) -> void:
 
         if not capture_audio_player.playing:
             capture_audio_player.play()
+
+
+func damage(value: int) -> void:
+    if is_dead():
+        return
+
+    var next_health := maxi(G.session.health - 1, 0)
+    G.session.set_health(next_health)
+    print("Ship damaged: %d [%d / %d]" % [value, G.session.health, G.session.max_health])
+    if is_dead():
+        _on_killed()
+    else:
+        # TODO(ALDEN): Sounds (OUCH, WE'VE BEEN SHOT!!)
+        pass
+
+
+func is_dead() -> bool:
+    return G.session.health <= 0
+
+
+func _on_killed() -> void:
+    print("Ship destroyed")
+    self.visible = false
+    # TODO(ALDEN): Sounds (KABLOOEY)
+    # TODO(JAKE): Show the game-over screen!

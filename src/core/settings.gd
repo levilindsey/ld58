@@ -11,6 +11,10 @@ extends Resource
 @export var extra_security_enemies_count_min := 0
 @export var extra_security_enemies_count_max := 20
 
+@export var bullet_damage := 1
+@export var bullet_speed := 210.0
+@export var bullet_scale := 1.0
+
 @export var start_in_zookeeper_screen := true
 @export var full_screen := false
 # TODO: Hook this up.
@@ -27,6 +31,8 @@ extends Resource
 @export var cat_scene: PackedScene
 @export var business_person_scene: PackedScene
 @export var police_officer_scene: PackedScene
+
+@export var bullet_scene: PackedScene
 
 @export var enemy_sound_scene: PackedScene
 
