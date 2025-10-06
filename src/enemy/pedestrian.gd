@@ -213,9 +213,11 @@ func _set_is_searching(value: bool) -> void:
 
 func _on_light_area_body_entered(body: Node2D) -> void:
     if body is Player:
+        _set_is_viewing_ship(true)
         _on_ufo_detected()
 
 
 func _on_light_area_body_exited(body: Node2D) -> void:
     if body is Player:
-        _on_ufo_detected()
+        _set_is_viewing_ship(false)
+        _on_detection_end()

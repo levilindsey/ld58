@@ -38,6 +38,12 @@ var config: Dictionary
 var home_region: Region
 
 var is_searching := false
+var is_searching_start_time := -INF
+
+var is_viewing_ship := false
+var is_viewing_ship_start_time := -INF
+
+var last_shoot_time := -INF
 
 var state := State.STARTING
 var was_on_floor := false
@@ -121,6 +127,15 @@ func _physics_process(delta: float) -> void:
     if was_player_recently_detected and is_past_alerted_cut_off:
         _on_done_running_away()
 
+    if get_is_security() and is_viewing_ship:
+        var have_recovered_since_first_noticing_ship:  bool = \
+            current_time > is_searching_start_time + config.initial_shoot_delay and \
+            current_time > is_viewing_ship_start_time + config.initial_shoot_delay
+        var have_shot_recently: bool = \
+            current_time < last_shoot_time + config.shoot_period
+        if have_recovered_since_first_noticing_ship and not have_shot_recently:
+            _shoot()
+
     _fix_facing_direction_for_target()
 
     previous_velocity = velocity
@@ -157,6 +172,11 @@ func _hack_sanitize_weird_transform_state() -> void:
     await get_tree().process_frame
     global_position.y = -10
     velocity = Vector2.ZERO
+
+
+func _shoot() -> void:
+    last_shoot_time = Time.get_ticks_msec() / 1000.0
+    # FIXME
 
 
 func queue_extra_security_dismissed() -> void:
@@ -254,6 +274,20 @@ func _on_ufo_detected() -> void:
         _on_alerted()
 
 
+func _on_detection_end() -> void:
+    if is_dead():
+        return
+
+    was_player_recently_detected = true
+    last_player_sighting_time = Time.get_ticks_msec() / 1000.0
+
+    if get_is_security() and not is_searching:
+        _set_is_searching(true)
+
+    if is_extra_security:
+        update_extra_security_dismissal_time()
+
+
 func _on_killed() -> void:
     state = State.DEAD
     death_time = Time.get_ticks_msec() / 1000.0
@@ -281,15 +315,17 @@ func _on_alerted() -> void:
 
 
 func _set_is_searching(value: bool) -> void:
+    var was_searching := is_searching
     is_searching = value
+    if not was_searching and is_searching:
+        is_searching_start_time = Time.get_ticks_msec() / 1000.0
 
 
-func _on_detection_end() -> void:
-    if is_dead():
-        return
-
-    was_player_recently_detected = true
-    last_player_sighting_time = Time.get_ticks_msec() / 1000.0
+func _set_is_viewing_ship(value: bool) -> void:
+    var was_viewing_ship := is_viewing_ship
+    is_viewing_ship = value
+    if not was_viewing_ship and is_viewing_ship:
+        is_viewing_ship_start_time = Time.get_ticks_msec() / 1000.0
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
@@ -297,6 +333,7 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
         return
 
     if body is Player:
+        _set_is_viewing_ship(true)
         _on_ufo_detected()
     elif body is Enemy:
         visible_enemies[body] = true
@@ -309,6 +346,7 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
         return
 
     if body is Player:
+        _set_is_viewing_ship(false)
         _on_detection_end()
     elif body is Enemy:
         visible_enemies.erase(body)
@@ -442,6 +480,8 @@ func assign_config() -> void:
         "jump_boost",
         "approach_distance",
         "stop_alert_delay",
+        "shoot_period",
+        "initial_shoot_delay",
     ]:
         config[key] = randf_range(config_template[key][0], config_template[key][1])
     config.is_security = config_template.is_security
