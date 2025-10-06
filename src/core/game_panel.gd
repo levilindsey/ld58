@@ -133,7 +133,6 @@ func return_from_zoo_keeper_screen() -> void:
     G.player.global_position = player_start_position
     G.session.start_new_excursion()
     # AUDIO: Music Switch
-    G.main.play_theme()
     G.main.fade_to_main_theme()
 
 

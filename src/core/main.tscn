@@ -8,7 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://cuvynce1ly56c" path="res://assets/audio/Alien Voice 2.mp3" id="6_2in8s"]
 [ext_resource type="AudioStream" uid="uid://505pi6oqhfst" path="res://assets/audio/Click/Click-cm-02.wav" id="6_nlf45"]
 [ext_resource type="AudioStream" uid="uid://dmh678v0gek8c" path="res://assets/audio/Click/Click-cm-04.wav" id="7_2in8s"]
-[ext_resource type="AudioStream" uid="uid://cnnsx11kxbsvb" path="res://assets/audio/Zookeeper_01.wav" id="7_7561f"]
+[ext_resource type="AudioStream" uid="uid://dvhroq3jf64ma" path="res://assets/audio/Zookeeper_02.wav" id="7_7561f"]
 [ext_resource type="AudioStream" uid="uid://b3achb3rytv11" path="res://assets/audio/Click/Click-cm-06.wav" id="8_7o0du"]
 [ext_resource type="AudioStream" uid="uid://qk2yfhofcotd" path="res://assets/audio/Click/Click-cm-07.wav" id="9_7561f"]
 [ext_resource type="AudioStream" uid="uid://bsrrqlihg8pnd" path="res://assets/audio/LD58_UFOOO_01.wav" id="11_7o0du"]
@@ -46,7 +46,7 @@ bus = &"Voices"
 [node name="ZooThemeStreamPlayer" type="AudioStreamPlayer" parent="ZooKeeper"]
 process_mode = 3
 stream = ExtResource("7_7561f")
-volume_db = 5.073
+volume_db = 2.247
 autoplay = true
 bus = &"Music"
 
