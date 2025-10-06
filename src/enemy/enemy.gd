@@ -10,6 +10,8 @@ enum Type {
     BUSINESS_PERSON,
     HOMELESS_PERSON,
     POLICE_OFFICER,
+    COW,
+    CHICKEN,
     # TODO: Add stuff here!
     #POLICE_CAR,
     #TANK,

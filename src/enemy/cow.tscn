@@ -1,0 +1,66 @@
+[gd_scene load_steps=8 format=3 uid="uid://brekkyvij72it"]
+
+[ext_resource type="Script" uid="uid://c00fx7v44n5qw" path="res://src/enemy/pedestrian.gd" id="1_e52yj"]
+[ext_resource type="Texture2D" uid="uid://2ejjy5r8vfsd" path="res://assets/images/cow.png" id="2_e52yj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tee10"]
+atlas = ExtResource("2_e52yj")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sid7i"]
+atlas = ExtResource("2_e52yj")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_k20il"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tee10")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sid7i")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1p648"]
+radius = 6.5
+height = 13.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1p648"]
+size = Vector2(36.93663, 49.75148)
+
+[node name="Cow" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_e52yj")
+type = 7
+metadata/_custom_type_script = "uid://c00fx7v44n5qw"
+
+[node name="SpriteWrapper" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="SpriteWrapper"]
+position = Vector2(0, -8)
+sprite_frames = SubResource("SpriteFrames_k20il")
+autoplay = "default"
+frame_progress = 0.32713288
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5.5)
+shape = SubResource("CapsuleShape2D_1p648")
+
+[node name="DetectionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 5
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+position = Vector2(28.999996, -12.999997)
+rotation = -1.3002703
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_1p648")
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]

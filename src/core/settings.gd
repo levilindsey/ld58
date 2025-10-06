@@ -35,6 +35,8 @@ extends Resource
 @export var cat_scene: PackedScene
 @export var business_person_scene: PackedScene
 @export var police_officer_scene: PackedScene
+@export var cow_scene: PackedScene
+@export var chicken_scene: PackedScene
 
 @export var bullet_scene: PackedScene
 @export var missile_scene: PackedScene
@@ -120,7 +122,7 @@ const ENEMY_CONFIGS := {
         initial_shoot_delay = [0.2, 0.5],
         is_security = false,
         regions = [Region.Type.RURAL, Region.Type.SUBURBS, Region.Type.CITY],
-        population_weight = 10,
+        population_weight = 7,
     },
     Enemy.Type.OLD_PERSON: {
         walking_speed = [45, 55],
@@ -156,7 +158,7 @@ const ENEMY_CONFIGS := {
         initial_shoot_delay = [0.2, 0.5],
         is_security = false,
         regions = [Region.Type.CITY],
-        population_weight = 10,
+        population_weight = 20,
     },
     Enemy.Type.BUSINESS_PERSON: {
         walking_speed = [45, 55],
@@ -168,7 +170,7 @@ const ENEMY_CONFIGS := {
         initial_shoot_delay = [0.2, 0.5],
         is_security = false,
         regions = [Region.Type.SUBURBS, Region.Type.CITY],
-        population_weight = 10,
+        population_weight = 15,
     },
     Enemy.Type.POLICE_OFFICER: {
         walking_speed = [55, 65],
@@ -180,7 +182,31 @@ const ENEMY_CONFIGS := {
         initial_shoot_delay = [0.2, 0.5],
         is_security = true,
         regions = [Region.Type.SUBURBS, Region.Type.CITY],
-        population_weight = 10,
+        population_weight = 12,
+    },
+    Enemy.Type.COW: {
+        walking_speed = [20, 40],
+        running_speed = [120, 180],
+        jump_boost = [80, 100],
+        approach_distance = [40, 100],
+        stop_alert_delay = [10, 12],
+        shoot_period = [0.5, 0.8],
+        initial_shoot_delay = [0.2, 0.5],
+        is_security = false,
+        regions = [Region.Type.RURAL],
+        population_weight = 20,
+    },
+    Enemy.Type.CHICKEN: {
+        walking_speed = [30, 60],
+        running_speed = [160, 220],
+        jump_boost = [80, 100],
+        approach_distance = [40, 100],
+        stop_alert_delay = [10, 12],
+        shoot_period = [0.5, 0.8],
+        initial_shoot_delay = [0.2, 0.5],
+        is_security = false,
+        regions = [Region.Type.RURAL],
+        population_weight = 30,
     },
 }
 
@@ -201,6 +227,10 @@ func instantiate_enemy(enemyType: Enemy.Type):
             return cat_scene.instantiate()
         Enemy.Type.BUSINESS_PERSON:
             return business_person_scene.instantiate()
+        Enemy.Type.COW:
+            return cow_scene.instantiate()
+        Enemy.Type.CHICKEN:
+            return chicken_scene.instantiate()
         _:
             G.utils.ensure(false)
             return
