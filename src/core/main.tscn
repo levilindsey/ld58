@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bpnl5pn3ydite"]
+[gd_scene load_steps=14 format=3 uid="uid://bpnl5pn3ydite"]
 
 [ext_resource type="Script" uid="uid://cb3gdybtwy0ry" path="res://src/core/main.gd" id="1_avv2o"]
 [ext_resource type="Resource" uid="uid://dv60bmaw1pdx6" path="res://settings.tres" id="2_ivtyw"]
@@ -8,6 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://cuvynce1ly56c" path="res://assets/audio/Alien Voice 2.mp3" id="6_2in8s"]
 [ext_resource type="AudioStream" uid="uid://505pi6oqhfst" path="res://assets/audio/Click/Click-cm-02.wav" id="6_nlf45"]
 [ext_resource type="AudioStream" uid="uid://dmh678v0gek8c" path="res://assets/audio/Click/Click-cm-04.wav" id="7_2in8s"]
+[ext_resource type="AudioStream" uid="uid://cnnsx11kxbsvb" path="res://assets/audio/Zookeeper_01.wav" id="7_7561f"]
 [ext_resource type="AudioStream" uid="uid://b3achb3rytv11" path="res://assets/audio/Click/Click-cm-06.wav" id="8_7o0du"]
 [ext_resource type="AudioStream" uid="uid://qk2yfhofcotd" path="res://assets/audio/Click/Click-cm-07.wav" id="9_7561f"]
 [ext_resource type="AudioStream" uid="uid://bsrrqlihg8pnd" path="res://assets/audio/LD58_UFOOO_01.wav" id="11_7o0du"]
@@ -41,6 +42,11 @@ unique_name_in_owner = true
 stream = ExtResource("6_2in8s")
 bus = &"Voices"
 
+[node name="ZooThemeStreamPlayer" type="AudioStreamPlayer" parent="ZooKeeper"]
+stream = ExtResource("7_7561f")
+volume_db = 5.073
+bus = &"Music"
+
 [node name="ClickStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamRandomizer_0g4b3")
 volume_db = -12.142
@@ -48,5 +54,6 @@ bus = &"SFX"
 
 [node name="ThemeStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_7o0du")
+volume_db = -8.0
 autoplay = true
 bus = &"Music"
