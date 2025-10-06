@@ -15,6 +15,7 @@ func _ready() -> void:
     var offset_x := G.game_panel.chunk_edge_distance_threshold_for_chunk_repositioning + 40
     velocity = Vector2.RIGHT * SPEED
     velocity.x *= -1
+    # FIXME: backwards when lfetwards
     if randf() < 0.5:
         offset_x *= -1
         velocity.x *= -1

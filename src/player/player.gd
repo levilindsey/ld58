@@ -26,6 +26,8 @@ func _ready() -> void:
 
 
 func reset() -> void:
+    for child in pedestrians_in_beam.get_children():
+        child.queue_free()
     pedestrians_in_beam.clear()
     is_beaming = false
 
