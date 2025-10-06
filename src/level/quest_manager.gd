@@ -4,15 +4,11 @@ extends Node
 
 var quest_schedule: Array[Quest] = [
     Quest.new({
-        Enemy.Type.FARMER: 3,
+        Enemy.Type.FARMER: 1,
     }, 5),
      Quest.new({
-        Enemy.Type.CAT: 2,
-        Enemy.Type.KID: 2
-    }, 5),
-    Quest.new({
-        Enemy.Type.CAT: 5
-    }, 5),
+        Enemy.Type.CAT: 1,
+    }, 5)
 ]
 
 var schedule_index := 0

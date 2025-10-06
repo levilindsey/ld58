@@ -23,6 +23,7 @@ const UPGRADE_SPEED_TEXT = "Improve speed"
 @onready var zoo_speech_audio_player: AudioStreamPlayer = $ZooSpeechStreamPlayer
 
 var fulfilled_quests_counter = 0
+var has_given_welcome = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -31,6 +32,7 @@ func _ready() -> void:
 
 func reset() -> void:
     fulfilled_quests_counter = 0
+    has_given_welcome = false
 
 func _update_zookeeper_text(text: String) -> void:
     zoo_speech_audio_player.play()
@@ -53,8 +55,10 @@ func on_return_to_zoo() -> void:
         _update_zookeeper_text(ZOOKEEPER_QUEST_FULFILLED)
         G.utils.ensure(G.session.fulfilled_quests.size() - 1 == fulfilled_quests_counter)
         fulfilled_quests_counter += 1
-    else:
+    elif has_given_welcome:
         _update_zookeeper_text(ZOOKEEPER_QUEST_FAILED)
+    else:
+        zookeeper_welcome()
         
 func _focus_first_enabled_button() -> void:
     if not %UpgradeBeam.disabled:
@@ -74,6 +78,7 @@ func _focus_first_enabled_button() -> void:
 func zookeeper_welcome() ->    void:
     _focus_first_enabled_button()
     _update_zookeeper_text(ZOOKEEPER_GREETING)
+    has_given_welcome = true
 
 func _update_wallet_text() -> void:
     if G.session.money == 1:

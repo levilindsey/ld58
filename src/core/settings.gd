@@ -69,10 +69,10 @@ const SHIP_UPGRADE_VALUES := {
     },
     # number of enemies to fill the detection bar
     UpgradeLevels.UpgradeTypes.STEALTH: {
-        0: 4,
-        1: 6,
-        2: 10,
-        3: 15
+        0: 6,
+        1: 10,
+        2: 15,
+        3: 20
     }
 }
 
