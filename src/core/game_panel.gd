@@ -2,7 +2,7 @@ class_name GamePanel
 extends Node2D
 
 
-const ZOO_KEEPER_SPACE_HEIGHT_THRESHOLD := -1200
+const ZOO_KEEPER_SPACE_HEIGHT_THRESHOLD := -900
 
 var player_start_position := Vector2.ZERO
 var chunk_edge_distance_threshold_for_chunk_repositioning: int
@@ -137,6 +137,7 @@ func show_zoo_keeper_screen() -> void:
     quest_manager.on_return_to_zoo()
     get_tree().paused = true
     G.zoo_keeper.visible = true
+    G.zoo_keeper.focus_first_enabled_button()
     G.session.deposit_enemies()
     # AUDIO: Music Switch
     G.main.fade_to_zoo_theme()

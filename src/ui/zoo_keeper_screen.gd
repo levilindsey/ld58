@@ -19,8 +19,23 @@ func _update_zookeeper_text(text: String) -> void:
     tween.kill() # Clean up the tween
     zoo_speech_audio_player.stop()
 
+func focus_first_enabled_button() -> void:
+    if not %UpgradeBeam.disabled:
+        %UpgradeBeam.grab_focus.call_deferred()
+    elif not %UpgradeCapacity.disabled:
+        %UpgradeCapacity.grab_focus.call_deferred()
+    elif not %UpgradeStealth.disabled:
+        %UpgradeStealth.grab_focus.call_deferred()
+    elif not %UpgradeSpeed.disabled:
+        %UpgradeSpeed.grab_focus.call_deferred()
+    elif not %EarthButton.disabled:
+        %EarthButton.grab_focus.call_deferred()
+    else:
+        G.utils.ensure(false)
+        
+
 func zookeeper_welcome() ->    void:
-    %UpgradeBeam.grab_focus.call_deferred()
+    focus_first_enabled_button()
     _update_zookeeper_text(ZOOKEEPER_GREETING)
     
 func update_upgrades_ui() -> void:

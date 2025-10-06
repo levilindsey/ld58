@@ -6,7 +6,6 @@ extends Resource
 @export var draw_annotations := false
 
 @export var total_enemy_count := 40
-@export var alert_enemies_count_for_max_detection := 20
 @export var count_multiplier_for_alert_security_enemy := 4
 
 @export var start_in_zookeeper_screen := true
@@ -50,12 +49,12 @@ const SHIP_UPGRADE_VALUES := {
         2: 6,
         3: 10
     },
-    # 
+    # number of enemies to fill the detection bar
     UpgradeLevels.UpgradeTypes.STEALTH: {
-        0: 100,
-        1: 200,
-        2: 300,
-        3: 400
+        0: 4,
+        1: 6,
+        2: 10,
+        3: 15
     }
 }
 

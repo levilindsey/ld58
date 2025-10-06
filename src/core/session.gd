@@ -36,6 +36,7 @@ var beam_scale := 0.0
 var max_speed := 0
 var max_speed_beaming := 0
 var gravity_per_enemy := 0
+var alert_enemies_count_for_max_detection := 0
 
 var health := 0
 var max_health := 0
@@ -85,6 +86,7 @@ func reset() -> void:
     max_speed = Settings.SHIP_UPGRADE_VALUES[UpgradeLevels.UpgradeTypes.SPEED][0][0]
     max_speed_beaming = Settings.SHIP_UPGRADE_VALUES[UpgradeLevels.UpgradeTypes.SPEED][0][1]
     gravity_per_enemy = Settings.SHIP_UPGRADE_VALUES[UpgradeLevels.UpgradeTypes.SPEED][0][2]
+    alert_enemies_count_for_max_detection = Settings.SHIP_UPGRADE_VALUES[UpgradeLevels.UpgradeTypes.STEALTH][0]
     health = DEFAULT_MAX_HEALTH
     max_health = DEFAULT_MAX_HEALTH
     money = 0
@@ -180,8 +182,8 @@ func _update_detection_score() -> void:
         scaled_alerted_enemy_count += current_alerted_enemies_by_type[type] * multiplier
 
     scaled_alerted_enemy_count = clamp(
-        scaled_alerted_enemy_count, 0, G.settings.alert_enemies_count_for_max_detection)
+        scaled_alerted_enemy_count, 0, alert_enemies_count_for_max_detection)
 
-    detection_score = scaled_alerted_enemy_count / G.settings.alert_enemies_count_for_max_detection
+    detection_score = scaled_alerted_enemy_count / alert_enemies_count_for_max_detection
 
     G.hud.update_detection()

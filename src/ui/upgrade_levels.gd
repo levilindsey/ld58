@@ -25,7 +25,7 @@ func set_level(level: int) -> void:
             G.session.beam_scale = updated_ability_value
             G.player.update_beam_scale()
         UpgradeTypes.STEALTH:
-            pass
+            G.session.alert_enemies_count_for_max_detection = updated_ability_value
         _:
             G.utils.ensure(false)
 
