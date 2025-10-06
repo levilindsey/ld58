@@ -89,8 +89,13 @@ func start_level() -> void:
 
 func reset() -> void:
     G.session.reset()
-    G.player.reset()
     G.zoo_keeper_screen.reset()
+    clear_level_entities()
+    start_level()
+
+
+func clear_level_entities() -> void:
+    G.player.reset()
     current_alerted_enemies.clear()
     if is_instance_valid(enemy_spawner):
         enemy_spawner.extra_security_enemies.clear()
@@ -99,7 +104,6 @@ func reset() -> void:
         child.queue_free()
     for child in get_projectile_container().get_children():
         child.queue_free()
-    start_level()
 
 
 func _physics_process(_delta: float) -> void:
@@ -150,6 +154,7 @@ func show_zoo_keeper_screen() -> void:
     # zoo_keeper_screen.on_return_to_zoo must come after deposit enemies
     # and quest_manager.on_return_to_zoo for proper behavior.
     G.main.open_screen(Main.ScreenType.ZOO_KEEPER)
+    clear_level_entities()
 
 
 func return_from_screen() -> void:
