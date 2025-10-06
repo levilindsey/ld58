@@ -90,6 +90,7 @@ func start_level() -> void:
 func reset() -> void:
     G.session.reset()
     G.player.reset()
+    G.zoo_keeper_screen.reset()
     current_alerted_enemies.clear()
     if is_instance_valid(enemy_spawner):
         enemy_spawner.extra_security_enemies.clear()
