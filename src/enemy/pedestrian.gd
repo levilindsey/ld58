@@ -227,3 +227,9 @@ func _on_light_area_body_exited(body: Node2D) -> void:
     if body is Player:
         _set_is_viewing_ship(false)
         _on_detection_end()
+
+
+func _shoot() -> void:
+    super._shoot()
+    # TODO(Alden): Shoot!
+    pass

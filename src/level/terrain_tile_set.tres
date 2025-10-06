@@ -1,6 +1,32 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://n1nnhi54pgyi"]
+[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://n1nnhi54pgyi"]
 
 [ext_resource type="Texture2D" uid="uid://r2onbmumkh4v" path="res://assets/images/dirt.png" id="1_dg6c5"]
+[ext_resource type="Texture2D" uid="uid://clygpix5468f8" path="res://assets/images/decorations.png" id="1_ex0m2"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xuaco"]
+texture = ExtResource("1_ex0m2")
+0:6/size_in_atlas = Vector2i(4, 4)
+0:6/0 = 0
+4:6/size_in_atlas = Vector2i(8, 4)
+4:6/0 = 0
+12:5/size_in_atlas = Vector2i(7, 5)
+12:5/0 = 0
+20:2/size_in_atlas = Vector2i(7, 8)
+20:2/0 = 0
+14:1/size_in_atlas = Vector2i(3, 2)
+14:1/0 = 0
+12:2/size_in_atlas = Vector2i(2, 1)
+12:2/0 = 0
+10:0/size_in_atlas = Vector2i(2, 3)
+10:0/0 = 0
+8:0/size_in_atlas = Vector2i(2, 3)
+8:0/0 = 0
+6:2/size_in_atlas = Vector2i(2, 1)
+6:2/0 = 0
+2:0/size_in_atlas = Vector2i(4, 3)
+2:0/0 = 0
+0:0/size_in_atlas = Vector2i(2, 3)
+0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ktrgy"]
 texture = ExtResource("1_dg6c5")
@@ -54,3 +80,4 @@ texture = ExtResource("1_dg6c5")
 physics_layer_0/collision_layer = 2
 physics_layer_0/collision_mask = 0
 sources/1 = SubResource("TileSetAtlasSource_ktrgy")
+sources/0 = SubResource("TileSetAtlasSource_xuaco")
