@@ -130,7 +130,7 @@ func _physics_process(delta: float) -> void:
     if was_player_recently_detected and is_past_alerted_cut_off:
         _on_done_running_away()
 
-    if get_is_security() and is_viewing_ship and state != State.BEING_BEAMED:
+    if get_is_security() and is_viewing_ship and state != State.BEING_BEAMED and not is_dead():
         var have_recovered_since_first_noticing_ship:  bool = \
             current_time > is_searching_start_time + config.initial_shoot_delay and \
             current_time > is_viewing_ship_start_time + config.initial_shoot_delay

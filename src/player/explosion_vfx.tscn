@@ -12,7 +12,7 @@ colors = PackedColorArray(0.2304, 0.24, 0.23247999, 1, 0.45504, 0.48, 0.4224, 1,
 
 [node name="ExplosionVFX" type="CPUParticles2D"]
 emitting = false
-amount = 100
+amount = 120
 texture = ExtResource("1_aomvh")
 lifetime = 0.4
 one_shot = true
@@ -23,7 +23,5 @@ spread = 180.0
 gravity = Vector2(0, 50)
 initial_velocity_min = 50.0
 initial_velocity_max = 270.0
-scale_amount_min = 2.0
-scale_amount_max = 2.0
 color_ramp = SubResource("Gradient_2ti1m")
 color_initial_ramp = SubResource("Gradient_l4nfn")
