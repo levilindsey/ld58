@@ -6,8 +6,21 @@ var quest_schedule: Array[Quest] = [
     Quest.new({
         Enemy.Type.FARMER: 1,
     }, 10),
+    Quest.new({
+        Enemy.Type.OLD_PERSON: 1,
+        Enemy.Type.KID: 1
+    }, 10),
      Quest.new({
-        Enemy.Type.CAT: 1,
+        Enemy.Type.CAT: 2,
+        Enemy.Type.COW: 1,
+        Enemy.Type.CHICKEN: 1,
+    }, 10),
+    Quest.new({
+        Enemy.Type.HOMELESS_PERSON: 3,
+        Enemy.Type.BUSINESS_PERSON: 3,
+    }, 10),
+    Quest.new({
+        Enemy.Type.POLICE_OFFICER: 5
     }, 10)
 ]
 
