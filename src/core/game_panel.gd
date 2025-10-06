@@ -12,8 +12,8 @@ var chunk_b_bounds: Rect2
 var chunk_c_bounds: Rect2
 var combined_level_chunk_bounds: Rect2
 @onready var chunks: Array[LevelChunk] = [
-    %LevelChunkA,
     %LevelChunkB,
+    %LevelChunkA,
     %LevelChunkC,
 ]
 
@@ -57,12 +57,12 @@ func start_level() -> void:
 
     has_fully_initialized = false
 
-    %LevelChunkA.global_position.x = 0
+    %LevelChunkB.global_position.x = 0
 
     await get_tree().process_frame
     _update_bounds()
 
-    %LevelChunkB.global_position.x = chunk_a_bounds.size.x
+    %LevelChunkA.global_position.x = chunk_b_bounds.size.x
 
     await get_tree().process_frame
     _update_bounds()
@@ -307,7 +307,7 @@ func on_player_killed() -> void:
     %ExplosionVFX.global_position = G.player.global_position
     %ExplosionVFX.emitting = true
 
-    var start_over_on_death := false
+    var start_over_on_death := true
 
     if start_over_on_death:
         G.session.is_game_ended = true

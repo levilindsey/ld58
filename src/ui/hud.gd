@@ -96,3 +96,5 @@ func update_quest() -> void:
     %QuestEnemyList.set_up_with_denominators(
         G.session.get_combined_counts_of_collected_and_deposited(),
         G.session.active_quest.enemy_type_to_count)
+
+    %ReturnMessage.visible = G.session.is_ship_full()
