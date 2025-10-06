@@ -26,13 +26,15 @@ var is_paused := true:
         is_paused = value
 
 
+func _enter_tree() -> void:
+    G.main = self
+    G.settings = settings
+
+
 func _ready() -> void:
     print("main._ready")
 
     randomize()
-
-    G.main = self
-    G.settings = settings
 
     get_tree().paused = true
 

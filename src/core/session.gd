@@ -2,9 +2,6 @@ class_name Session
 extends RefCounted
 
 
-const DEFAULT_MAX_HEALTH := 3
-
-
 # Dictionary<Enemy.Type, int>
 var total_enemies_deposited_by_type := {}
 # Dictionary<Enemy.Type, int>
@@ -96,8 +93,8 @@ func reset() -> void:
     max_speed_beaming = Settings.SHIP_UPGRADE_VALUES[UpgradeLevels.UpgradeTypes.SPEED][0][1]
     gravity_per_enemy = Settings.SHIP_UPGRADE_VALUES[UpgradeLevels.UpgradeTypes.SPEED][0][2]
     alert_enemies_count_for_max_detection = Settings.SHIP_UPGRADE_VALUES[UpgradeLevels.UpgradeTypes.STEALTH][0]
-    health = DEFAULT_MAX_HEALTH
-    max_health = DEFAULT_MAX_HEALTH
+    health = G.settings.max_health
+    max_health = G.settings.max_health
     money = 0
     detection_score = 0
 
@@ -109,7 +106,7 @@ func reset() -> void:
 
 func start_new_quest(next_quest: Quest) -> void:
     active_quest = next_quest
-    health = DEFAULT_MAX_HEALTH
+    health = G.settings.max_health
     detection_score = 0
 
     for type in Enemy.Type.values():
