@@ -13,12 +13,19 @@ var type: Region.Type = Region.Type.RURAL
 var local_start_x := 0.0
 var local_end_x := 0.0
 
+var local_center_x: float:
+    get:
+        return local_start_x + (local_end_x - local_start_x) / 2.0
+
 var global_start_x: float:
     get:
         return chunk.global_position.x + local_start_x
 var global_end_x: float:
     get:
         return chunk.global_position.x + local_end_x
+var global_center_x: float:
+    get:
+        return chunk.global_position.x + local_center_x
 
 var width: float:
     get:
