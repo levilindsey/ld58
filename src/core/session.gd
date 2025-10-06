@@ -72,7 +72,7 @@ func reset() -> void:
         current_enemies_deposited_by_type[type] = 0
         current_enemies_collected_by_type[type] = 0
         current_alerted_enemies_by_type[type] = 0
-        
+
     for type in UpgradeLevels.UpgradeTypes.values():
         ship_upgrade_levels[type] = 0
 
@@ -160,9 +160,10 @@ func remove_alerted_enemy(type: Enemy.Type) -> void:
     current_alerted_enemies_by_type[type] -= 1
     current_alerted_enemies_count -= 1
 
-    if not G.utils.ensure(current_alerted_enemies_by_type[type] >= 0):
+    if current_alerted_enemies_by_type[type] < 0:
+        push_warning("remove_alerted_enemy: current_alerted_enemies_by_type[type] is negative!")
         current_alerted_enemies_by_type[type] = 0
-    if not G.utils.ensure(current_alerted_enemies_count >= 0):
+    if current_alerted_enemies_count < 0:
         current_alerted_enemies_count = 0
 
     _update_detection_score()

@@ -91,7 +91,7 @@ func handle_beam() -> void:
             pass
     if Input.is_action_just_released("Beam"):
         _on_stopped_beam()
-        
+
 func update_beam_scale() -> void:
     %TractorBeamArea.scale.x = G.session.beam_scale
     %TractorBeamArea.scale.y = G.session.beam_scale

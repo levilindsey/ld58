@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dbqcor0mf1viv"]
+[gd_scene load_steps=10 format=3 uid="uid://dbqcor0mf1viv"]
 
 [ext_resource type="Script" uid="uid://c00fx7v44n5qw" path="res://src/enemy/pedestrian.gd" id="1_7712g"]
 [ext_resource type="Texture2D" uid="uid://bt3yqi0uj5k44" path="res://assets/images/police-officer.png" id="2_7712g"]
+[ext_resource type="Texture2D" uid="uid://e0nly6ynqwkt" path="res://assets/images/light.png" id="3_4bnun"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4bnun"]
 atlas = ExtResource("2_7712g")
@@ -32,6 +33,9 @@ height = 15.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1p648"]
 size = Vector2(86.976685, 101.52755)
 
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_4bnun"]
+points = PackedVector2Array(0, 0, 248.521, -252.26985, 212.36667, -299.7459, 148.57596, -336.41516, 81.38263, -344.51523)
+
 [node name="PoliceOfficer" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 2
@@ -61,5 +65,27 @@ position = Vector2(62.598305, -38.174217)
 rotation = -1.2147492
 shape = SubResource("RectangleShape2D_1p648")
 
+[node name="Light" type="Node2D" parent="."]
+unique_name_in_owner = true
+visible = false
+position = Vector2(3, -8)
+rotation = -0.2932153
+scale = Vector2(0.6, 0.6)
+
+[node name="LightSprite" type="Sprite2D" parent="Light"]
+position = Vector2(124.5, -172.25)
+scale = Vector2(1.0121951, 1.0222552)
+texture = ExtResource("3_4bnun")
+
+[node name="LightArea" type="Area2D" parent="Light"]
+unique_name_in_owner = true
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Light/LightArea"]
+shape = SubResource("ConvexPolygonShape2D_4bnun")
+
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
+[connection signal="body_entered" from="Light/LightArea" to="." method="_on_light_area_body_entered"]
+[connection signal="body_exited" from="Light/LightArea" to="." method="_on_light_area_body_exited"]

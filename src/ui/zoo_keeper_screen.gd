@@ -37,11 +37,11 @@ func focus_first_enabled_button() -> void:
 func zookeeper_welcome() ->    void:
     focus_first_enabled_button()
     _update_zookeeper_text(ZOOKEEPER_GREETING)
-    
+
 func update_upgrades_ui() -> void:
     for widget in [%BeamLevels, %CapacityLevels, %StealthLevels, %SpeedLevels]:
         widget.update_levels_ui()
- 
+
 func _on_earth_button_pressed() -> void:
     G.main.click_sound()
     G.game_panel.return_from_zoo_keeper_screen()

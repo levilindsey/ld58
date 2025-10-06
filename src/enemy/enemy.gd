@@ -36,6 +36,11 @@ var config: Dictionary
 
 var home_region: Region
 
+# FIXME: Update this.
+var is_extra_security := false
+
+var is_searching := false
+
 var state := State.STARTING
 var was_on_floor := false
 var previous_velocity := Vector2.ZERO
@@ -43,8 +48,7 @@ var death_time := -INF
 var was_dropped_from_lethal_height := false
 
 var last_player_sighting_time := -INF
-var is_player_visible := false
-var was_player_recently_visible := false
+var was_player_recently_detected := false
 var is_facing_right := true
 
 # Dictionary<Enemy, bool>
@@ -68,6 +72,9 @@ func _ready() -> void:
     add_child(sound_scene)
 
     setup_sound()
+
+    if get_is_security() and is_extra_security:
+        _set_is_searching(true)
 
     # Fade-in.
     var tween := create_tween()
@@ -102,7 +109,7 @@ func _physics_process(delta: float) -> void:
         last_player_sighting_time + get_stop_alert_delay() <
                 Time.get_ticks_msec() / 1000.0
     )
-    if was_player_recently_visible and is_past_alerted_cut_off:
+    if was_player_recently_detected and is_past_alerted_cut_off:
         _on_done_running_away()
 
     _fix_facing_direction_for_target()
@@ -144,10 +151,12 @@ func _hack_sanitize_weird_transform_state() -> void:
 
 
 func _on_done_running_away() -> void:
-    was_player_recently_visible = false
+    was_player_recently_detected = false
     if is_alerted():
         G.session.remove_alerted_enemy(type)
         state = State.WALKING
+        if get_is_security() and not is_extra_security:
+            _set_is_searching(false)
 
 
 func set_is_facing_right(p_is_facing_right: bool) -> void:
@@ -195,19 +204,11 @@ func _on_lifted_off() -> void:
     pass
 
 
-func _on_detection_start() -> void:
+func _on_ufo_detected() -> void:
     if is_dead():
         return
 
-    is_player_visible = true
-    _on_ufo_or_beamed_player_detection_start()
-
-
-func _on_ufo_or_beamed_player_detection_start() -> void:
-    if is_dead():
-        return
-
-    was_player_recently_visible = true
+    was_player_recently_detected = true
     last_player_sighting_time = Time.get_ticks_msec() / 1000.0
 
     if state != State.DEAD and state != State.BEING_BEAMED:
@@ -235,16 +236,21 @@ func _on_killed() -> void:
 
 func _on_alerted() -> void:
     state = get_alerted_state()
-
     G.session.add_alerted_enemy(type)
+
+    if get_is_security() and not is_searching:
+        _set_is_searching(true)
+
+
+func _set_is_searching(value: bool) -> void:
+    is_searching = value
 
 
 func _on_detection_end() -> void:
     if is_dead():
         return
 
-    is_player_visible = false
-    was_player_recently_visible = true
+    was_player_recently_detected = true
     last_player_sighting_time = Time.get_ticks_msec() / 1000.0
 
 
@@ -253,11 +259,11 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
         return
 
     if body is Player:
-        _on_detection_start()
+        _on_ufo_detected()
     elif body is Enemy:
         visible_enemies[body] = true
         if body.state == State.BEING_BEAMED:
-            _on_ufo_or_beamed_player_detection_start()
+            _on_ufo_detected()
 
 
 func _on_detection_area_body_exited(body: Node2D) -> void:

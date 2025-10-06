@@ -50,4 +50,6 @@ func spawn_enemy(type: Enemy.Type):
     # Assign a random start direction.
     enemy.set_is_facing_right(int(offset) % 2 == 0)
 
+    await get_tree().process_frame
+
     G.game_panel.get_enemy_container().add_child(enemy)
