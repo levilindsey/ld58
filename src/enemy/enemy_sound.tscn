@@ -191,6 +191,7 @@ bus = &"SFX"
 
 [node name="CatStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource("AudioStreamRandomizer_ataan")
+volume_db = -2.916
 max_distance = 300.0
 
 [node name="CowStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

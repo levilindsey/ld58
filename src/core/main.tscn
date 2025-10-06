@@ -81,7 +81,7 @@ bus = &"Music"
 [node name="ClickStreamPlayer" type="AudioStreamPlayer" parent="."]
 process_mode = 3
 stream = SubResource("AudioStreamRandomizer_0g4b3")
-volume_db = -9.723
+volume_db = -2.919
 bus = &"SFX"
 
 [node name="ThemeStreamPlayer" type="AudioStreamPlayer" parent="."]
