@@ -178,6 +178,19 @@ func _on_alerted() -> void:
         pass
 
 
+func _fade_out() -> void:
+    super._fade_out()
+    if type == Type.POLICE_OFFICER:
+        get_flashlight_wrapper().visible = false
+
+
+func disable_collision_monitoring() -> void:
+    super.disable_collision_monitoring()
+    if type == Type.POLICE_OFFICER:
+        get_flashlight_area_wrapper().monitoring = false
+        get_flashlight_area_wrapper().monitorable = false
+
+
 func assign_config() -> void:
     super.assign_config()
     flashlight_rotation_period = randf_range(FLASHLIGHT_ROTATION_PERIOD_MIN, FLASHLIGHT_ROTATION_PERIOD_MAX)

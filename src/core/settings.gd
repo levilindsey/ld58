@@ -8,6 +8,9 @@ extends Resource
 @export var total_enemy_count := 40
 @export var count_multiplier_for_alert_security_enemy := 4
 
+@export var extra_security_enemies_count_min := 0
+@export var extra_security_enemies_count_max := 20
+
 @export var start_in_zookeeper_screen := true
 @export var full_screen := false
 # TODO: Hook this up.
