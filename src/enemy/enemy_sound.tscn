@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://v01bkoexv76d"]
+[gd_scene load_steps=67 format=3 uid="uid://v01bkoexv76d"]
 
 [ext_resource type="AudioStream" uid="uid://ddcvc3bya2scb" path="res://assets/audio/Human Screams/Human screams-cm-01.wav" id="1_44n7j"]
 [ext_resource type="AudioStream" uid="uid://cgjv1jya2givh" path="res://assets/audio/Human Screams/Human screams-cm-02.wav" id="2_8ayot"]
@@ -51,6 +51,11 @@
 [ext_resource type="AudioStream" uid="uid://don43gem4117e" path="res://assets/audio/The Fuzz/Cops-cm-04.wav" id="49_qt41h"]
 [ext_resource type="AudioStream" uid="uid://42l1jtu7viqj" path="res://assets/audio/The Fuzz/Cops-cm_01-01.wav" id="50_vd6o0"]
 [ext_resource type="AudioStream" uid="uid://btwh3b2edxkww" path="res://assets/audio/The Fuzz/Cops-cm_01-02.wav" id="51_qhhw3"]
+[ext_resource type="AudioStream" uid="uid://bcgab43ssjnpy" path="res://assets/audio/Chickenz/Audio 5-cm-01.wav" id="52_jjsxn"]
+[ext_resource type="AudioStream" uid="uid://ekchd3upag78" path="res://assets/audio/Chickenz/Audio 5-cm-03.wav" id="53_8hhf6"]
+[ext_resource type="AudioStream" uid="uid://cq4fve15ac7v1" path="res://assets/audio/Chickenz/Audio 5-cm_01-01.wav" id="54_2kpid"]
+[ext_resource type="AudioStream" uid="uid://b4l88te124tov" path="res://assets/audio/Chickenz/Audio 5-cm_02-01.wav" id="55_cmmvy"]
+[ext_resource type="AudioStream" uid="uid://bcdml27qm7ywr" path="res://assets/audio/Chickenz/Audio 5-cm_02-02.wav" id="56_2hmi1"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_hnjx5"]
 streams_count = 16
@@ -135,6 +140,15 @@ stream_2/stream = ExtResource("49_qt41h")
 stream_3/stream = ExtResource("50_vd6o0")
 stream_4/stream = ExtResource("51_qhhw3")
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_tjjr1"]
+random_pitch = 1.1
+streams_count = 5
+stream_0/stream = ExtResource("52_jjsxn")
+stream_1/stream = ExtResource("53_8hhf6")
+stream_2/stream = ExtResource("54_2kpid")
+stream_3/stream = ExtResource("55_cmmvy")
+stream_4/stream = ExtResource("56_2hmi1")
+
 [node name="EnemySound" type="Node2D"]
 
 [node name="AbductingAudioStream" type="AudioStreamPlayer2D" parent="."]
@@ -187,6 +201,11 @@ bus = &"Voices"
 [node name="TheFuzzStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource("AudioStreamRandomizer_jjsxn")
 max_distance = 300.0
+bus = &"Voices"
+
+[node name="ChickenStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_tjjr1")
+max_distance = 275.0
 bus = &"Voices"
 
 [connection signal="finished" from="AbductingAudioStream" to="AbductingAudioStream" method="_on_finished"]
