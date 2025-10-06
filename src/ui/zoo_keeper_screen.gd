@@ -1,7 +1,17 @@
 class_name ZooKeeperScreen
 extends PanelContainer
 
-const ZOOKEEPER_GREETING = "I am the Zookeeper. Hear me roar. I would like you to collect earthlings for me."
+const ZOOKEEPER_GREETING = """
+I am the Zookeeper. I've always been interested in Earthlings and it's time to start a collection
+of my own! If you collect them for me, I'll reward you handsomely in alien coins that you can
+use to upgrade your ship. Who doesn't love home improvement?
+"""
+const ZOOKEEPER_QUEST_FULFILLED = """
+Excellent. You are helping my dreams come true.
+"""
+const ZOOKEEPER_QUEST_FAILED = """
+Hmmm. These earthlings don't quite match what I
+"""
 
 const UPGRADE_BEAM_TEXT = "Enlarge tractor beam"
 const UPGRADE_CAPACITY_TEXT = "Add ship capacity"
@@ -10,17 +20,19 @@ const UPGRADE_SPEED_TEXT = "Improve speed"
 
 @onready var zoo_speech_audio_player: AudioStreamPlayer = $ZooSpeechStreamPlayer
 
+var fulfilled_quests = 0
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
     G.zoo_keeper_screen = self
     _update_upgrades_ui()
 
-func _update_zookeeper_text(text: String) -> void:
+func update_zookeeper_text(text: String) -> void:
     zoo_speech_audio_player.play()
     %ZooKeeperText.text = text
     %ZooKeeperText.visible_characters = 0
     var tween = create_tween()
-    tween.tween_property(%ZooKeeperText, "visible_characters", text.length(), 3)
+    tween.tween_property(%ZooKeeperText, "visible_characters", text.length(), int(text.length() / 20))
     await tween.finished # Wait for the tween to complete
     tween.kill() # Clean up the tween
     zoo_speech_audio_player.stop()
@@ -28,6 +40,11 @@ func _update_zookeeper_text(text: String) -> void:
 func on_return_to_zoo() -> void:
     _focus_first_enabled_button()
     _update_upgrades_ui()
+    if G.session.fulfilled_quests.size() > fulfilled_quests:
+        update_zookeeper_text(ZOOKEEPER_QUEST_FULFILLED)
+    else:
+        update_zookeeper_text(ZOOKEEPER_QUEST_FAILED)
+        
 
 func _focus_first_enabled_button() -> void:
     if not %UpgradeBeam.disabled:
@@ -46,7 +63,7 @@ func _focus_first_enabled_button() -> void:
 
 func zookeeper_welcome() ->    void:
     _focus_first_enabled_button()
-    _update_zookeeper_text(ZOOKEEPER_GREETING)
+    update_zookeeper_text(ZOOKEEPER_GREETING)
 
 func _update_wallet_text() -> void:
     if G.session.money == 1:
