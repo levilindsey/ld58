@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Settings" load_steps=13 format=3 uid="uid://dv60bmaw1pdx6"]
+[gd_resource type="Resource" script_class="Settings" load_steps=15 format=3 uid="uid://dv60bmaw1pdx6"]
 
 [ext_resource type="PackedScene" uid="uid://di1dddin37gml" path="res://src/enemy/bullet.tscn" id="1_bav20"]
 [ext_resource type="PackedScene" uid="uid://c37vtw0k41rob" path="res://src/enemy/business_man.tscn" id="1_i3tmf"]
@@ -7,7 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://dffaiyxnj3vsv" path="res://src/enemy/elderly.tscn" id="3_bav20"]
 [ext_resource type="PackedScene" uid="uid://v01bkoexv76d" path="res://src/enemy/enemy_sound.tscn" id="4_4irwu"]
 [ext_resource type="PackedScene" uid="uid://drnwm8uaffaxb" path="res://src/enemy/farmer.tscn" id="4_e1gfc"]
+[ext_resource type="PackedScene" uid="uid://duwl4g8y35w36" path="res://src/enemy/chicken.tscn" id="4_n131f"]
 [ext_resource type="PackedScene" uid="uid://cakoqktrln4k8" path="res://src/enemy/homeless_person.tscn" id="5_32itx"]
+[ext_resource type="PackedScene" uid="uid://brekkyvij72it" path="res://src/enemy/cow.tscn" id="5_b2txj"]
 [ext_resource type="PackedScene" uid="uid://dtilrn7qxle35" path="res://src/enemy/kid.tscn" id="6_wuxul"]
 [ext_resource type="PackedScene" uid="uid://dbqcor0mf1viv" path="res://src/enemy/police_officer.tscn" id="7_n131f"]
 [ext_resource type="PackedScene" uid="uid://djfr2r8sg5xy0" path="res://src/enemy/jet.tscn" id="8_e1gfc"]
@@ -24,6 +26,8 @@ elderly_scene = ExtResource("3_bav20")
 cat_scene = ExtResource("2_4irwu")
 business_person_scene = ExtResource("1_i3tmf")
 police_officer_scene = ExtResource("7_n131f")
+cow_scene = ExtResource("5_b2txj")
+chicken_scene = ExtResource("4_n131f")
 bullet_scene = ExtResource("1_bav20")
 missile_scene = ExtResource("10_32itx")
 jet_scene = ExtResource("8_e1gfc")

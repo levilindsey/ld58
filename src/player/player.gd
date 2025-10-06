@@ -17,6 +17,7 @@ var is_beaming = false
 @onready var ufo_audio_player: AudioStreamPlayer = $UFOAudiostream
 @onready var capture_audio_player: AudioStreamPlayer = $CaptureStreamPlayer
 @onready var reject_audio_player: AudioStreamPlayer = $RejectStreamPlayer
+@onready var warning_audio_player: AudioStreamPlayer = $WarningStreamPlayer
 
 
 func _ready() -> void:

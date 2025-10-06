@@ -1,4 +1,4 @@
-[gd_scene load_steps=96 format=3 uid="uid://cn6hdqmmufnvr"]
+[gd_scene load_steps=97 format=3 uid="uid://cn6hdqmmufnvr"]
 
 [ext_resource type="Script" uid="uid://ctdjb8phvmc71" path="res://src/player/player.gd" id="1_gkcme"]
 [ext_resource type="Texture2D" uid="uid://dsgbstsy1ok2w" path="res://assets/images/ufo.png" id="2_gmfve"]
@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://bq4fafekbj2cd" path="res://assets/audio/Reject/REJECT-cm-02.wav" id="7_l271a"]
 [ext_resource type="AudioStream" uid="uid://damhwvkhnqxle" path="res://assets/audio/Reject/REJECT-cm-04.wav" id="8_8ydov"]
 [ext_resource type="AudioStream" uid="uid://ern2enrp4li" path="res://assets/audio/Reject/REJECT-cm-06.wav" id="9_ylhto"]
+[ext_resource type="AudioStream" uid="uid://0hsn38go0410" path="res://assets/audio/Danger siren-cm 2.wav" id="10_8ydov"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2swit"]
 atlas = ExtResource("3_5f2sf")
@@ -684,6 +685,11 @@ bus = &"SFX"
 [node name="RejectStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamRandomizer_cwolq")
 volume_db = -15.537
+bus = &"SFX"
+
+[node name="WarningStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_8ydov")
+volume_db = -28.634
 bus = &"SFX"
 
 [connection signal="body_entered" from="TractorBeam/TractorBeamArea" to="." method="_on_tractor_beam_area_body_entered"]

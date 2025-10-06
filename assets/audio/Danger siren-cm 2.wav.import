@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://0hsn38go0410"
+path="res://.godot/imported/Danger siren-cm 2.wav-f183462c740a7eb8482644ef1c759d51.sample"
+
+[deps]
+
+source_file="res://assets/audio/Danger siren-cm 2.wav"
+dest_files=["res://.godot/imported/Danger siren-cm 2.wav-f183462c740a7eb8482644ef1c759d51.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
