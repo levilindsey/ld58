@@ -105,7 +105,7 @@ func _physics_process(delta: float) -> void:
     if was_player_recently_visible and is_past_alerted_cut_off:
         _on_done_running_away()
 
-    _fix_facing_direction_for_walking_back_to_home_region()
+    _fix_facing_direction_for_target()
 
     previous_velocity = velocity
 
@@ -270,42 +270,26 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
         visible_enemies.erase(body)
 
 
-func _fix_facing_direction_for_walking_back_to_home_region() -> void:
-    if state != State.WALKING:
-        return
+func _fix_facing_direction_for_target() -> void:
+    match state:
+        State.WALKING:
+            var is_in_home_region := (
+                global_position.x >= home_region.global_start_x and
+                global_position.x <= home_region.global_end_x
+            )
+            if is_in_home_region:
+                return
 
-    var is_in_home_region := (
-        global_position.x >= home_region.global_start_x and
-        global_position.x <= home_region.global_end_x
-    )
-    if is_in_home_region:
-        return
-
-    # Have them face back toward their home region.
-    var is_enemy_left_of_region := \
-        global_position.x < home_region.global_start_x
-    var distance_leftward_from_enemy_to_region := (
-        (
-            (global_position.x -
-                G.game_panel.combined_level_chunk_bounds.position.x) +
-            (G.game_panel.combined_level_chunk_bounds.end.x -
-                home_region.global_end_x)
-        ) if
-        is_enemy_left_of_region else
-        global_position.x - home_region.global_end_x
-    )
-    var distance_rightward_from_enemy_to_region := (
-        home_region.global_start_x - global_position.x if
-        is_enemy_left_of_region else
-        (
-            (G.game_panel.combined_level_chunk_bounds.end.x -
-                global_position.x) +
-            (home_region.global_start_x -
-                G.game_panel.combined_level_chunk_bounds.position.x)
-        )
-    )
-    var is_left_closer := distance_leftward_from_enemy_to_region < distance_rightward_from_enemy_to_region
-    set_is_facing_right(not is_left_closer)
+            # Have them face back toward their home region.
+            var is_left_closer := _get_is_target_leftward(global_position.x, home_region.global_center_x)
+            set_is_facing_right(not is_left_closer)
+        State.CHASING:
+            var is_player_leftward_from_enemy = _get_is_target_leftward(
+                global_position.x, G.player.global_position.x)
+            set_is_facing_right(not is_player_leftward_from_enemy)
+        _:
+            # Do nothing.
+            pass
 
 
 func _get_horizontal_velocity() -> float:
@@ -326,7 +310,7 @@ func _get_horizontal_velocity() -> float:
                 return get_running_speed() * facing_direction_multiplier
         State.CHASING:
             var horizontal_distance := absf(G.player.global_position.x - global_position.x)
-            if get_approach_distance() < horizontal_distance:
+            if horizontal_distance < get_approach_distance():
                 return 0
             else:
                 # Preserve whichever direction they were facing.
@@ -336,6 +320,27 @@ func _get_horizontal_velocity() -> float:
         _:
             G.utils.ensure(false)
             return 0
+
+
+func _get_is_target_leftward(source_x: float, target_x: float) -> bool:
+    var is_target_leftward := target_x < source_x
+    var distance_leftward_to_target := (
+        source_x - target_x if
+        is_target_leftward else
+        (
+            (source_x - G.game_panel.combined_level_chunk_bounds.position.x) +
+            (G.game_panel.combined_level_chunk_bounds.end.x - target_x)
+        )
+    )
+    var distance_rightward_to_target := (
+        (
+            (G.game_panel.combined_level_chunk_bounds.end.x - source_x) +
+            (target_x - G.game_panel.combined_level_chunk_bounds.position.x)
+        ) if
+        is_target_leftward else
+        target_x - source_x
+    )
+    return distance_leftward_to_target < distance_rightward_to_target
 
 
 func is_dead() -> bool:

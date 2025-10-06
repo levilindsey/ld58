@@ -30,7 +30,7 @@ radius = 2.0
 height = 15.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1p648"]
-size = Vector2(54, 58.204)
+size = Vector2(86.976685, 101.52755)
 
 [node name="PoliceOfficer" type="CharacterBody2D"]
 collision_layer = 4
@@ -57,8 +57,8 @@ collision_mask = 5
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
-position = Vector2(40, -19)
-rotation = -0.92415726
+position = Vector2(62.598305, -38.174217)
+rotation = -1.2147492
 shape = SubResource("RectangleShape2D_1p648")
 
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
