@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://1krn140i48a3"
+path="res://.godot/imported/COWS MOOING.cm8-01.wav-3c7a17f02f58e2896255e35e91404ee9.sample"
+
+[deps]
+
+source_file="res://assets/audio/Cows Mooing 1/COWS MOOING.cm8-01.wav"
+dest_files=["res://.godot/imported/COWS MOOING.cm8-01.wav-3c7a17f02f58e2896255e35e91404ee9.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
