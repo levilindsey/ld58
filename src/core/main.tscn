@@ -34,7 +34,6 @@ layer = 200
 
 [node name="ZooKeeperScreen" parent="ZooKeeper" instance=ExtResource("5_w61mg")]
 unique_name_in_owner = true
-visible = true
 
 [node name="ClickStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamRandomizer_0g4b3")

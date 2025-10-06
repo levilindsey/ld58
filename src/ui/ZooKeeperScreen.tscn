@@ -129,6 +129,7 @@ layout_mode = 2
 theme = SubResource("Theme_lpqvl")
 
 [node name="ZooKeeperText" type="Label" parent="MarginContainer/LeftPanel/RightPanel/PanelContainer2"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_vertical = 6

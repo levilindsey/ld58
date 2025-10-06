@@ -1,3 +1,4 @@
+class_name ZooKeeperScreen
 extends PanelContainer
 
 const ZOOKEEPER_GREETING = "I am the Zookeeper. Hear me roar. I would like you to collect earthlings for me."

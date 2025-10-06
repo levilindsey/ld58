@@ -116,7 +116,6 @@ func show_zoo_keeper_screen() -> void:
     quest_manager.on_return_to_zoo()
     get_tree().paused = true
     G.zoo_keeper.visible = true
-    G.zoo_keeper.zookeeper_welcome()
     G.session.deposit_enemies()
 
 

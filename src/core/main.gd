@@ -31,7 +31,13 @@ func _ready() -> void:
     if G.settings.full_screen:
         DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 
-    if not G.settings.start_in_zookeeper_screen:
+    start_game()
+
+
+func start_game() -> void:
+    if G.settings.start_in_zookeeper_screen:
+        G.zoo_keeper.zookeeper_welcome()
+    else:
         G.game_panel.return_from_zoo_keeper_screen()
 
 
