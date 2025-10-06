@@ -7,8 +7,8 @@ enum Type {
     KID,
     OLD_PERSON,
     CAT,
-    HOMELESS_PERSON,
     BUSINESS_PERSON,
+    HOMELESS_PERSON,
     POLICE_OFFICER,
     # TODO: Add stuff here!
     #POLICE_CAR,

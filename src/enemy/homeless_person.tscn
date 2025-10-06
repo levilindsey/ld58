@@ -36,7 +36,7 @@ size = Vector2(54, 58.204)
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_jwwoi")
-type = 4
+type = 5
 metadata/_custom_type_script = "uid://crnlma8ijjgwp"
 
 [node name="SpriteWrapper" type="Node2D" parent="."]
