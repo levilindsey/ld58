@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://v01bkoexv76d"]
+[gd_scene load_steps=55 format=3 uid="uid://v01bkoexv76d"]
 
 [ext_resource type="AudioStream" uid="uid://ddcvc3bya2scb" path="res://assets/audio/Human Screams/Human screams-cm-01.wav" id="1_44n7j"]
 [ext_resource type="AudioStream" uid="uid://cgjv1jya2givh" path="res://assets/audio/Human Screams/Human screams-cm-02.wav" id="2_8ayot"]
@@ -36,6 +36,16 @@
 [ext_resource type="AudioStream" uid="uid://cq5rl3aljip44" path="res://assets/audio/Gunshots/Gunzzzz-cm_01-04.wav" id="34_hgru8"]
 [ext_resource type="AudioStream" uid="uid://dsquosyopaads" path="res://assets/audio/Gunshots/Gunzzzz-cm_01-06.wav" id="35_2gpy8"]
 [ext_resource type="AudioStream" uid="uid://dao1e8iyw86x1" path="res://assets/audio/Gunshots/Gunzzzz-cm_01-07.wav" id="36_32nxv"]
+[ext_resource type="AudioStream" uid="uid://btde7h58mtly5" path="res://assets/audio/Cat Meows 1/Granada Ave 40-cm-01.wav" id="37_o13oh"]
+[ext_resource type="AudioStream" uid="uid://bg0pqqbi8362m" path="res://assets/audio/Cat Meows 1/Granada Ave 40-cm-03.wav" id="38_ucg3w"]
+[ext_resource type="AudioStream" uid="uid://81r6eo8gtqfs" path="res://assets/audio/Cat Meows 1/Granada Ave 40-cm-05.wav" id="39_xyquo"]
+[ext_resource type="AudioStream" uid="uid://dwuqn1wqa6xxq" path="res://assets/audio/Cat Meows 1/Granada Ave 40-cm-07.wav" id="40_aii2x"]
+[ext_resource type="AudioStream" uid="uid://4fwt2uaufvu7" path="res://assets/audio/Cat Meows 1/Granada Ave 40-cm-08.wav" id="41_oey0a"]
+[ext_resource type="AudioStream" uid="uid://utt61vgptuk5" path="res://assets/audio/Cows Mooing 1/COWS MOOING.cm5-02.wav" id="42_maijj"]
+[ext_resource type="AudioStream" uid="uid://b8qsieshcvqta" path="res://assets/audio/Cows Mooing 1/COWS MOOING.cm6-01.wav" id="43_x3p5a"]
+[ext_resource type="AudioStream" uid="uid://bicg4i2i5ekm6" path="res://assets/audio/Cows Mooing 1/COWS MOOING.cm6-02.wav" id="44_wadpl"]
+[ext_resource type="AudioStream" uid="uid://cm31ufnd7s8h1" path="res://assets/audio/Cows Mooing 1/COWS MOOING.cm7-01.wav" id="45_nhv58"]
+[ext_resource type="AudioStream" uid="uid://1krn140i48a3" path="res://assets/audio/Cows Mooing 1/COWS MOOING.cm8-01.wav" id="46_x2hc5"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_hnjx5"]
 streams_count = 16
@@ -94,6 +104,24 @@ stream_1/stream = ExtResource("34_hgru8")
 stream_2/stream = ExtResource("35_2gpy8")
 stream_3/stream = ExtResource("36_32nxv")
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ataan"]
+random_pitch = 1.1
+streams_count = 5
+stream_0/stream = ExtResource("37_o13oh")
+stream_1/stream = ExtResource("38_ucg3w")
+stream_2/stream = ExtResource("39_xyquo")
+stream_3/stream = ExtResource("40_aii2x")
+stream_4/stream = ExtResource("41_oey0a")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_hgru8"]
+random_pitch = 1.05
+streams_count = 5
+stream_0/stream = ExtResource("42_maijj")
+stream_1/stream = ExtResource("43_x3p5a")
+stream_2/stream = ExtResource("44_wadpl")
+stream_3/stream = ExtResource("45_nhv58")
+stream_4/stream = ExtResource("46_x2hc5")
+
 [node name="EnemySound" type="Node2D"]
 
 [node name="AbductingAudioStream" type="AudioStreamPlayer2D" parent="."]
@@ -132,6 +160,15 @@ bus = &"Voices"
 stream = SubResource("AudioStreamRandomizer_6kgty")
 max_distance = 400.0
 bus = &"SFX"
+
+[node name="CatStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_ataan")
+max_distance = 300.0
+
+[node name="CowStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_hgru8")
+max_distance = 300.0
+bus = &"Voices"
 
 [connection signal="finished" from="AbductingAudioStream" to="AbductingAudioStream" method="_on_finished"]
 [connection signal="finished" from="DetectStreamPlayer2D" to="DetectStreamPlayer2D" method="_on_finished"]
