@@ -1,8 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://bt1la6s52krxe"]
+[gd_scene load_steps=9 format=3 uid="uid://bt1la6s52krxe"]
 
 [ext_resource type="Theme" uid="uid://cl3pkwueh4mag" path="res://src/core/main_theme.tres" id="1_4rn03"]
 [ext_resource type="Script" uid="uid://cvmchc2851mho" path="res://src/ui/hud.gd" id="1_eqvli"]
+[ext_resource type="Texture2D" uid="uid://byohklws5014h" path="res://assets/images/health_icon.png" id="3_r2cn7"]
 [ext_resource type="PackedScene" uid="uid://cr5vb16maok34" path="res://src/ui/enemy_list.tscn" id="3_snmo6"]
+[ext_resource type="Texture2D" uid="uid://r3t65eb1axn8" path="res://assets/images/detection_icon.png" id="4_0isw4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0isw4"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_r2cn7"]
+color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r2cn7"]
+bg_color = Color(1, 1, 1, 1)
 
 [node name="Hud" type="PanelContainer"]
 anchors_preset = 15
@@ -22,6 +37,63 @@ theme_override_constants/margin_bottom = 10
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="HealthIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("3_r2cn7")
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_0isw4")
+
+[node name="HealthBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer2/HBoxContainer/PanelContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxLine_r2cn7")
+max_value = 1.0
+show_percentage = false
+
+[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="DetectionIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("4_0isw4")
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_0isw4")
+
+[node name="DetectionBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_r2cn7")
+max_value = 1.0
+show_percentage = false
 
 [node name="Control" type="Control" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2

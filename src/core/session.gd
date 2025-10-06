@@ -31,7 +31,8 @@ var max_health := 0
 
 var money := 0
 
-var detection_score := 0
+# [0,1]
+var detection_score := 0.0
 
 var active_quest: Quest
 
@@ -77,7 +78,7 @@ func start_new_quest(next_quest: Quest) -> void:
     active_quest = next_quest
     health = DEFAULT_MAX_HEALTH
     detection_score = 0
-    G.hud.update()
+    G.hud.update_quest()
 
 
 func start_new_excursion() -> void:
@@ -86,7 +87,9 @@ func start_new_excursion() -> void:
     current_enemies_collected_count = 0
     total_excursion_count += 1
     current_quest_excursion_count += 1
-    G.hud.update()
+    G.hud.update_quest()
+    G.hud.update_health()
+    G.hud.update_detection()
 
 
 func deposit_enemies() -> void:
@@ -95,13 +98,13 @@ func deposit_enemies() -> void:
         total_enemies_deposited_by_type[type] += type_count
         current_enemies_deposited_by_type[type] += type_count
         current_enemies_deposited_count += type_count
-    G.hud.update()
+    G.hud.update_quest()
 
 
 func add_collected_enemy(type: Enemy.Type) -> void:
     current_enemies_collected_by_type[type] += 1
     current_enemies_collected_count += 1
-    G.hud.update()
+    G.hud.update_quest()
 
 
 func add_splatted_enemy(type: Enemy.Type) -> void:
@@ -124,3 +127,13 @@ func get_combined_counts_of_collected_and_deposited() -> Dictionary:
             current_enemies_deposited_by_type[type]
         )
     return counts
+
+
+func set_health(value: int) -> void:
+    health = value
+    G.hud.update_health()
+
+
+func set_detection_score(value: float) -> void:
+    detection_score = value
+    G.hud.update_detection()

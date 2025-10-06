@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=11 format=3 uid="uid://cl3pkwueh4mag"]
+[gd_resource type="Theme" load_steps=13 format=3 uid="uid://cl3pkwueh4mag"]
 
 [ext_resource type="Texture2D" uid="uid://bkuxtbiaa6jlx" path="res://assets/images/gui/button_normal.png" id="1_3hca0"]
 [ext_resource type="Texture2D" uid="uid://pnajuswex37w" path="res://assets/images/gui/button_hover.png" id="2_58wv2"]
@@ -63,6 +63,25 @@ texture_margin_bottom = 6.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q3c4w"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4mktn"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ovqlw"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 6
+
 [resource]
 default_font = ExtResource("4_4mktn")
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
@@ -90,3 +109,9 @@ Button/styles/hover = SubResource("StyleBoxTexture_or3yn")
 Button/styles/normal = SubResource("StyleBoxTexture_58wv2")
 Button/styles/pressed = SubResource("StyleBoxTexture_4mktn")
 PanelContainer/styles/panel = SubResource("StyleBoxEmpty_q3c4w")
+ProgressBar/colors/font_color = Color(0.95, 0.95, 0.95, 1)
+ProgressBar/colors/font_outline_color = Color(0, 0, 0, 1)
+ProgressBar/constants/outline_size = 0
+ProgressBar/font_sizes/font_size = 16
+ProgressBar/styles/background = SubResource("StyleBoxFlat_4mktn")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_ovqlw")
