@@ -18,6 +18,7 @@ var enemy_spawner : EnemySpawner
 var quest_manager : QuestManager
 
 
+
 func _enter_tree() -> void:
     G.session = Session.new()
 
@@ -122,13 +123,18 @@ func show_zoo_keeper_screen() -> void:
     get_tree().paused = true
     G.zoo_keeper.visible = true
     G.session.deposit_enemies()
-
+    # AUDIO: Music Switch
+    G.main.fade_to_zoo_theme()
+    
 
 func return_from_zoo_keeper_screen() -> void:
     G.zoo_keeper.visible = false
     get_tree().paused = false
     G.player.global_position = player_start_position
     G.session.start_new_excursion()
+    # AUDIO: Music Switch
+    G.main.play_theme()
+    G.main.fade_to_main_theme()
 
 
 func get_enemy_container() -> Node2D:

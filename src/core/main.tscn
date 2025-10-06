@@ -39,21 +39,25 @@ layer = 200
 unique_name_in_owner = true
 
 [node name="ZooSpeechStreamPlayer" type="AudioStreamPlayer" parent="ZooKeeper"]
+process_mode = 3
 stream = ExtResource("6_2in8s")
 bus = &"Voices"
 
 [node name="ZooThemeStreamPlayer" type="AudioStreamPlayer" parent="ZooKeeper"]
+process_mode = 3
 stream = ExtResource("7_7561f")
 volume_db = 5.073
+autoplay = true
 bus = &"Music"
 
 [node name="ClickStreamPlayer" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = SubResource("AudioStreamRandomizer_0g4b3")
 volume_db = -12.142
 bus = &"SFX"
 
 [node name="ThemeStreamPlayer" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("11_7o0du")
 volume_db = -8.0
-autoplay = true
 bus = &"Music"
