@@ -112,9 +112,6 @@ func start_new_quest(next_quest: Quest) -> void:
 
 
 func start_new_excursion() -> void:
-    for type in Enemy.Type.values():
-        current_enemies_collected_by_type[type] = 0
-    current_enemies_collected_count = 0
     total_excursion_count += 1
     current_quest_excursion_count += 1
     G.hud.update_quest()
@@ -129,6 +126,11 @@ func deposit_enemies() -> void:
         total_enemies_deposited_count += type_count
         current_enemies_deposited_by_type[type] += type_count
         current_enemies_deposited_count += type_count
+
+    for type in Enemy.Type.values():
+        current_enemies_collected_by_type[type] = 0
+    current_enemies_collected_count = 0
+
     G.hud.update_quest()
 
 
