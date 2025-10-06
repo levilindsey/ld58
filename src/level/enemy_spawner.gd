@@ -4,16 +4,37 @@ class_name EnemySpawner extends Node
 # Dictionary<Enemy.Type, int>
 var enemy_counts_by_type := {}
 
-# Dictionary<Enemy.Type, int>
-var extra_security_enemies_by_type := {}
+var extra_security_enemies: Array[Enemy] = []
 
-
-# FIXME: LEFT OFF HERE: Update extra_security_enemies_by_type dynamically to match the current G.session.detection_score.
+var security_enemy_types: Array[Enemy.Type] = []
 
 
 func _ready() -> void:
+    for type in Settings.ENEMY_CONFIGS:
+        var config: Dictionary = Settings.ENEMY_CONFIGS[type]
+        if config.is_security:
+            security_enemy_types.push_back(type)
+
     _record_enemy_counts_by_type()
     _populate_enemies()
+
+
+func _physics_process(_delta: float) -> void:
+    var target_extra_security_count := ceili(lerpf(
+        G.settings.extra_security_enemies_count_min,
+        G.settings.extra_security_enemies_count_max,
+        G.session.detection_score))
+    if extra_security_enemies.size() < target_extra_security_count:
+        spawn_extra_security()
+    if extra_security_enemies.size() > target_extra_security_count:
+        var undismissed_extras: Array[Enemy] = []
+        for enemy in extra_security_enemies:
+            if not enemy.is_extra_security_dismissal_queued:
+                undismissed_extras.push_back(enemy)
+        var count_to_dismiss := undismissed_extras.size() - target_extra_security_count
+        if count_to_dismiss > 0:
+            for i in count_to_dismiss:
+                undismissed_extras[i].queue_extra_security_dismissed()
 
 
 func _record_enemy_counts_by_type() -> void:
@@ -34,6 +55,21 @@ func _populate_enemies() -> void:
 
 
 func spawn_enemy(type: Enemy.Type):
+    var enemy := _instantiate_enemy(type)
+    await get_tree().process_frame
+    G.game_panel.get_enemy_container().add_child(enemy)
+
+
+func spawn_extra_security() -> void:
+    var index := randi_range(0, security_enemy_types.size() - 1)
+    var type := security_enemy_types[index]
+    var enemy := _instantiate_enemy(type)
+    enemy.is_extra_security = true
+    G.game_panel.get_enemy_container().add_child(enemy)
+    extra_security_enemies.push_back(enemy)
+
+
+func _instantiate_enemy(type: Enemy.Type) -> Enemy:
     var enemy = G.settings.instantiate_enemy(type)
 
     # Assign a random region.
@@ -50,6 +86,4 @@ func spawn_enemy(type: Enemy.Type):
     # Assign a random start direction.
     enemy.set_is_facing_right(int(offset) % 2 == 0)
 
-    await get_tree().process_frame
-
-    G.game_panel.get_enemy_container().add_child(enemy)
+    return enemy

@@ -174,7 +174,7 @@ func _on_tractor_beam_area_body_entered(body: Node2D) -> void:
     if not is_beaming or pedestrians_in_beam.has(body):
         return
 
-    if body is Pedestrian and not body.is_dead():
+    if body is Pedestrian and not body.is_dead() and not body.is_fading:
         # Add pedestrian to dictionary to keep them unique. Value is meaningless
         print("Critter entered beam ")
         pedestrians_in_beam[body] = true

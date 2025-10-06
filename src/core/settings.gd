@@ -8,6 +8,9 @@ extends Resource
 @export var total_enemy_count := 40
 @export var count_multiplier_for_alert_security_enemy := 4
 
+@export var extra_security_enemies_count_min := 0
+@export var extra_security_enemies_count_max := 20
+
 @export var start_in_zookeeper_screen := true
 @export var full_screen := false
 # TODO: Hook this up.
@@ -61,22 +64,22 @@ const SHIP_UPGRADE_VALUES := {
 const SHIP_UPGRADE_COSTS := {
     UpgradeLevels.UpgradeTypes.SPEED: {
         1: 5,
-        2: 10, 
+        2: 10,
         3: 15
     },
     UpgradeLevels.UpgradeTypes.BEAM: {
         1: 5,
-        2: 10, 
+        2: 10,
         3: 15
     },
     UpgradeLevels.UpgradeTypes.CAPACITY: {
         1: 5,
-        2: 10, 
+        2: 10,
         3: 15
     },
     UpgradeLevels.UpgradeTypes.STEALTH: {
         1: 5,
-        2: 10, 
+        2: 10,
         3: 15
     }
 }
@@ -88,6 +91,8 @@ const ENEMY_CONFIGS := {
         jump_boost = [150, 170],
         approach_distance = [28, 36],
         stop_alert_delay = [6, 8],
+        shoot_period = [0.5, 0.8],
+        initial_shoot_delay = [0.2, 0.5],
         is_security = false,
         regions = [Region.Type.RURAL],
         population_weight = 10,
@@ -98,8 +103,10 @@ const ENEMY_CONFIGS := {
         jump_boost = [150, 170],
         approach_distance = [28, 36],
         stop_alert_delay = [6, 8],
+        shoot_period = [0.5, 0.8],
+        initial_shoot_delay = [0.2, 0.5],
         is_security = false,
-        regions = [Region.Type.RURAL],
+        regions = [Region.Type.RURAL, Region.Type.SUBURBS, Region.Type.CITY],
         population_weight = 10,
     },
     Enemy.Type.OLD_PERSON: {
@@ -108,8 +115,10 @@ const ENEMY_CONFIGS := {
         jump_boost = [150, 170],
         approach_distance = [28, 36],
         stop_alert_delay = [6, 8],
+        shoot_period = [0.5, 0.8],
+        initial_shoot_delay = [0.2, 0.5],
         is_security = false,
-        regions = [Region.Type.RURAL],
+        regions = [Region.Type.SUBURBS, Region.Type.CITY],
         population_weight = 10,
     },
     Enemy.Type.CAT: {
@@ -118,8 +127,10 @@ const ENEMY_CONFIGS := {
         jump_boost = [150, 170],
         approach_distance = [28, 36],
         stop_alert_delay = [6, 8],
+        shoot_period = [0.5, 0.8],
+        initial_shoot_delay = [0.2, 0.5],
         is_security = false,
-        regions = [Region.Type.RURAL],
+        regions = [Region.Type.RURAL, Region.Type.SUBURBS],
         population_weight = 10,
     },
     Enemy.Type.HOMELESS_PERSON: {
@@ -128,8 +139,10 @@ const ENEMY_CONFIGS := {
         jump_boost = [150, 170],
         approach_distance = [28, 36],
         stop_alert_delay = [6, 8],
+        shoot_period = [0.5, 0.8],
+        initial_shoot_delay = [0.2, 0.5],
         is_security = false,
-        regions = [Region.Type.RURAL],
+        regions = [Region.Type.CITY],
         population_weight = 10,
     },
     Enemy.Type.BUSINESS_PERSON: {
@@ -138,16 +151,20 @@ const ENEMY_CONFIGS := {
         jump_boost = [150, 170],
         approach_distance = [28, 36],
         stop_alert_delay = [6, 8],
+        shoot_period = [0.5, 0.8],
+        initial_shoot_delay = [0.2, 0.5],
         is_security = false,
-        regions = [Region.Type.RURAL],
+        regions = [Region.Type.SUBURBS, Region.Type.CITY],
         population_weight = 10,
     },
     Enemy.Type.POLICE_OFFICER: {
         walking_speed = [55, 65],
         running_speed = [200, 240],
         jump_boost = [150, 170],
-        approach_distance = [20, 80],
+        approach_distance = [40, 100],
         stop_alert_delay = [10, 12],
+        shoot_period = [0.5, 0.8],
+        initial_shoot_delay = [0.2, 0.5],
         is_security = true,
         regions = [Region.Type.SUBURBS, Region.Type.CITY],
         population_weight = 10,

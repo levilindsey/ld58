@@ -7,8 +7,8 @@ enum Type {
     KID,
     OLD_PERSON,
     CAT,
-    HOMELESS_PERSON,
     BUSINESS_PERSON,
+    HOMELESS_PERSON,
     POLICE_OFFICER,
     # TODO: Add stuff here!
     #POLICE_CAR,
@@ -26,7 +26,8 @@ enum State {
 }
 
 const LETHAL_DROP_HEIGHT := 50.0
-const FADE_DELAY_AFTER_DEATH := 5
+const FADE_DELAY_AFTER_DEATH := 5.0
+const EXTRA_SECURITY_DISMISSED_DELAY := 8.0
 
 
 @export var type := Type.FARMER
@@ -36,20 +37,28 @@ var config: Dictionary
 
 var home_region: Region
 
-# FIXME: Update this.
-var is_extra_security := false
-
 var is_searching := false
+var is_searching_start_time := -INF
+
+var is_viewing_ship := false
+var is_viewing_ship_start_time := -INF
+
+var last_shoot_time := -INF
 
 var state := State.STARTING
 var was_on_floor := false
 var previous_velocity := Vector2.ZERO
 var death_time := -INF
 var was_dropped_from_lethal_height := false
+var is_fading := false
 
 var last_player_sighting_time := -INF
 var was_player_recently_detected := false
 var is_facing_right := true
+
+var is_extra_security := false
+var is_extra_security_dismissal_queued := false
+var extra_security_dismissal_time := INF
 
 # Dictionary<Enemy, bool>
 var visible_enemies := {}
@@ -101,9 +110,15 @@ func _physics_process(delta: float) -> void:
         #push_warning("Enemy is below the floor, AND GLOBAL_POSITION IS SOMEHOW BORKED!")
         _hack_sanitize_weird_transform_state()
 
-    var time_since_dead := Time.get_ticks_msec() / 1000.0 - death_time
+    var current_time := Time.get_ticks_msec() / 1000.0
+    var time_since_dead := current_time - death_time
     if is_dead() and time_since_dead >= FADE_DELAY_AFTER_DEATH:
-        _fade_out_death()
+        _fade_out()
+
+    if (is_extra_security and
+            is_extra_security_dismissal_queued and
+            extra_security_dismissal_time < current_time):
+        _fade_out()
 
     var is_past_alerted_cut_off := (
         last_player_sighting_time + get_stop_alert_delay() <
@@ -111,6 +126,15 @@ func _physics_process(delta: float) -> void:
     )
     if was_player_recently_detected and is_past_alerted_cut_off:
         _on_done_running_away()
+
+    if get_is_security() and is_viewing_ship:
+        var have_recovered_since_first_noticing_ship:  bool = \
+            current_time > is_searching_start_time + config.initial_shoot_delay and \
+            current_time > is_viewing_ship_start_time + config.initial_shoot_delay
+        var have_shot_recently: bool = \
+            current_time < last_shoot_time + config.shoot_period
+        if have_recovered_since_first_noticing_ship and not have_shot_recently:
+            _shoot()
 
     _fix_facing_direction_for_target()
 
@@ -150,6 +174,21 @@ func _hack_sanitize_weird_transform_state() -> void:
     velocity = Vector2.ZERO
 
 
+func _shoot() -> void:
+    last_shoot_time = Time.get_ticks_msec() / 1000.0
+    # FIXME
+
+
+func queue_extra_security_dismissed() -> void:
+    G.utils.ensure(is_extra_security)
+    is_extra_security_dismissal_queued = true
+    update_extra_security_dismissal_time()
+
+
+func update_extra_security_dismissal_time() -> void:
+    extra_security_dismissal_time = Time.get_ticks_msec() / 1000.0 + EXTRA_SECURITY_DISMISSED_DELAY
+
+
 func _on_done_running_away() -> void:
     was_player_recently_detected = false
     if is_alerted():
@@ -166,12 +205,17 @@ func set_is_facing_right(p_is_facing_right: bool) -> void:
     scale.x = 1 if is_facing_right else -1
 
 
-func _fade_out_death() -> void:
+func _fade_out() -> void:
+    is_fading = true
+    remove_references_to_this_enemy()
+    disable_collision_monitoring()
+
     var tween = get_tree().create_tween()
     # Adjust the modulate property to an alpha of 0 (completely transparent)
     tween.tween_property(self, "modulate:a", 0, 1.0)
     await tween.finished # Wait for the tween to complete
     tween.kill() # Clean up the tween
+
     destroy()
 
 
@@ -183,16 +227,26 @@ func _exit_tree() -> void:
 
 func destroy() -> void:
     print("Critter destroyed")
-    # Remove references to this enemy.
+    remove_references_to_this_enemy()
+    if not self.is_queued_for_deletion():
+        queue_free()
+
+
+func remove_references_to_this_enemy() -> void:
     for enemy in G.enemies:
         if not is_instance_valid(enemy):
             continue
         enemy.visible_enemies.erase(self)
     G.player.pedestrians_in_beam.erase(self)
     G.game_panel.current_alerted_enemies.erase(self)
+    G.game_panel.enemy_spawner.extra_security_enemies.erase(self)
     G.enemies.erase(self)
-    if not self.is_queued_for_deletion():
-        queue_free()
+
+
+func disable_collision_monitoring() -> void:
+    get_detection_area().monitoring = false
+    get_detection_area().monitorable = false
+    #get_collision_shape().disabled = true
 
 
 func _on_landed() -> void:
@@ -220,6 +274,20 @@ func _on_ufo_detected() -> void:
         _on_alerted()
 
 
+func _on_detection_end() -> void:
+    if is_dead():
+        return
+
+    was_player_recently_detected = true
+    last_player_sighting_time = Time.get_ticks_msec() / 1000.0
+
+    if get_is_security() and not is_searching:
+        _set_is_searching(true)
+
+    if is_extra_security:
+        update_extra_security_dismissal_time()
+
+
 func _on_killed() -> void:
     state = State.DEAD
     death_time = Time.get_ticks_msec() / 1000.0
@@ -242,17 +310,22 @@ func _on_alerted() -> void:
     if get_is_security() and not is_searching:
         _set_is_searching(true)
 
+    if is_extra_security:
+        update_extra_security_dismissal_time()
+
 
 func _set_is_searching(value: bool) -> void:
+    var was_searching := is_searching
     is_searching = value
+    if not was_searching and is_searching:
+        is_searching_start_time = Time.get_ticks_msec() / 1000.0
 
 
-func _on_detection_end() -> void:
-    if is_dead():
-        return
-
-    was_player_recently_detected = true
-    last_player_sighting_time = Time.get_ticks_msec() / 1000.0
+func _set_is_viewing_ship(value: bool) -> void:
+    var was_viewing_ship := is_viewing_ship
+    is_viewing_ship = value
+    if not was_viewing_ship and is_viewing_ship:
+        is_viewing_ship_start_time = Time.get_ticks_msec() / 1000.0
 
 
 func _on_detection_area_body_entered(body: Node2D) -> void:
@@ -260,6 +333,7 @@ func _on_detection_area_body_entered(body: Node2D) -> void:
         return
 
     if body is Player:
+        _set_is_viewing_ship(true)
         _on_ufo_detected()
     elif body is Enemy:
         visible_enemies[body] = true
@@ -272,6 +346,7 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
         return
 
     if body is Player:
+        _set_is_viewing_ship(false)
         _on_detection_end()
     elif body is Enemy:
         visible_enemies.erase(body)
@@ -370,6 +445,10 @@ func get_collision_shape() -> CollisionShape2D:
     return get_node("CollisionShape2D")
 
 
+func get_detection_area() -> Area2D:
+    return get_node("DetectionArea")
+
+
 func get_shape() -> Shape2D:
     return get_collision_shape().shape
 
@@ -401,6 +480,8 @@ func assign_config() -> void:
         "jump_boost",
         "approach_distance",
         "stop_alert_delay",
+        "shoot_period",
+        "initial_shoot_delay",
     ]:
         config[key] = randf_range(config_template[key][0], config_template[key][1])
     config.is_security = config_template.is_security
