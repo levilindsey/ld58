@@ -25,7 +25,8 @@ var quest_schedule: Array[Quest] = [
     Quest.new({
         Enemy.Type.GOLDEN_CHICKEN: 1
     }, 10)
-]
+
+ ]
 
 var schedule_index := 0
 

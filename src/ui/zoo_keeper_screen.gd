@@ -16,11 +16,12 @@ Excellent. You are helping my dreams come true. Please take some money
 as a token of my gratitude.
 """
 const ZOOKEEPER_QUEST_FULFILLED_2 = """
-Took you long enough... I do admit these are nice looking specimens though.
+Took you long enough... I do admit these are nice looking earthlings though.
 Here is your reward as promised.
 """
 const ZOOKEEPER_QUEST_FAILED = """
-Do you think I'm stupid?? This is not what I asked for. Try again.
+Do you think I'm stupid?? I want EXACTLY what I asked for. I'll take what you
+have but you gotta go get the rest before you're getting any money.
 
 Remember the one's I'm looking for can be seen in the top right.
 """
