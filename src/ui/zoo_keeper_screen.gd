@@ -22,16 +22,21 @@ func zookeeper_welcome() ->    void:
     _update_zookeeper_text(ZOOKEEPER_GREETING)
 
 func _on_earth_button_pressed() -> void:
+    G.main.click_sound()
     G.game_panel.return_from_zoo_keeper_screen()
 
 func _on_upgrade_speed_pressed() -> void:
+    G.main.click_sound()
     G.player.max_speed *= 1.1
 
 func _on_upgrade_stealth_pressed() -> void:
+    G.main.click_sound()
     pass # Replace with function body.
 
 func _on_upgrade_capacity_pressed() -> void:
+    G.main.click_sound()
     G.session.collection_capacity += 1
 
 func _on_drop_earthlings_pressed() -> void:
+    G.main.click_sound()
     pass # Replace with function body.

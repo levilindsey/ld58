@@ -75,18 +75,23 @@ layout_mode = 2
 [node name="DropEarthlings" type="Button" parent="MarginContainer/LeftPanel/Options"]
 unique_name_in_owner = true
 layout_mode = 2
+focus_neighbor_top = NodePath("../EarthButton")
+disabled = true
 text = "Drop off earthlings"
 
 [node name="UpgradeCapacity" type="Button" parent="MarginContainer/LeftPanel/Options"]
 layout_mode = 2
+disabled = true
 text = "Add ship capacity (+1)"
 
 [node name="UpgradeStealth" type="Button" parent="MarginContainer/LeftPanel/Options"]
 layout_mode = 2
+disabled = true
 text = "Improve stealth (+20%)"
 
 [node name="UpgradeSpeed" type="Button" parent="MarginContainer/LeftPanel/Options"]
 layout_mode = 2
+disabled = true
 text = "Upgrade speed (+10%)"
 
 [node name="Spacer2" type="Control" parent="MarginContainer/LeftPanel/Options"]
@@ -95,6 +100,7 @@ layout_mode = 2
 
 [node name="EarthButton" type="Button" parent="MarginContainer/LeftPanel/Options"]
 layout_mode = 2
+focus_neighbor_bottom = NodePath("../DropEarthlings")
 text = "Return to earth"
 
 [node name="Spacer2" type="Control" parent="MarginContainer/LeftPanel"]
