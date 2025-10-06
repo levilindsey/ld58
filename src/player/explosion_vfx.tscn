@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://b5fkt4hcic8st"]
+
+[ext_resource type="Texture2D" uid="uid://g3ysr8be4but" path="res://assets/images/white_pixel.png" id="1_aomvh"]
+
+[sub_resource type="Gradient" id="Gradient_2ti1m"]
+offsets = PackedFloat32Array(0, 0.752, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_l4nfn"]
+offsets = PackedFloat32Array(0, 0.364, 0.75733334, 0.85333335, 1)
+colors = PackedColorArray(0.32639998, 0.34, 0.3293467, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0.8, 0.8, 0.8, 1)
+
+[node name="ExplosionVFX" type="CPUParticles2D"]
+emitting = false
+amount = 30
+texture = ExtResource("1_aomvh")
+lifetime = 0.3
+one_shot = true
+explosiveness = 1.0
+emission_shape = 1
+emission_sphere_radius = 4.0
+direction = Vector2(0, -1)
+spread = 55.0
+gravity = Vector2(0, 3500)
+initial_velocity_min = 450.0
+initial_velocity_max = 600.0
+scale_amount_min = 2.0
+scale_amount_max = 2.0
+color_ramp = SubResource("Gradient_2ti1m")
+color_initial_ramp = SubResource("Gradient_l4nfn")

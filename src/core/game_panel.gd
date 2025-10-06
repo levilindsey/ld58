@@ -161,7 +161,8 @@ func show_zoo_keeper_screen() -> void:
     quest_manager.on_return_to_zoo()
     # zoo_keeper_screen.on_return_to_zoo must come after deposit enemies
     # and quest_manager.on_return_to_zoo for proper behavior.
-    G.main.open_screen(Main.ScreenType.ZOO_KEEPER)
+    if not G.session.is_game_ended:
+        G.main.open_screen(Main.ScreenType.ZOO_KEEPER)
     clear_level_entities()
 
 

@@ -48,4 +48,5 @@ func on_return_to_zoo() -> void:
 
 func on_win() -> void:
     G.player.global_position = G.game_panel.player_start_position
+    G.session.is_game_ended = true
     G.main.open_screen(G.main.ScreenType.WIN)

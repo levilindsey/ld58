@@ -55,7 +55,7 @@ func on_return_to_zoo() -> void:
         fulfilled_quests_counter += 1
     else:
         _update_zookeeper_text(ZOOKEEPER_QUEST_FAILED)
-        
+
 func _focus_first_enabled_button() -> void:
     if not %UpgradeBeam.disabled:
         %UpgradeBeam.grab_focus.call_deferred()
