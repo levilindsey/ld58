@@ -16,6 +16,9 @@ func _ready() -> void:
             security_enemy_types.push_back(type)
 
     _record_enemy_counts_by_type()
+
+
+func spawn() -> void:
     _populate_enemies()
 
 

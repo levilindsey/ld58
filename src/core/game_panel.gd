@@ -169,6 +169,8 @@ func return_from_screen() -> void:
     # AUDIO: Music Switch
     G.main.fade_to_main_theme()
 
+    enemy_spawner.spawn()
+
     # Fade-in ship.
     G.player.modulate.a = 0
     await get_tree().create_timer(0.2).timeout
