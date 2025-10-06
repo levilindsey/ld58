@@ -183,7 +183,7 @@ custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_vertical = 6
 text = "I am the Zookeeper. Hear me roar. I would like you to collect humans for me."
-horizontal_alignment = 1
+horizontal_alignment = 2
 autowrap_mode = 3
 
 [node name="ZooSpeechStreamPlayer" type="AudioStreamPlayer" parent="."]

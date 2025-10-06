@@ -5,14 +5,29 @@ const ZOOKEEPER_GREETING = """
 I am the Zookeeper. I've always been interested in Earthlings and it's time to start a collection
 of my own! If you collect them for me, I'll reward you handsomely in alien coins that you can
 use to upgrade your ship. Who doesn't love home improvement?
+
+I will pay 10 alien coins per mission you complete (seen in top right)
+and 1 additional coin for each stray earthling. To return them to me just fly
+straight up into the sky! Be careful down there and try not to be seen;
+the 'conspiracy theorists' are dangerous.
 """
-const ZOOKEEPER_QUEST_FULFILLED = """
+const ZOOKEEPER_QUEST_FULFILLED_1 = """
 Excellent. You are helping my dreams come true. Please take some money
 as a token of my gratitude.
 """
+const ZOOKEEPER_QUEST_FULFILLED_2 = """
+Took you long enough... I do admit these are nice looking specimens though.
+Here is your reward as promised.
+"""
 const ZOOKEEPER_QUEST_FAILED = """
-Hmmm. These earthlings don't quite match what I'm looking for. Mind going
-down and trying again?
+Do you think I'm stupid?? This is not what I asked for. Try again.
+
+Remember the one's I'm looking for can be seen in the top right.
+"""
+const ZOOKEEPER_NO_EARTHLINGS = """
+NOT EVEN ONE EARTHLING?!? You disrespectful, green headed, alienderthal..
+
+Don't forget your mission is in the top right. 
 """
 
 const UPGRADE_BEAM_TEXT = "Enlarge tractor beam"
@@ -52,13 +67,20 @@ func on_return_to_zoo() -> void:
     _focus_first_enabled_button()
     _update_upgrades_ui()
     if G.session.fulfilled_quests.size() > fulfilled_quests_counter:
-        _update_zookeeper_text(ZOOKEEPER_QUEST_FULFILLED)
+        var rando = randi()
+        if rando % 2 == 0:
+            _update_zookeeper_text(ZOOKEEPER_QUEST_FULFILLED_1)
+        else:
+            _update_zookeeper_text(ZOOKEEPER_QUEST_FULFILLED_2)
         G.utils.ensure(G.session.fulfilled_quests.size() - 1 == fulfilled_quests_counter)
         fulfilled_quests_counter += 1
-    elif has_given_welcome:
-        _update_zookeeper_text(ZOOKEEPER_QUEST_FAILED)
-    else:
+    elif not has_given_welcome:
         zookeeper_welcome()
+    elif G.session.most_recent_enemies_collected_count == 0:
+        _update_zookeeper_text(ZOOKEEPER_NO_EARTHLINGS)
+    else:
+        _update_zookeeper_text(ZOOKEEPER_QUEST_FAILED)
+
         
 func _focus_first_enabled_button() -> void:
     if not %UpgradeBeam.disabled:

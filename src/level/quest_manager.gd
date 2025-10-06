@@ -5,10 +5,10 @@ extends Node
 var quest_schedule: Array[Quest] = [
     Quest.new({
         Enemy.Type.FARMER: 1,
-    }, 5),
+    }, 10),
      Quest.new({
         Enemy.Type.CAT: 1,
-    }, 5)
+    }, 10)
 ]
 
 var schedule_index := 0
@@ -30,8 +30,8 @@ func on_return_to_zoo() -> void:
 
     # Start the next quest.
     if is_quest_fulfilled:
+        G.session.money += calculate_money_for_quest(G.session.active_quest)
         G.session.fulfilled_quests.push_back(G.session.active_quest)
-        G.session.money += G.session.active_quest.money_reward
         schedule_index += 1
         var next_quest: Quest
         if schedule_index < quest_schedule.size():
@@ -41,8 +41,16 @@ func on_return_to_zoo() -> void:
         else:
             on_win()
 
-
 func on_win() -> void:
     G.player.global_position = G.game_panel.player_start_position
     G.session.is_game_ended = true
     G.main.open_screen(G.main.ScreenType.WIN)
+    
+func calculate_money_for_quest(quest: Quest):
+    var total_enemies_needed = 0
+    for quota in quest.enemy_type_to_count.values():
+        total_enemies_needed += quota
+    var total_enemies_caught = 0
+    for caught in G.session.current_enemies_deposited_by_type.values():
+        total_enemies_caught += caught
+    return quest.money_reward + total_enemies_caught - total_enemies_needed

@@ -27,6 +27,8 @@ var current_enemies_deposited_count := 0
 var current_enemies_collected_by_type := {}
 var current_enemies_collected_count := 0
 
+var most_recent_enemies_collected_count := 0
+
 var total_excursion_count := 0
 var current_quest_excursion_count := 0
 
@@ -84,6 +86,7 @@ func reset() -> void:
 
     current_enemies_deposited_count = 0
     current_enemies_collected_count = 0
+    most_recent_enemies_collected_count = 0
     total_excursion_count = 0
     current_quest_excursion_count = 0
     total_quest_count = 0
@@ -138,6 +141,7 @@ func deposit_enemies() -> void:
 
     for type in Enemy.Type.values():
         current_enemies_collected_by_type[type] = 0
+    most_recent_enemies_collected_count = current_enemies_collected_count
     current_enemies_collected_count = 0
 
     G.hud.update_quest()
