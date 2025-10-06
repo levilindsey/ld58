@@ -109,26 +109,22 @@ func _physics_process(_delta: float) -> void:
 
     # Check for player reaching space for zookeeper updates.
     if G.player.global_position.y < ZOO_KEEPER_SPACE_HEIGHT_THRESHOLD:
-        _show_zoo_keeper_screen()
+        show_zoo_keeper_screen()
 
 
-func _show_zoo_keeper_screen() -> void:
+func show_zoo_keeper_screen() -> void:
     quest_manager.on_return_to_zoo()
     get_tree().paused = true
     G.zoo_keeper.visible = true
     G.zoo_keeper.zookeeper_welcome()
     G.session.deposit_enemies()
-    # TODO
-    pass
 
 
-func _return_from_zoo_keeper_screen() -> void:
+func return_from_zoo_keeper_screen() -> void:
     G.zoo_keeper.visible = false
     get_tree().paused = false
     G.player.global_position = player_start_position
     G.session.start_new_excursion()
-    # TODO
-    pass
 
 
 func get_enemy_container() -> Node2D:

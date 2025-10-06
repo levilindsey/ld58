@@ -12,6 +12,10 @@ var is_paused := true:
         is_paused = value
 
 
+func _enter_tree() -> void:
+    get_tree().paused = true
+
+
 func _ready() -> void:
     print("main._ready")
 
@@ -26,6 +30,9 @@ func _ready() -> void:
 
     if G.settings.full_screen:
         DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+
+    if not G.settings.start_in_zookeeper_screen:
+        G.game_panel.return_from_zoo_keeper_screen()
 
 
 func _notification(notification_type: int) -> void:

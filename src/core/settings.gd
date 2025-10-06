@@ -4,6 +4,7 @@ extends Resource
 
 @export var dev_mode := true
 
+@export var start_in_zookeeper_screen := true
 @export var full_screen := false
 # TODO: Hook this up.
 @export var mute_music := false

@@ -6,9 +6,6 @@ const DEFAULT_COLLECTION_CAPACITY := 3
 const DEFAULT_MAX_HEALTH := 3
 
 
-# FIXME(levilindsey): Update these other counts.
-
-
 # Dictionary<Enemy.Type, int>
 var total_enemies_deposited_by_type := {}
 # Dictionary<Enemy.Type, int>

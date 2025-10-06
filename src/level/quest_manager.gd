@@ -38,7 +38,7 @@ func on_return_to_zoo() -> void:
         if schedule_index < quest_schedule.size():
             next_quest = quest_schedule[schedule_index]
         else:
-            var index := randi_range(0, end_game_quests.size())
+            var index := randi_range(0, end_game_quests.size() - 1)
             next_quest = end_game_quests[index]
 
         G.session.start_new_quest(next_quest)

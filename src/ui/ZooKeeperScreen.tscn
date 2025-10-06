@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://dg8tvc66eq6c5"]
+[gd_scene load_steps=11 format=3 uid="uid://dg8tvc66eq6c5"]
 
 [ext_resource type="Texture2D" uid="uid://dj2ig84eome17" path="res://assets/images/background_color.png" id="1_e6fyj"]
+[ext_resource type="Theme" uid="uid://cl3pkwueh4mag" path="res://src/core/main_theme.tres" id="1_lpqvl"]
 [ext_resource type="Texture2D" uid="uid://bymo0pfodey5k" path="res://assets/images/cat.png" id="2_fdtcg"]
 [ext_resource type="Script" uid="uid://bkdd7i01q1ow5" path="res://src/ui/zoo_keeper_screen.gd" id="2_lpqvl"]
 [ext_resource type="Texture2D" uid="uid://ccrh0uyxuhy7h" path="res://assets/images/background_stars.png" id="2_npo0w"]
-
-[sub_resource type="Theme" id="Theme_fdtcg"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lpqvl"]
 texture = ExtResource("1_e6fyj")
@@ -15,15 +14,24 @@ texture = ExtResource("2_npo0w")
 
 [sub_resource type="Theme" id="Theme_ntcfd"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lpqvl"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+
+[sub_resource type="Theme" id="Theme_lpqvl"]
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_lpqvl")
+
 [node name="ZooKeeperScreen" type="PanelContainer"]
 process_mode = 3
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_fdtcg")
+theme = ExtResource("1_lpqvl")
 theme_override_styles/panel = SubResource("StyleBoxTexture_lpqvl")
 script = ExtResource("2_lpqvl")
 
@@ -82,7 +90,11 @@ texture = ExtResource("2_fdtcg")
 expand_mode = 4
 stretch_mode = 4
 
-[node name="ZooKeeperText" type="Label" parent="MarginContainer/LeftPanel/RightPanel"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/LeftPanel/RightPanel"]
+layout_mode = 2
+theme = SubResource("Theme_lpqvl")
+
+[node name="ZooKeeperText" type="Label" parent="MarginContainer/LeftPanel/RightPanel/PanelContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
