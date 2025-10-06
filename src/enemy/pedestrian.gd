@@ -4,6 +4,12 @@ extends Enemy
 
 const SPLATTER_VFX_SCENE := preload("res://src/enemy/splatter_vfx.tscn")
 
+const FLASHLIGHT_ROTATION_MIN := 15.0
+const FLASHLIGHT_ROTATION_MAX := 48.0
+
+const FLASHLIGHT_ROTATION_PERIOD_MIN := 6.0
+const FLASHLIGHT_ROTATION_PERIOD_MAX := 9.0
+
 
 var abducting_audio_player: AudioStreamPlayer2D
 var falling_audio_player: AudioStreamPlayer2D
@@ -14,11 +20,30 @@ var gunshot_audio_player: AudioStreamPlayer2D
 
 var splatter_vfx: CPUParticles2D
 
+var flashlight_rotation_period := FLASHLIGHT_ROTATION_PERIOD_MAX
+var flashlight_rotation_elapsed_time := 0.0
+
 
 func _ready() -> void:
     super._ready()
     splatter_vfx = SPLATTER_VFX_SCENE.instantiate()
     add_child(splatter_vfx)
+
+
+func _physics_process(delta: float) -> void:
+    super._physics_process(delta)
+
+    if is_searching and type == Type.POLICE_OFFICER:
+        flashlight_rotation_elapsed_time += delta
+        var flashlight_rotation_progress := fmod(
+            flashlight_rotation_elapsed_time,
+            flashlight_rotation_period) / flashlight_rotation_period
+        flashlight_rotation_progress = sin(TAU * flashlight_rotation_progress)
+        var flashlight_rotation := lerpf(
+            FLASHLIGHT_ROTATION_MIN,
+            FLASHLIGHT_ROTATION_MAX,
+            flashlight_rotation_progress)
+        get_flashlight_wrapper().rotation = flashlight_rotation / 180.0 * PI
 
 
 func setup_sound() -> void:
@@ -42,7 +67,7 @@ func on_beam_start() -> void:
 
     # Beaming enemies don't count toward the detection score.
     if is_alerted():
-        G.session.remove_alerted_enemy(type)
+        G.game_panel.remove_alerted_enemy(self)
 
     state = State.BEING_BEAMED
 
@@ -60,10 +85,10 @@ func on_beam_start() -> void:
         if not is_instance_valid(enemy):
             continue
         if enemy.visible_enemies.has(self):
-            enemy._on_ufo_or_beamed_player_detection_start()
+            enemy._on_ufo_detected()
 
     # Mark player as seen so that if dropped the pedestrian will run.
-    was_player_recently_visible = true
+    was_player_recently_detected = true
     last_player_sighting_time = Time.get_ticks_msec() / 1000.0
 
 
@@ -77,7 +102,7 @@ func on_beam_end() -> void:
 
     # If they are going to survive the fall, they count toward the detection score.
     if not was_dropped_from_lethal_height:
-        G.session.add_alerted_enemy(type)
+        _on_alerted()
 
     # AUDIO: Falling
     if abducting_audio_player.playing:
@@ -136,7 +161,7 @@ func _on_alerted() -> void:
 
     # Jump in fear.
     velocity.x = 0
-    velocity.y = -get_jump_boost()
+    velocity.y = - get_jump_boost()
     was_on_floor = false
 
     # AUDIO: SCREAM
@@ -151,3 +176,33 @@ func _on_alerted() -> void:
     elif state == State.CHASING:
         # TODO(ALDEN): Sound me up, baby
         pass
+
+
+func assign_config() -> void:
+    super.assign_config()
+    flashlight_rotation_period = randf_range(FLASHLIGHT_ROTATION_PERIOD_MIN, FLASHLIGHT_ROTATION_PERIOD_MAX)
+    flashlight_rotation_elapsed_time = randf() * flashlight_rotation_period
+
+
+func get_flashlight_wrapper() -> Node2D:
+    return get_node("Light")
+
+
+func get_flashlight_area_wrapper() -> Area2D:
+    return get_node("Light/LightArea")
+
+
+func _set_is_searching(value: bool) -> void:
+    super._set_is_searching(value)
+    get_flashlight_wrapper().visible = value
+    get_flashlight_area_wrapper().monitoring = value
+
+
+func _on_light_area_body_entered(body: Node2D) -> void:
+    if body is Player:
+        _on_ufo_detected()
+
+
+func _on_light_area_body_exited(body: Node2D) -> void:
+    if body is Player:
+        _on_ufo_detected()
