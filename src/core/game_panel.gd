@@ -88,9 +88,16 @@ func start_level() -> void:
 
 
 func reset() -> void:
-    # FIXME: Reset enemies?
     G.session.reset()
     G.player.reset()
+    current_alerted_enemies.clear()
+    if is_instance_valid(enemy_spawner):
+        enemy_spawner.extra_security_enemies.clear()
+    G.enemies.clear()
+    for child in get_enemy_container().get_children():
+        child.queue_free()
+    for child in get_projectile_container().get_children():
+        child.queue_free()
     start_level()
 
 

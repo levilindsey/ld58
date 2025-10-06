@@ -65,13 +65,15 @@ func open_screen(screen_type: ScreenType) -> void:
         ScreenType.MAIN_MENU:
             G.game_panel.reset()
             G.main_menu_screen.visible = true
+            G.main_menu_screen.on_open()
         ScreenType.GAME_OVER:
             G.game_panel.reset()
             G.game_over_screen.visible = true
-            G.game_over_screen.update()
+            G.game_over_screen.on_open()
         ScreenType.WIN:
             G.game_panel.reset()
             G.win_screen.visible = true
+            G.win_screen.on_open()
         ScreenType.ZOO_KEEPER:
             G.zoo_keeper_screen.visible = true
             G.zoo_keeper_screen.on_return_to_zoo()
