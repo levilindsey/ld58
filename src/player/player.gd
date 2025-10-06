@@ -18,6 +18,8 @@ var is_beaming = false
 @onready var capture_audio_player: AudioStreamPlayer = $CaptureStreamPlayer
 @onready var reject_audio_player: AudioStreamPlayer = $RejectStreamPlayer
 @onready var warning_audio_player: AudioStreamPlayer = $WarningStreamPlayer
+@onready var explosion_audio_player: AudioStreamPlayer = $ExplosionStreamPlayer
+@onready var bullethit_audio_player: AudioStreamPlayer = $BulletHitStreamPlayer
 
 
 func _ready() -> void:
@@ -211,6 +213,10 @@ func damage(value: int) -> void:
     if is_dead():
         return
 
+    if value == G.settings.bullet_damage:
+        # TODO(Alden): Hit by a bullet!
+        pass
+
     var next_health := maxi(G.session.health - value, 0)
     G.session.set_health(next_health)
     print("Ship damaged: %d [%d / %d]" % [value, G.session.health, G.session.max_health])
@@ -228,5 +234,6 @@ func is_dead() -> bool:
 func _on_killed() -> void:
     print("Ship destroyed")
     self.modulate.a = 0
-    # TODO(ALDEN): Sounds (KABLOOEY)
+    #AUDIO: Explosion
+    explosion_audio_player.play()
     G.game_panel.on_player_killed()

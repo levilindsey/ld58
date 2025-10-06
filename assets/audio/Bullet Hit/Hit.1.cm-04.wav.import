@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://1ulpp67vul07"
+path="res://.godot/imported/Hit.1.cm-04.wav-50f229f2beab2ffa07bd3979d1901a7b.sample"
+
+[deps]
+
+source_file="res://assets/audio/Bullet Hit/Hit.1.cm-04.wav"
+dest_files=["res://.godot/imported/Hit.1.cm-04.wav-50f229f2beab2ffa07bd3979d1901a7b.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
