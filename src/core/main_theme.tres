@@ -6,9 +6,9 @@
 [ext_resource type="FontFile" uid="uid://dqinodgfkr7qt" path="res://assets/fonts/pxlzr/pxlzr.ttf" id="4_4mktn"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q3c4w"]
-content_margin_left = 8.0
+content_margin_left = 16.0
 content_margin_top = 8.0
-content_margin_right = 8.0
+content_margin_right = 16.0
 content_margin_bottom = 8.0
 texture = ExtResource("1_3hca0")
 texture_margin_left = 6.0
@@ -18,9 +18,9 @@ texture_margin_bottom = 6.0
 modulate_color = Color(1, 1, 1, 0.43137255)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3hca0"]
-content_margin_left = 8.0
+content_margin_left = 16.0
 content_margin_top = 8.0
-content_margin_right = 8.0
+content_margin_right = 16.0
 content_margin_bottom = 8.0
 texture = ExtResource("2_58wv2")
 texture_margin_left = 6.0
@@ -29,9 +29,9 @@ texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_or3yn"]
-content_margin_left = 8.0
+content_margin_left = 16.0
 content_margin_top = 8.0
-content_margin_right = 8.0
+content_margin_right = 16.0
 content_margin_bottom = 8.0
 texture = ExtResource("2_58wv2")
 texture_margin_left = 6.0
@@ -40,9 +40,9 @@ texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_58wv2"]
-content_margin_left = 8.0
+content_margin_left = 16.0
 content_margin_top = 8.0
-content_margin_right = 8.0
+content_margin_right = 16.0
 content_margin_bottom = 8.0
 texture = ExtResource("1_3hca0")
 texture_margin_left = 6.0
@@ -51,9 +51,9 @@ texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4mktn"]
-content_margin_left = 8.0
+content_margin_left = 16.0
 content_margin_top = 8.0
-content_margin_right = 8.0
+content_margin_right = 16.0
 content_margin_bottom = 8.0
 texture = ExtResource("3_4mktn")
 texture_margin_left = 6.0

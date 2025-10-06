@@ -2,9 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://dj2ig84eome17" path="res://assets/images/background_color.png" id="1_e6fyj"]
 [ext_resource type="Theme" uid="uid://cl3pkwueh4mag" path="res://src/core/main_theme.tres" id="1_lpqvl"]
-[ext_resource type="Texture2D" uid="uid://bymo0pfodey5k" path="res://assets/images/cat.png" id="2_fdtcg"]
 [ext_resource type="Script" uid="uid://bkdd7i01q1ow5" path="res://src/ui/zoo_keeper_screen.gd" id="2_lpqvl"]
 [ext_resource type="Texture2D" uid="uid://ccrh0uyxuhy7h" path="res://assets/images/background_stars.png" id="2_npo0w"]
+[ext_resource type="Texture2D" uid="uid://crgbkxjhlafc1" path="res://assets/images/zookeeper_portrait.png" id="5_lpqvl"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lpqvl"]
 texture = ExtResource("1_e6fyj")
@@ -15,10 +15,10 @@ texture = ExtResource("2_npo0w")
 [sub_resource type="Theme" id="Theme_ntcfd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lpqvl"]
-content_margin_left = 12.0
-content_margin_top = 12.0
-content_margin_right = 12.0
-content_margin_bottom = 12.0
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
 bg_color = Color(0.1, 0.1, 0.1, 0.6)
 
 [sub_resource type="Theme" id="Theme_lpqvl"]
@@ -51,11 +51,26 @@ theme_override_constants/margin_bottom = 100
 [node name="LeftPanel" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 2
+alignment = 1
 
 [node name="Options" type="VBoxContainer" parent="MarginContainer/LeftPanel"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 4
 size_flags_vertical = 4
+
+[node name="Spacer" type="Control" parent="MarginContainer/LeftPanel/Options"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/LeftPanel/Options"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Upgrade your ship?"
+horizontal_alignment = 1
+
+[node name="Spacer3" type="Control" parent="MarginContainer/LeftPanel/Options"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
 
 [node name="DropEarthlings" type="Button" parent="MarginContainer/LeftPanel/Options"]
 unique_name_in_owner = true
@@ -74,28 +89,46 @@ text = "Improve stealth (+20%)"
 layout_mode = 2
 text = "Upgrade speed (+10%)"
 
+[node name="Spacer2" type="Control" parent="MarginContainer/LeftPanel/Options"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+
 [node name="EarthButton" type="Button" parent="MarginContainer/LeftPanel/Options"]
 layout_mode = 2
 text = "Return to earth"
 
+[node name="Spacer2" type="Control" parent="MarginContainer/LeftPanel"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
 [node name="RightPanel" type="VBoxContainer" parent="MarginContainer/LeftPanel"]
+custom_minimum_size = Vector2(400, 0)
 layout_direction = 3
 layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="ZooKeeperImage" type="TextureRect" parent="MarginContainer/LeftPanel/RightPanel"]
-custom_minimum_size = Vector2(0, 500)
-layout_mode = 2
-texture = ExtResource("2_fdtcg")
-expand_mode = 4
-stretch_mode = 4
+size_flags_horizontal = 4
+theme_override_constants/separation = 20
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/LeftPanel/RightPanel"]
 layout_mode = 2
 theme = SubResource("Theme_lpqvl")
 
-[node name="ZooKeeperText" type="Label" parent="MarginContainer/LeftPanel/RightPanel/PanelContainer"]
-unique_name_in_owner = true
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/LeftPanel/RightPanel/PanelContainer"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+
+[node name="ZooKeeperImage" type="TextureRect" parent="MarginContainer/LeftPanel/RightPanel/PanelContainer/CenterContainer"]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+texture = ExtResource("5_lpqvl")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/LeftPanel/RightPanel"]
+layout_mode = 2
+theme = SubResource("Theme_lpqvl")
+
+[node name="ZooKeeperText" type="Label" parent="MarginContainer/LeftPanel/RightPanel/PanelContainer2"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_vertical = 6
