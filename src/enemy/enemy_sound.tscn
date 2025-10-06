@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://v01bkoexv76d"]
+[gd_scene load_steps=70 format=3 uid="uid://v01bkoexv76d"]
 
 [ext_resource type="AudioStream" uid="uid://ddcvc3bya2scb" path="res://assets/audio/Human Screams/Human screams-cm-01.wav" id="1_44n7j"]
 [ext_resource type="AudioStream" uid="uid://cgjv1jya2givh" path="res://assets/audio/Human Screams/Human screams-cm-02.wav" id="2_8ayot"]
@@ -56,6 +56,9 @@
 [ext_resource type="AudioStream" uid="uid://cq4fve15ac7v1" path="res://assets/audio/Chickenz/Audio 5-cm_01-01.wav" id="54_2kpid"]
 [ext_resource type="AudioStream" uid="uid://b4l88te124tov" path="res://assets/audio/Chickenz/Audio 5-cm_02-01.wav" id="55_cmmvy"]
 [ext_resource type="AudioStream" uid="uid://bcdml27qm7ywr" path="res://assets/audio/Chickenz/Audio 5-cm_02-02.wav" id="56_2hmi1"]
+[ext_resource type="Script" uid="uid://cobr581x35lxx" path="res://src/enemy/abduct_cat_stream_player_2d.gd" id="57_cmmvy"]
+[ext_resource type="Script" uid="uid://pq6mr66loh6j" path="res://src/enemy/abduct_cow_stream_player_2d.gd" id="58_2hmi1"]
+[ext_resource type="Script" uid="uid://dj4npsvcm1s8k" path="res://src/enemy/abduct_chicken_stream_player_2d.gd" id="59_kgtpc"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_hnjx5"]
 streams_count = 16
@@ -114,6 +117,14 @@ stream_1/stream = ExtResource("34_hgru8")
 stream_2/stream = ExtResource("35_2gpy8")
 stream_3/stream = ExtResource("36_32nxv")
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jjsxn"]
+streams_count = 5
+stream_0/stream = ExtResource("47_tjjr1")
+stream_1/stream = ExtResource("48_fvnkd")
+stream_2/stream = ExtResource("49_qt41h")
+stream_3/stream = ExtResource("50_vd6o0")
+stream_4/stream = ExtResource("51_qhhw3")
+
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ataan"]
 random_pitch = 1.1
 streams_count = 5
@@ -131,14 +142,6 @@ stream_1/stream = ExtResource("43_x3p5a")
 stream_2/stream = ExtResource("44_wadpl")
 stream_3/stream = ExtResource("45_nhv58")
 stream_4/stream = ExtResource("46_x2hc5")
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jjsxn"]
-streams_count = 5
-stream_0/stream = ExtResource("47_tjjr1")
-stream_1/stream = ExtResource("48_fvnkd")
-stream_2/stream = ExtResource("49_qt41h")
-stream_3/stream = ExtResource("50_vd6o0")
-stream_4/stream = ExtResource("51_qhhw3")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_tjjr1"]
 random_pitch = 1.1
@@ -189,6 +192,11 @@ volume_db = 18.0
 max_distance = 400.0
 bus = &"SFX"
 
+[node name="TheFuzzStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_jjsxn")
+max_distance = 300.0
+bus = &"Voices"
+
 [node name="CatStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource("AudioStreamRandomizer_ataan")
 volume_db = -2.916
@@ -199,15 +207,34 @@ stream = SubResource("AudioStreamRandomizer_hgru8")
 max_distance = 300.0
 bus = &"Voices"
 
-[node name="TheFuzzStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = SubResource("AudioStreamRandomizer_jjsxn")
-max_distance = 300.0
-bus = &"Voices"
-
 [node name="ChickenStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource("AudioStreamRandomizer_tjjr1")
 max_distance = 275.0
 bus = &"Voices"
 
+[node name="AbductCatStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_ataan")
+volume_db = -2.916
+max_distance = 300.0
+script = ExtResource("57_cmmvy")
+
+[node name="AbductCowStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_hgru8")
+max_distance = 300.0
+bus = &"Voices"
+script = ExtResource("58_2hmi1")
+
+[node name="AbductChickenStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_tjjr1")
+max_distance = 275.0
+bus = &"Voices"
+script = ExtResource("59_kgtpc")
+
 [connection signal="finished" from="AbductingAudioStream" to="AbductingAudioStream" method="_on_finished"]
 [connection signal="finished" from="DetectStreamPlayer2D" to="DetectStreamPlayer2D" method="_on_finished"]
+[connection signal="finished" from="AbductCatStreamPlayer2D" to="AbductingAudioStream" method="_on_abduct_cat_stream_player_2d_finished"]
+[connection signal="finished" from="AbductCatStreamPlayer2D" to="AbductCatStreamPlayer2D" method="_on_finished"]
+[connection signal="finished" from="AbductCowStreamPlayer2D" to="AbductingAudioStream" method="_on_abduct_cow_stream_player_2d_finished"]
+[connection signal="finished" from="AbductCowStreamPlayer2D" to="AbductCowStreamPlayer2D" method="_on_finished"]
+[connection signal="finished" from="AbductChickenStreamPlayer2D" to="AbductingAudioStream" method="_on_abduct_chicken_stream_player_2d_finished"]
+[connection signal="finished" from="AbductChickenStreamPlayer2D" to="AbductChickenStreamPlayer2D" method="_on_finished"]

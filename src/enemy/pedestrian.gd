@@ -21,6 +21,12 @@ var cat_audio_player: AudioStreamPlayer2D
 var cow_audio_player: AudioStreamPlayer2D
 var thefuzz_audio_player: AudioStreamPlayer2D
 var chicken_audio_player: AudioStreamPlayer2D
+var abductcat_audio_player: AudioStreamPlayer2D
+var abductcow_audio_player: AudioStreamPlayer2D
+var abductchicken_audio_player: AudioStreamPlayer2D
+
+
+
 
 var splatter_vfx: CPUParticles2D
 
@@ -61,6 +67,11 @@ func setup_sound() -> void:
     cow_audio_player = sound_scene.get_node("CowStreamPlayer2D")
     thefuzz_audio_player = sound_scene.get_node("TheFuzzStreamPlayer2D")
     chicken_audio_player = sound_scene.get_node("ChickenStreamPlayer2D")
+    abductcat_audio_player = sound_scene.get_node("AbductCatStreamPlayer2D")
+    abductcow_audio_player = sound_scene.get_node("AbductCowStreamPlayer2D")
+    abductchicken_audio_player = sound_scene.get_node("AbductChickenStreamPlayer2D")
+
+
 
 func _on_done_running_away() -> void:
     super._on_done_running_away()
@@ -84,11 +95,11 @@ func on_beam_start() -> void:
 
     if not abducting_audio_player.playing:
         if type == Type.COW:
-            cow_audio_player.play()
+            abductcow_audio_player.play()
         elif type == Type.CAT:
-            cat_audio_player.play()
+            abductcat_audio_player.play()
         elif type == Type.CHICKEN or type == Type.GOLDEN_CHICKEN:
-            chicken_audio_player.play()
+            abductchicken_audio_player.play()
         else:
             abducting_audio_player.play()
 
