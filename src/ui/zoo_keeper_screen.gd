@@ -59,7 +59,7 @@ func on_return_to_zoo() -> void:
         _update_zookeeper_text(ZOOKEEPER_QUEST_FAILED)
     else:
         zookeeper_welcome()
-        
+
 func _focus_first_enabled_button() -> void:
     if not %UpgradeBeam.disabled:
         %UpgradeBeam.grab_focus.call_deferred()

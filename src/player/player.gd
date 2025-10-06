@@ -234,6 +234,6 @@ func is_dead() -> bool:
 func _on_killed() -> void:
     print("Ship destroyed")
     self.modulate.a = 0
-    #AUDIO: Explosion    
+    #AUDIO: Explosion
     explosion_audio_player.play()
     G.game_panel.on_player_killed()

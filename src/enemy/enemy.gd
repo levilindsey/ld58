@@ -205,6 +205,8 @@ func _shoot() -> void:
     bullet.damage = G.settings.bullet_damage
     G.game_panel.get_projectile_container().add_child(bullet)
 
+    # TODO(Alden): Shot bullet
+
 
 func queue_extra_security_dismissed() -> void:
     G.utils.ensure(is_extra_security)
