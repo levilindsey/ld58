@@ -25,6 +25,9 @@ var quest_manager : QuestManager
 # Dictionary<Region.Type, float>
 var total_width_per_region_type := {}
 
+# Dictionary<Enemy, bool>
+var current_alerted_enemies := {}
+
 
 func _enter_tree() -> void:
     G.session = Session.new()
@@ -156,6 +159,34 @@ func return_from_zoo_keeper_screen() -> void:
     await get_tree().create_timer(0.2).timeout
     var tween := create_tween()
     tween.tween_property(G.player, "modulate:a", 1, 1.0)
+
+
+
+func add_alerted_enemy(enemy: Enemy) -> void:
+    current_alerted_enemies[enemy] = true
+    G.session.record_alerted_enemy(enemy.type)
+    _update_detection_score()
+
+
+func remove_alerted_enemy(enemy: Enemy) -> void:
+    current_alerted_enemies.erase(enemy)
+    _update_detection_score()
+
+
+func _update_detection_score() -> void:
+    var scaled_alerted_enemy_count := 0.0
+    for enemy in current_alerted_enemies:
+        var multiplier := Enemy.get_alerted_enemy_multiplier_by_type(enemy.type)
+        scaled_alerted_enemy_count += multiplier
+
+    scaled_alerted_enemy_count = clamp(
+        scaled_alerted_enemy_count, 0, G.session.alert_enemies_count_for_max_detection)
+
+    var detection_score := (
+        float(scaled_alerted_enemy_count) / G.session.alert_enemies_count_for_max_detection)
+
+    G.session.set_detection_score(detection_score)
+    G.hud.update_detection()
 
 
 func get_enemy_container() -> Node2D:

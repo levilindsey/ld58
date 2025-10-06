@@ -99,21 +99,22 @@ func update_beam_scale() -> void:
 func _on_started_beam() -> void:
     print("_on_started_beam")
     var beam = get_node("TractorBeam")
-    var beamCollisionArea = %TractorBeamCollisionPolygon
+    var beam_collision_area = %TractorBeamCollisionPolygon
     is_beaming = true
     beam.visible = true
     if not beam_audio_player.playing:
         beam_audio_player.play()
-    beamCollisionArea.disabled = false
+    beam_collision_area.disabled = false
+
 
 func _on_stopped_beam() -> void:
     print("_on_stopped_beam")
     var beam = get_node("TractorBeam")
-    var beamCollisionArea = %TractorBeamCollisionPolygon
+    var beam_collision_area = %TractorBeamCollisionPolygon
     is_beaming = false
     beam.visible = false
     beam_audio_player.stop()
-    beamCollisionArea.disabled = true
+    beam_collision_area.disabled = true
     for ped in pedestrians_in_beam:
         ped.reparent(G.game_panel.get_enemy_container())
         ped.on_beam_end()

@@ -153,7 +153,7 @@ func _hack_sanitize_weird_transform_state() -> void:
 func _on_done_running_away() -> void:
     was_player_recently_detected = false
     if is_alerted():
-        G.session.remove_alerted_enemy(type)
+        G.game_panel.remove_alerted_enemy(self)
         state = State.WALKING
         if get_is_security() and not is_extra_security:
             _set_is_searching(false)
@@ -189,6 +189,7 @@ func destroy() -> void:
             continue
         enemy.visible_enemies.erase(self)
     G.player.pedestrians_in_beam.erase(self)
+    G.game_panel.current_alerted_enemies.erase(self)
     G.enemies.erase(self)
     if not self.is_queued_for_deletion():
         queue_free()
@@ -236,7 +237,7 @@ func _on_killed() -> void:
 
 func _on_alerted() -> void:
     state = get_alerted_state()
-    G.session.add_alerted_enemy(type)
+    G.game_panel.add_alerted_enemy(self)
 
     if get_is_security() and not is_searching:
         _set_is_searching(true)

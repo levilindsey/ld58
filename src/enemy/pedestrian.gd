@@ -67,7 +67,7 @@ func on_beam_start() -> void:
 
     # Beaming enemies don't count toward the detection score.
     if is_alerted():
-        G.session.remove_alerted_enemy(type)
+        G.game_panel.remove_alerted_enemy(self)
 
     state = State.BEING_BEAMED
 

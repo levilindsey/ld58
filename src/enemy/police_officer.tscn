@@ -80,6 +80,7 @@ texture = ExtResource("3_4bnun")
 [node name="LightArea" type="Area2D" parent="Light"]
 unique_name_in_owner = true
 collision_layer = 0
+monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Light/LightArea"]

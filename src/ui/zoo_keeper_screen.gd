@@ -32,7 +32,7 @@ func focus_first_enabled_button() -> void:
         %EarthButton.grab_focus.call_deferred()
     else:
         G.utils.ensure(false)
-        
+
 
 func zookeeper_welcome() ->    void:
     focus_first_enabled_button()
