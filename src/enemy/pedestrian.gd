@@ -10,6 +10,7 @@ var falling_audio_player: AudioStreamPlayer2D
 var splat_audio_player: AudioStreamPlayer
 var detect_audio_player: AudioStreamPlayer2D
 var running_audio_player: AudioStreamPlayer2D
+var gunshot_audio_player: AudioStreamPlayer2D
 
 var splatter_vfx: CPUParticles2D
 
@@ -26,7 +27,7 @@ func setup_sound() -> void:
     splat_audio_player = sound_scene.get_node("SplatStreamPlayer")
     detect_audio_player = sound_scene.get_node("DetectStreamPlayer2D")
     running_audio_player = sound_scene.get_node("RunningStreamPlayer2D")
-
+    gunshot_audio_player = sound_scene.get_node("GunshotStreamPlayer2D")
 
 func _on_done_running_away() -> void:
     super._on_done_running_away()

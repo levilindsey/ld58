@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://v01bkoexv76d"]
+[gd_scene load_steps=43 format=3 uid="uid://v01bkoexv76d"]
 
 [ext_resource type="AudioStream" uid="uid://ddcvc3bya2scb" path="res://assets/audio/Human Screams/Human screams-cm-01.wav" id="1_44n7j"]
 [ext_resource type="AudioStream" uid="uid://cgjv1jya2givh" path="res://assets/audio/Human Screams/Human screams-cm-02.wav" id="2_8ayot"]
@@ -31,7 +31,11 @@
 [ext_resource type="AudioStream" uid="uid://ddht7s208ilp" path="res://assets/audio/Human Surprise/Human screams.dup1-cm_07-01.wav" id="29_kptdp"]
 [ext_resource type="Script" uid="uid://dx1i5n60x14ay" path="res://src/enemy/detect_stream_player_2d.gd" id="30_kptdp"]
 [ext_resource type="AudioStream" uid="uid://b6bx2xd5ff8oq" path="res://assets/audio/Running Screams/Running.cm1_01.wav" id="32_kptdp"]
+[ext_resource type="AudioStream" uid="uid://4qcs40ktrtil" path="res://assets/audio/Gunshots/Gunzzzz-cm_01-02.wav" id="33_ataan"]
 [ext_resource type="AudioStream" uid="uid://7fmajccvb2jp" path="res://assets/audio/Running Screams/Running.cm1_02.wav" id="33_dor8u"]
+[ext_resource type="AudioStream" uid="uid://cq5rl3aljip44" path="res://assets/audio/Gunshots/Gunzzzz-cm_01-04.wav" id="34_hgru8"]
+[ext_resource type="AudioStream" uid="uid://dsquosyopaads" path="res://assets/audio/Gunshots/Gunzzzz-cm_01-06.wav" id="35_2gpy8"]
+[ext_resource type="AudioStream" uid="uid://dao1e8iyw86x1" path="res://assets/audio/Gunshots/Gunzzzz-cm_01-07.wav" id="36_32nxv"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_hnjx5"]
 streams_count = 16
@@ -82,6 +86,14 @@ streams_count = 2
 stream_0/stream = ExtResource("32_kptdp")
 stream_1/stream = ExtResource("33_dor8u")
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_6kgty"]
+random_pitch = 1.1
+streams_count = 4
+stream_0/stream = ExtResource("33_ataan")
+stream_1/stream = ExtResource("34_hgru8")
+stream_2/stream = ExtResource("35_2gpy8")
+stream_3/stream = ExtResource("36_32nxv")
+
 [node name="EnemySound" type="Node2D"]
 
 [node name="AbductingAudioStream" type="AudioStreamPlayer2D" parent="."]
@@ -115,6 +127,11 @@ stream = SubResource("AudioStreamRandomizer_s27u6")
 volume_db = -3.8
 max_distance = 300.0
 bus = &"Voices"
+
+[node name="GunshotStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_6kgty")
+max_distance = 400.0
+bus = &"SFX"
 
 [connection signal="finished" from="AbductingAudioStream" to="AbductingAudioStream" method="_on_finished"]
 [connection signal="finished" from="DetectStreamPlayer2D" to="DetectStreamPlayer2D" method="_on_finished"]
