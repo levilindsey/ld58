@@ -47,7 +47,8 @@ func _ready() -> void:
 
 
 func start_game() -> void:
-    var screen_type := ScreenType.GAME_OVER if G.settings.start_in_game else ScreenType.MAIN_MENU
+    var screen_type := ScreenType.GAME if G.settings.start_in_game else ScreenType.MAIN_MENU
+    G.session.is_game_ended = not G.settings.start_in_game
     open_screen(screen_type)
 
 

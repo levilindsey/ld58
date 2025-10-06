@@ -52,6 +52,8 @@ var active_quest: Quest
 
 var fulfilled_quests: Array[Quest] = []
 
+var is_game_ended := true
+
 
 func _init() -> void:
     reset()
@@ -64,7 +66,6 @@ func reset() -> void:
     current_enemies_deposited_by_type.clear()
     current_enemies_collected_by_type.clear()
     ship_upgrade_levels.clear()
-
 
     # Initialize map entries with zero counts.
     for type in Enemy.Type.values():
@@ -99,6 +100,8 @@ func reset() -> void:
 
     active_quest = null
     fulfilled_quests.clear()
+
+    is_game_ended = true
 
 
 func start_new_quest(next_quest: Quest) -> void:

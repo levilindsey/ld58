@@ -186,8 +186,8 @@ func _on_tractor_beam_area_body_entered(body: Node2D) -> void:
         # Add pedestrian to dictionary to keep them unique. Value is meaningless
         print("Critter entered beam ")
         pedestrians_in_beam[body] = true
-        body.call_deferred("reparent", %EnemiesInBeam)
         body.on_beam_start()
+        body.call_deferred("reparent", %EnemiesInBeam)
 
 
 func _on_abductee_collection_area_body_entered(body: Node2D) -> void:
@@ -229,4 +229,4 @@ func _on_killed() -> void:
     print("Ship destroyed")
     self.modulate.a = 0
     # TODO(ALDEN): Sounds (KABLOOEY)
-    G.main.open_screen(Main.ScreenType.GAME_OVER)
+    G.game_panel.on_player_killed()

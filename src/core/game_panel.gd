@@ -161,7 +161,8 @@ func show_zoo_keeper_screen() -> void:
     quest_manager.on_return_to_zoo()
     # zoo_keeper_screen.on_return_to_zoo must come after deposit enemies
     # and quest_manager.on_return_to_zoo for proper behavior.
-    G.main.open_screen(Main.ScreenType.ZOO_KEEPER)
+    if not G.session.is_game_ended:
+        G.main.open_screen(Main.ScreenType.ZOO_KEEPER)
     clear_level_entities()
 
 
@@ -298,3 +299,13 @@ func get_random_region(types: Array[Region.Type]) -> Region:
     G.utils.ensure(false)
 
     return chunks[0].regions[0]
+
+
+func on_player_killed() -> void:
+    %ExplosionVFX.global_position = G.player.global_position
+    %ExplosionVFX.emitting = true
+    G.session.is_game_ended = true
+
+    await get_tree().create_timer(2.0).timeout
+
+    G.main.open_screen(Main.ScreenType.GAME_OVER)
