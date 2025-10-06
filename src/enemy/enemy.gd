@@ -104,6 +104,8 @@ func _physics_process(delta: float) -> void:
     if was_player_recently_visible and is_past_alerted_cut_off:
         _on_done_running_away()
 
+    _fix_facing_direction_for_walking_back_to_home_region()
+
     previous_velocity = velocity
 
     velocity.x = _get_horizontal_velocity()
@@ -266,11 +268,49 @@ func _on_detection_area_body_exited(body: Node2D) -> void:
         visible_enemies.erase(body)
 
 
+func _fix_facing_direction_for_walking_back_to_home_region() -> void:
+    if state != State.WALKING:
+        return
+
+    var is_in_home_region := (
+        global_position.x >= home_region.global_start_x and
+        global_position.x <= home_region.global_end_x
+    )
+    if is_in_home_region:
+        return
+
+    # Have them face back toward their home region.
+    var is_enemy_left_of_region := \
+        global_position.x < home_region.global_start_x
+    var distance_leftward_from_enemy_to_region := (
+        (
+            (global_position.x -
+                G.game_panel.combined_level_chunk_bounds.position.x) +
+            (G.game_panel.combined_level_chunk_bounds.end.x -
+                home_region.global_end_x)
+        ) if
+        is_enemy_left_of_region else
+        global_position.x - home_region.global_end_x
+    )
+    var distance_rightward_from_enemy_to_region := (
+        home_region.global_start_x - global_position.x if
+        is_enemy_left_of_region else
+        (
+            (G.game_panel.combined_level_chunk_bounds.end.x -
+                global_position.x) +
+            (home_region.global_start_x -
+                G.game_panel.combined_level_chunk_bounds.position.x)
+        )
+    )
+    var is_left_closer := distance_leftward_from_enemy_to_region < distance_rightward_from_enemy_to_region
+    set_is_facing_right(not is_left_closer)
+
+
 func _get_horizontal_velocity() -> float:
     if is_falling():
         return velocity.x
 
-    var direction_multiplier := 1 if is_facing_right else -1
+    var facing_direction_multiplier := 1 if is_facing_right else -1
     match state:
         State.STARTING:
             return 0
@@ -278,17 +318,17 @@ func _get_horizontal_velocity() -> float:
             return 0
         State.WALKING:
             # Preserve whichever direction they were facing.
-            return get_walking_speed() * direction_multiplier
+            return get_walking_speed() * facing_direction_multiplier
         State.FLEEING:
                 # Preserve whichever direction they were facing.
-                return get_running_speed() * direction_multiplier
+                return get_running_speed() * facing_direction_multiplier
         State.CHASING:
             var horizontal_distance := absf(G.player.global_position.x - global_position.x)
             if get_approach_distance() < horizontal_distance:
                 return 0
             else:
                 # Preserve whichever direction they were facing.
-                return get_running_speed() * direction_multiplier
+                return get_running_speed() * facing_direction_multiplier
         State.BEING_BEAMED:
             return 0
         _:

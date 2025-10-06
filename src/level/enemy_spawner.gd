@@ -1,4 +1,4 @@
-class_name  EnemySpawner extends Node
+class_name EnemySpawner extends Node
 
 
 # Dictionary<Enemy.Type, int>

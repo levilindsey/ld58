@@ -16,13 +16,13 @@ extends Resource
 
 @export var show_hud := true
 
-@export var farmer_scene : PackedScene
-@export var kid_scene : PackedScene
-@export var homeless_person_scene : PackedScene
-@export var elderly_scene : PackedScene
-@export var cat_scene : PackedScene
-@export var business_person_scene : PackedScene
-@export var police_officer_scene : PackedScene
+@export var farmer_scene: PackedScene
+@export var kid_scene: PackedScene
+@export var homeless_person_scene: PackedScene
+@export var elderly_scene: PackedScene
+@export var cat_scene: PackedScene
+@export var business_person_scene: PackedScene
+@export var police_officer_scene: PackedScene
 
 @export var enemy_sound_scene: PackedScene
 
