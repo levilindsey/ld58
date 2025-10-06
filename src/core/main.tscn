@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bpnl5pn3ydite"]
+[gd_scene load_steps=17 format=3 uid="uid://bpnl5pn3ydite"]
 
 [ext_resource type="Script" uid="uid://cb3gdybtwy0ry" path="res://src/core/main.gd" id="1_avv2o"]
 [ext_resource type="Resource" uid="uid://dv60bmaw1pdx6" path="res://settings.tres" id="2_ivtyw"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://hrkm0p3okgms" path="res://src/ui/game_over_screen.tscn" id="9_i5nkp"]
 [ext_resource type="PackedScene" uid="uid://ddl2sry3xhy84" path="res://src/ui/win_screen.tscn" id="10_qgou3"]
 [ext_resource type="AudioStream" uid="uid://cehcojmxljntb" path="res://assets/audio/LD58_UFOOO_03.wav" id="12_7561f"]
+[ext_resource type="AudioStream" uid="uid://bhe8q3fdrliy8" path="res://assets/audio/Mission Accomplished/Mission accomplished-cm-02.wav" id="15_m33k1"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_0g4b3"]
 streams_count = 4
@@ -89,3 +90,9 @@ process_mode = 3
 stream = ExtResource("12_7561f")
 volume_db = -8.0
 bus = &"Music"
+
+[node name="MissionAccomplishedStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_m33k1")
+volume_db = -3.612
+pitch_scale = 0.8
+bus = &"SFX"
