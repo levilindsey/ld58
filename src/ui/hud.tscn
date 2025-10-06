@@ -25,11 +25,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme = ExtResource("1_4rn03")
 script = ExtResource("1_eqvli")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -37,60 +39,72 @@ theme_override_constants/margin_bottom = 10
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="LeftContent" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/LeftContent"]
 layout_mode = 2
+mouse_filter = 2
 
-[node name="HealthIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="HealthIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/LeftContent/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("3_r2cn7")
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/LeftContent/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_0isw4")
 
-[node name="HealthBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer2/HBoxContainer/PanelContainer"]
+[node name="HealthBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/LeftContent/HBoxContainer/PanelContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+mouse_filter = 2
 theme_override_styles/fill = SubResource("StyleBoxLine_r2cn7")
 max_value = 1.0
 show_percentage = false
 
-[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer/LeftContent"]
 custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
+mouse_filter = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/LeftContent"]
 layout_mode = 2
+mouse_filter = 2
 
-[node name="DetectionIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+[node name="DetectionIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/LeftContent/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("4_0isw4")
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2/HBoxContainer2"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/LeftContent/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_0isw4")
 
-[node name="DetectionBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PanelContainer"]
+[node name="DetectionBar" type="ProgressBar" parent="MarginContainer/HBoxContainer/LeftContent/HBoxContainer2/PanelContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+mouse_filter = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_r2cn7")
 max_value = 1.0
 show_percentage = false
@@ -98,14 +112,23 @@ show_percentage = false
 [node name="Control" type="Control" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+[node name="RightContent" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ExtraWrapperForSpacing" type="VBoxContainer" parent="MarginContainer/HBoxContainer/RightContent"]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="ShipCapacityWrapper" type="HBoxContainer" parent="MarginContainer/HBoxContainer/RightContent/ExtraWrapperForSpacing"]
+unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 2
 
-[node name="ShipCapacityLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="ShipCapacityLabel" type="Label" parent="MarginContainer/HBoxContainer/RightContent/ExtraWrapperForSpacing/ShipCapacityWrapper"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -113,14 +136,14 @@ theme_override_constants/outline_size = 4
 text = "Ship capacity: "
 horizontal_alignment = 2
 
-[node name="CurrentCollectionCount" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="CurrentCollectionCount" type="Label" parent="MarginContainer/HBoxContainer/RightContent/ExtraWrapperForSpacing/ShipCapacityWrapper"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 9
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 
-[node name="ShipCapacitySlash" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="ShipCapacitySlash" type="Label" parent="MarginContainer/HBoxContainer/RightContent/ExtraWrapperForSpacing/ShipCapacityWrapper"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 9
@@ -128,14 +151,15 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 text = "/"
 
-[node name="CollectionCapacity" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="CollectionCapacity" type="Label" parent="MarginContainer/HBoxContainer/RightContent/ExtraWrapperForSpacing/ShipCapacityWrapper"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 9
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 
-[node name="QuestEnemyList" parent="MarginContainer/HBoxContainer/VBoxContainer" instance=ExtResource("3_snmo6")]
+[node name="QuestEnemyList" parent="MarginContainer/HBoxContainer/RightContent" instance=ExtResource("3_snmo6")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
+mouse_filter = 2

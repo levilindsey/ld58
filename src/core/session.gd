@@ -12,6 +12,10 @@ var total_enemies_splatted_by_type := {}
 # Dictionary<Enemy.Type, int>
 var total_alerted_enemies_by_type := {}
 
+var total_enemies_deposited_count := 0
+var total_enemies_splatted_count := 0
+var total_enemies_alerted_count := 0
+
 # Dictionary<UpgradeType, int>
 var ship_upgrade_levels := {}
 
@@ -25,6 +29,8 @@ var current_enemies_collected_count := 0
 
 var total_excursion_count := 0
 var current_quest_excursion_count := 0
+
+var total_quest_count := 0
 
 # Upgradeable attributes
 var collection_capacity := 0
@@ -68,6 +74,10 @@ func reset() -> void:
         current_enemies_deposited_by_type[type] = 0
         current_enemies_collected_by_type[type] = 0
 
+    total_enemies_deposited_count = 0
+    total_enemies_splatted_count = 0
+    total_enemies_alerted_count = 0
+
     for type in UpgradeLevels.UpgradeTypes.values():
         ship_upgrade_levels[type] = 0
 
@@ -75,6 +85,7 @@ func reset() -> void:
     current_enemies_collected_count = 0
     total_excursion_count = 0
     current_quest_excursion_count = 0
+    total_quest_count = 0
     collection_capacity = Settings.SHIP_UPGRADE_VALUES[UpgradeLevels.UpgradeTypes.CAPACITY][0]
     beam_scale = Settings.SHIP_UPGRADE_VALUES[UpgradeLevels.UpgradeTypes.BEAM][0]
     max_speed = Settings.SHIP_UPGRADE_VALUES[UpgradeLevels.UpgradeTypes.SPEED][0][0]
@@ -93,9 +104,13 @@ func reset() -> void:
 func start_new_quest(next_quest: Quest) -> void:
     if is_instance_valid(active_quest):
         fulfilled_quests.push_back(active_quest)
+    total_quest_count += 1
     active_quest = next_quest
     health = DEFAULT_MAX_HEALTH
     detection_score = 0
+    for type in Enemy.Type.values():
+        current_enemies_deposited_by_type[type] = 0
+    current_enemies_deposited_count = 0
     G.hud.update_quest()
 
 
@@ -114,6 +129,7 @@ func deposit_enemies() -> void:
     for type in current_enemies_collected_by_type:
         var type_count: int = current_enemies_collected_by_type[type]
         total_enemies_deposited_by_type[type] += type_count
+        total_enemies_deposited_count += type_count
         current_enemies_deposited_by_type[type] += type_count
         current_enemies_deposited_count += type_count
     G.hud.update_quest()
@@ -127,6 +143,7 @@ func add_collected_enemy(type: Enemy.Type) -> void:
 
 func add_splatted_enemy(type: Enemy.Type) -> void:
     total_enemies_splatted_by_type[type] += 1
+    total_enemies_splatted_count += 1
 
 
 func is_ship_full() -> bool:
@@ -150,6 +167,7 @@ func set_health(value: int) -> void:
 
 func record_alerted_enemy(type: Enemy.Type) -> void:
     total_alerted_enemies_by_type[type] += 1
+    total_enemies_alerted_count += 1
 
 
 func set_detection_score(score: float) -> void:

@@ -224,6 +224,6 @@ func is_dead() -> bool:
 
 func _on_killed() -> void:
     print("Ship destroyed")
-    self.visible = false
+    self.modulate.a = 0
     # TODO(ALDEN): Sounds (KABLOOEY)
-    # TODO(JAKE): Show the game-over screen!
+    G.main.open_screen(Main.ScreenType.GAME_OVER)
