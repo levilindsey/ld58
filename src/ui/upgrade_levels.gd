@@ -32,6 +32,13 @@ func set_level(level: int) -> void:
 func get_level() -> int:
      return G.session.ship_upgrade_levels[type]
 
+func get_upgrade_cost() -> int:
+    var current_level = G.session.ship_upgrade_levels[type]
+    if current_level < 3:
+        return G.settings.SHIP_UPGRADE_COSTS[type][current_level + 1]
+    else:
+        return INF
+
 func update_levels_ui() -> void:
     var level = get_level()
     match level:

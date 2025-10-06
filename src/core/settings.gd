@@ -58,6 +58,29 @@ const SHIP_UPGRADE_VALUES := {
     }
 }
 
+const SHIP_UPGRADE_COSTS := {
+    UpgradeLevels.UpgradeTypes.SPEED: {
+        1: 5,
+        2: 10, 
+        3: 15
+    },
+    UpgradeLevels.UpgradeTypes.BEAM: {
+        1: 5,
+        2: 10, 
+        3: 15
+    },
+    UpgradeLevels.UpgradeTypes.CAPACITY: {
+        1: 5,
+        2: 10, 
+        3: 15
+    },
+    UpgradeLevels.UpgradeTypes.STEALTH: {
+        1: 5,
+        2: 10, 
+        3: 15
+    }
+}
+
 const ENEMY_CONFIGS := {
     Enemy.Type.FARMER: {
         walking_speed = [45, 55],

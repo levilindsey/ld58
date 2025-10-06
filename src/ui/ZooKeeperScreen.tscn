@@ -49,129 +49,134 @@ theme_override_constants/margin_top = 100
 theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 100
 
-[node name="LeftPanel" type="HBoxContainer" parent="MarginContainer"]
+[node name="HBox" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 2
 alignment = 1
 
-[node name="Options" type="VBoxContainer" parent="MarginContainer/LeftPanel"]
+[node name="Options" type="VBoxContainer" parent="MarginContainer/HBox"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Spacer" type="Control" parent="MarginContainer/LeftPanel/Options"]
+[node name="Wallet" type="Label" parent="MarginContainer/HBox/Options"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "You have 0 alien bucks."
+
+[node name="Spacer" type="Control" parent="MarginContainer/HBox/Options"]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/LeftPanel/Options"]
+[node name="Label2" type="Label" parent="MarginContainer/HBox/Options"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Upgrade your ship?"
-horizontal_alignment = 1
 
-[node name="Spacer3" type="Control" parent="MarginContainer/LeftPanel/Options"]
+[node name="Spacer3" type="Control" parent="MarginContainer/HBox/Options"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="BeamBox" type="HBoxContainer" parent="MarginContainer/LeftPanel/Options"]
+[node name="BeamBox" type="HBoxContainer" parent="MarginContainer/HBox/Options"]
 layout_mode = 2
 
-[node name="UpgradeBeam" type="Button" parent="MarginContainer/LeftPanel/Options/BeamBox"]
+[node name="UpgradeBeam" type="Button" parent="MarginContainer/HBox/Options/BeamBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 focus_neighbor_top = NodePath("../../EarthButton")
-text = "Enlarge tractor beam"
+text = "Enlarge tractor beam  ($tbd)"
 
-[node name="BeamLevels" parent="MarginContainer/LeftPanel/Options/BeamBox" instance=ExtResource("5_ntcfd")]
+[node name="BeamLevels" parent="MarginContainer/HBox/Options/BeamBox" instance=ExtResource("5_ntcfd")]
 unique_name_in_owner = true
 layout_mode = 2
 type = 1
 
-[node name="CapacityBox" type="HBoxContainer" parent="MarginContainer/LeftPanel/Options"]
+[node name="CapacityBox" type="HBoxContainer" parent="MarginContainer/HBox/Options"]
 layout_mode = 2
 
-[node name="UpgradeCapacity" type="Button" parent="MarginContainer/LeftPanel/Options/CapacityBox"]
+[node name="UpgradeCapacity" type="Button" parent="MarginContainer/HBox/Options/CapacityBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
-text = "Add ship capacity"
+text = "Add ship capacity  ($tbd)"
 icon_alignment = 1
 
-[node name="CapacityLevels" parent="MarginContainer/LeftPanel/Options/CapacityBox" instance=ExtResource("5_ntcfd")]
+[node name="CapacityLevels" parent="MarginContainer/HBox/Options/CapacityBox" instance=ExtResource("5_ntcfd")]
 unique_name_in_owner = true
 layout_mode = 2
 type = 2
 
-[node name="StealthBox" type="HBoxContainer" parent="MarginContainer/LeftPanel/Options"]
+[node name="StealthBox" type="HBoxContainer" parent="MarginContainer/HBox/Options"]
 layout_mode = 2
 
-[node name="UpgradeStealth" type="Button" parent="MarginContainer/LeftPanel/Options/StealthBox"]
+[node name="UpgradeStealth" type="Button" parent="MarginContainer/HBox/Options/StealthBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
-text = "Upgrade stealth"
+text = "Upgrade stealth  ($tbd)"
 
-[node name="StealthLevels" parent="MarginContainer/LeftPanel/Options/StealthBox" instance=ExtResource("5_ntcfd")]
+[node name="StealthLevels" parent="MarginContainer/HBox/Options/StealthBox" instance=ExtResource("5_ntcfd")]
 unique_name_in_owner = true
 layout_mode = 2
 type = 3
 
-[node name="SpeedBox" type="HBoxContainer" parent="MarginContainer/LeftPanel/Options"]
+[node name="SpeedBox" type="HBoxContainer" parent="MarginContainer/HBox/Options"]
 layout_mode = 2
 
-[node name="UpgradeSpeed" type="Button" parent="MarginContainer/LeftPanel/Options/SpeedBox"]
+[node name="UpgradeSpeed" type="Button" parent="MarginContainer/HBox/Options/SpeedBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(220, 0)
+custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
-text = "Improve speed"
+text = "Improve speed  ($tbd)"
 
-[node name="SpeedLevels" parent="MarginContainer/LeftPanel/Options/SpeedBox" instance=ExtResource("5_ntcfd")]
+[node name="SpeedLevels" parent="MarginContainer/HBox/Options/SpeedBox" instance=ExtResource("5_ntcfd")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Spacer2" type="Control" parent="MarginContainer/LeftPanel/Options"]
+[node name="Spacer2" type="Control" parent="MarginContainer/HBox/Options"]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 
-[node name="EarthButton" type="Button" parent="MarginContainer/LeftPanel/Options"]
+[node name="EarthButton" type="Button" parent="MarginContainer/HBox/Options"]
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../BeamBox/UpgradeBeam")
 text = "Return to earth"
 
-[node name="Spacer2" type="Control" parent="MarginContainer/LeftPanel"]
+[node name="Spacer2" type="Control" parent="MarginContainer/HBox"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="RightPanel" type="VBoxContainer" parent="MarginContainer/LeftPanel"]
+[node name="RightPanel" type="VBoxContainer" parent="MarginContainer/HBox"]
 custom_minimum_size = Vector2(400, 0)
 layout_direction = 3
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 20
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/LeftPanel/RightPanel"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBox/RightPanel"]
 layout_mode = 2
 theme = SubResource("Theme_lpqvl")
 
-[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/LeftPanel/RightPanel/PanelContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/HBox/RightPanel/PanelContainer"]
 custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 
-[node name="ZooKeeperImage" type="TextureRect" parent="MarginContainer/LeftPanel/RightPanel/PanelContainer/CenterContainer"]
+[node name="ZooKeeperImage" type="TextureRect" parent="MarginContainer/HBox/RightPanel/PanelContainer/CenterContainer"]
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 texture = ExtResource("5_lpqvl")
 expand_mode = 4
 stretch_mode = 4
 
-[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/LeftPanel/RightPanel"]
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/HBox/RightPanel"]
 layout_mode = 2
 theme = SubResource("Theme_lpqvl")
 
-[node name="ZooKeeperText" type="Label" parent="MarginContainer/LeftPanel/RightPanel/PanelContainer2"]
+[node name="ZooKeeperText" type="Label" parent="MarginContainer/HBox/RightPanel/PanelContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
@@ -180,8 +185,8 @@ text = "I am the Zookeeper. Hear me roar. I would like you to collect humans for
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[connection signal="pressed" from="MarginContainer/LeftPanel/Options/BeamBox/UpgradeBeam" to="." method="_on_upgrade_beam_pressed"]
-[connection signal="pressed" from="MarginContainer/LeftPanel/Options/CapacityBox/UpgradeCapacity" to="." method="_on_upgrade_capacity_pressed"]
-[connection signal="pressed" from="MarginContainer/LeftPanel/Options/StealthBox/UpgradeStealth" to="." method="_on_upgrade_stealth_pressed"]
-[connection signal="pressed" from="MarginContainer/LeftPanel/Options/SpeedBox/UpgradeSpeed" to="." method="_on_upgrade_speed_pressed"]
-[connection signal="pressed" from="MarginContainer/LeftPanel/Options/EarthButton" to="." method="_on_earth_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBox/Options/BeamBox/UpgradeBeam" to="." method="_on_upgrade_beam_pressed"]
+[connection signal="pressed" from="MarginContainer/HBox/Options/CapacityBox/UpgradeCapacity" to="." method="_on_upgrade_capacity_pressed"]
+[connection signal="pressed" from="MarginContainer/HBox/Options/StealthBox/UpgradeStealth" to="." method="_on_upgrade_stealth_pressed"]
+[connection signal="pressed" from="MarginContainer/HBox/Options/SpeedBox/UpgradeSpeed" to="." method="_on_upgrade_speed_pressed"]
+[connection signal="pressed" from="MarginContainer/HBox/Options/EarthButton" to="." method="_on_earth_button_pressed"]
