@@ -19,6 +19,7 @@ var is_beaming = false
 @onready var reject_audio_player: AudioStreamPlayer = $RejectStreamPlayer
 @onready var warning_audio_player: AudioStreamPlayer = $WarningStreamPlayer
 @onready var explosion_audio_player: AudioStreamPlayer = $ExplosionStreamPlayer
+@onready var bullethit_audio_player: AudioStreamPlayer = $BulletHitStreamPlayer
 
 
 func _ready() -> void:
