@@ -177,7 +177,7 @@ func return_from_screen() -> void:
     # AUDIO: Music Switch
     G.main.fade_to_main_theme()
     G.zoo_keeper_screen.stop_zookeeper_audio()
-    
+
     enemy_spawner.spawn()
 
     # Fade-in ship.
