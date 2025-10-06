@@ -150,6 +150,12 @@ func return_from_zoo_keeper_screen() -> void:
     # AUDIO: Music Switch
     G.main.fade_to_main_theme()
 
+    # Fade-in ship.
+    G.player.modulate.a = 0
+    await get_tree().create_timer(0.2).timeout
+    var tween := create_tween()
+    tween.tween_property(G.player, "modulate:a", 1, 1.0)
+
 
 func get_enemy_container() -> Node2D:
     return %Enemies

@@ -132,7 +132,7 @@ func _on_alerted() -> void:
     if not detect_audio_player.playing:
         detect_audio_player.play()
 
-    await get_tree().create_timer(.5).timeout
+    await get_tree().create_timer(0.5).timeout
 
     if state == State.FLEEING:
         if not running_audio_player.playing:
