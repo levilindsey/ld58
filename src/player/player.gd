@@ -208,7 +208,7 @@ func damage(value: int) -> void:
     if is_dead():
         return
 
-    var next_health := maxi(G.session.health - 1, 0)
+    var next_health := maxi(G.session.health - value, 0)
     G.session.set_health(next_health)
     print("Ship damaged: %d [%d / %d]" % [value, G.session.health, G.session.max_health])
     if is_dead():

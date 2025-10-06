@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://djfr2r8sg5xy0"]
+
+[ext_resource type="Script" uid="uid://bacji3e8geluo" path="res://src/enemy/jet.gd" id="1_6yrfd"]
+[ext_resource type="Texture2D" uid="uid://b32263axsodtn" path="res://assets/images/jet.png" id="2_8dok1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hf5ba"]
+atlas = ExtResource("2_8dok1")
+region = Rect2(0, 0, 64, 19)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_354qu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hf5ba")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Jet" type="Node2D"]
+script = ExtResource("1_6yrfd")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_354qu")
+autoplay = "default"
+frame_progress = 0.080566555
+
+[node name="MissileSpawnPosition" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-1, 7)

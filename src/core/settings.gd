@@ -15,6 +15,10 @@ extends Resource
 @export var bullet_speed := 210.0
 @export var bullet_scale := 1.0
 
+@export var missile_damage := 10
+@export var missile_speed := 400.0
+@export var missile_scale := 1.5
+
 @export var start_in_game := false
 @export var full_screen := false
 # TODO: Hook this up.
@@ -33,6 +37,9 @@ extends Resource
 @export var police_officer_scene: PackedScene
 
 @export var bullet_scene: PackedScene
+@export var missile_scene: PackedScene
+
+@export var jet_scene: PackedScene
 
 @export var enemy_sound_scene: PackedScene
 
