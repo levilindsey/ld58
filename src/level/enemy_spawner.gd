@@ -50,9 +50,16 @@ func _record_enemy_counts_by_type() -> void:
         var count := roundi(ratio * G.settings.total_enemy_count)
         enemy_counts_by_type[type] = count
 
+    # The golden chicken is special and should always be unique.
+    enemy_counts_by_type[Enemy.Type.GOLDEN_CHICKEN] = 1
+
 
 func _populate_enemies() -> void:
     for type in Enemy.Type.values():
+        # Only spawn a golden chicken if the active quest needs it.
+        if type == Enemy.Type.GOLDEN_CHICKEN:
+            if G.session.active_quest.enemy_type_to_count.has(type):
+                continue
         for i in enemy_counts_by_type[type]:
             spawn_enemy(type)
 

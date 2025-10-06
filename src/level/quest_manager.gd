@@ -57,11 +57,13 @@ func on_return_to_zoo() -> void:
         else:
             on_win()
 
+
 func on_win() -> void:
     G.player.global_position = G.game_panel.player_start_position
     G.session.is_game_ended = true
     G.main.open_screen(G.main.ScreenType.WIN)
-    
+
+
 func calculate_money_for_quest(quest: Quest):
     var total_enemies_needed = 0
     for quota in quest.enemy_type_to_count.values():
