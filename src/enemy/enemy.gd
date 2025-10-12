@@ -150,6 +150,10 @@ func _physics_process(delta: float) -> void:
     else:
         velocity.y += get_gravity().y * delta
 
+    if state == State.BEING_BEAMED:
+        was_on_floor = false
+        return
+
     move_and_slide()
 
     # teleport the enemy if it is going to walk off the end of the map
@@ -170,10 +174,10 @@ func _physics_process(delta: float) -> void:
 
 
 func _hack_sanitize_weird_transform_state() -> void:
-    global_position.y = -10
+    global_position.y = -30
     velocity = Vector2.ZERO
     await get_tree().process_frame
-    global_position.y = -10
+    global_position.y = -30
     velocity = Vector2.ZERO
 
 

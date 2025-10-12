@@ -106,6 +106,7 @@ func clear_level_entities() -> void:
         child.queue_free()
     for child in get_projectile_container().get_children():
         child.queue_free()
+    G.hud.end_count_down()
     has_spawned_jet = false
 
 
@@ -150,10 +151,13 @@ func _physics_process(_delta: float) -> void:
     if G.player.global_position.y < ZOO_KEEPER_SPACE_HEIGHT_THRESHOLD:
         show_zoo_keeper_screen()
 
-    if G.session.detection_score >= 0.99 and not has_spawned_jet:
-        has_spawned_jet = true
-        var jet := G.settings.jet_scene.instantiate()
-        %Enemies.add_child(jet)
+    if G.session.detection_score >= 0.99:
+        if (not get_is_counting_down_for_jet() and
+                not has_spawned_jet):
+            start_jet_count_down()
+    elif get_is_counting_down_for_jet():
+        G.hud.end_count_down()
+
 
 
 func show_zoo_keeper_screen() -> void:
@@ -319,3 +323,17 @@ func on_player_killed() -> void:
         G.session.current_enemies_collected_count = 0
         await get_tree().create_timer(2.0).timeout
         show_zoo_keeper_screen()
+
+
+func get_is_counting_down_for_jet() -> bool:
+    return G.hud.jet_count_down_start_time > 0
+
+
+func start_jet_count_down() -> void:
+    G.hud.start_count_down()
+
+
+func spawn_jet() -> void:
+    has_spawned_jet = true
+    var jet := G.settings.jet_scene.instantiate()
+    %Enemies.add_child(jet)

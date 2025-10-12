@@ -22,6 +22,8 @@ const HEALTH_LOW_THRESHOLD := 0.33
 var health_bar_stylebox: StyleBoxFlat = StyleBoxFlat.new()
 var detection_bar_stylebox: StyleBoxFlat = StyleBoxFlat.new()
 
+var jet_count_down_start_time := 0.0
+
 
 func _ready() -> void:
     G.hud = self
@@ -33,6 +35,16 @@ func _ready() -> void:
 
     %HealthBar.add_theme_stylebox_override("fill", health_bar_stylebox)
     %DetectionBar.add_theme_stylebox_override("fill", detection_bar_stylebox)
+
+
+func _physics_process(_delta: float) -> void:
+    if jet_count_down_start_time > 0:
+        var current_time := Time.get_ticks_msec() / 1000.0
+        if current_time > jet_count_down_start_time + G.settings.jet_delay:
+            end_count_down()
+            G.game_panel.spawn_jet()
+        else:
+            %JetCountDown.text = "%d" % [G.settings.jet_delay - int(current_time - jet_count_down_start_time)]
 
 
 func update_visibility() -> void:
@@ -98,3 +110,14 @@ func update_quest() -> void:
         G.session.active_quest.enemy_type_to_count)
 
     %ReturnMessage.visible = G.session.is_ship_full()
+
+
+func start_count_down() -> void:
+    jet_count_down_start_time = Time.get_ticks_msec() / 1000.0
+    %JetCountDown.visible = true
+    %JetCountDown.text = "%d" % int(G.settings.jet_delay)
+
+
+func end_count_down() -> void:
+    jet_count_down_start_time = 0
+    %JetCountDown.visible = false

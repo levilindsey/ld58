@@ -148,7 +148,9 @@ func fade_to_zoo_theme() -> void:
         theme_audio_player.stream_paused = true
 
     if not zoo_audio_player.playing:
-        zoo_audio_player.play()
+        if not G.settings.mute_music:
+            zoo_audio_player.play()
+
 
 func fade_to_main_theme() -> void:
     zoo_audio_player.stop()
@@ -159,11 +161,15 @@ func fade_to_main_theme() -> void:
     tween.tween_property(theme_audio_player, "volume_db", -8.0, .2)
 
     if not theme_audio_player.playing:
-        theme_audio_player.play()
+        if not G.settings.mute_music:
+            theme_audio_player.play()
+
 
 func play_theme() -> void:
     if not theme_audio_player.playing:
-        theme_audio_player.play()
+        if not G.settings.mute_music:
+            theme_audio_player.play()
+
 
 func play_quest_complete_sound() -> void:
     if not %MissionAccomplishedStreamPlayer.playing:

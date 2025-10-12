@@ -11,6 +11,8 @@ extends Resource
 @export var extra_security_enemies_count_min := 0
 @export var extra_security_enemies_count_max := 10
 
+@export var jet_delay := 5.0
+
 @export var bullet_damage := 1
 @export var bullet_speed := 210.0
 @export var bullet_scale := 1.0
